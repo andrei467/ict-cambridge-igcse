@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Components of Computer Systems — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  header.hero{
+    padding:52px 24px 34px;
+    max-width:760px;
+    margin:0 auto;
+    border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(26px,5vw,40px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  /* Tabs */
+  nav.tabs{
+    max-width:760px;
+    margin:0 auto;
+    padding:14px 24px;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    border-bottom:1px solid var(--trace);
+    position:sticky;
+    top:0;
+    background:rgba(16,22,19,.95);
+    backdrop-filter: blur(4px);
+    z-index:30;
+    scrollbar-width: thin;
+  }
+  nav.tabs button{
+    font-family:var(--mono);
+    font-size:12.5px;
+    white-space:nowrap;
+    background:transparent;
+    border:1px solid var(--trace);
+    color:var(--paper-dim);
+    padding:8px 13px;
+    border-radius:var(--radius);
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{
+    background:var(--copper);
+    color:#181008;
+    border-color:var(--copper);
+    font-weight:500;
+  }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  /* Interactive task frame */
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  /* MCQ */
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  /* classify */
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* order task */
+  .order-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .order-item{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:11px 14px; border-radius:var(--radius); font-family:var(--mono); font-size:14.5px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .order-item .num{color:var(--sage); font-size:12px;}
+  .order-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .order-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .order-item:disabled{cursor:default;}
+  .order-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .order-feedback.ok{color:var(--sage);}
+  .order-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:40px 20px 28px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px;
+    margin:0 auto;
+    padding:14px 24px 0;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono);
+    font-size:12.5px;
+    text-decoration:none;
+    color:var(--paper-dim);
+    border:1px solid var(--trace);
+    padding:8px 13px;
+    border-radius:var(--radius);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{
+    opacity:.4;
+    pointer-events:none;
+  }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){
+    nav.theory-nav a span.full{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">36</span></div>
+
+<nav class="theory-nav">
+  <a href="hardware-software-igcse-ict.html">← <span class="full">Previous theory:</span> Hardware &amp; Software</a>
+  <span class="spacer"></span>
+  <a class="disabled" href="#" aria-disabled="true"><span class="full">Next theory</span> →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Theory 2</p>
+  <h1 class="title">Components of Computer Systems</h1>
+  <p>A computer works by taking an input, processing it, and producing an output — and every physical part of the system exists to do one of those three jobs. This page covers the CPU, memory, input and output devices, and how data is stored long-term.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="cpu">CPU</button>
+  <button class="tab-btn" data-panel="memory">Memory</button>
+  <button class="tab-btn" data-panel="input">Input</button>
+  <button class="tab-btn" data-panel="dde">Direct data entry</button>
+  <button class="tab-btn" data-panel="output">Output</button>
+  <button class="tab-btn" data-panel="storage">Storage</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ CPU ============ -->
+<div class="panel active" id="panel-cpu">
+  <h2 class="section-title">CPU <span class="tag">the brain of the computer</span></h2>
+  <p>The <strong>Central Processing Unit (CPU)</strong> exists to <strong>fetch</strong>, <strong>decode</strong> and <strong>execute</strong> instructions. It takes an input, processes data, and produces an output — for example, clicking a gamepad button (input) is processed by the console's CPU (process) to move the player on screen (output).</p>
+
+  <h3>The four key components</h3>
+  <div class="block">
+    <ul>
+      <li><strong>Arithmetic Logic Unit (ALU)</strong> — performs calculations and logical comparisons</li>
+      <li><strong>Control Unit (CU)</strong> — directs and coordinates the CPU's operations</li>
+      <li><strong>Cache</strong> — very fast, small memory holding data likely to be needed again soon</li>
+      <li><strong>Registers</strong> — tiny, extremely fast storage locations for data being used right now</li>
+    </ul>
+  </div>
+
+  <h3>The fetch-execute cycle</h3>
+  <p>The CPU runs through this cycle billions of times per second:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Fetch</strong> — the next instruction or data is fetched from RAM and brought to the CPU</li>
+      <li><strong>Decode</strong> — the CPU works out what the instruction is actually asking for</li>
+      <li><strong>Execute</strong> — the CPU carries out the instruction — e.g. performing a calculation, storing a result back in RAM, or fetching data from a different memory location</li>
+    </ul>
+  </div>
+
+  <div class="task" data-task="order" data-points="3">
+    <p class="task-label"><span>Task 1 · Put it in order</span><span class="pts">3 points</span></p>
+    <h4>Click the three stages of the cycle in the correct order, starting with the first.</h4>
+    <div class="order-list">
+      <button class="order-item" data-order="2">Decode <span class="num">?</span></button>
+      <button class="order-item" data-order="3">Execute <span class="num">?</span></button>
+      <button class="order-item" data-order="1">Fetch <span class="num">?</span></button>
+    </div>
+    <p class="order-feedback"></p>
+  </div>
+
+  <div class="task" data-task="open" data-points="1">
+    <p class="task-label"><span>Task 2 · Short answer</span><span class="pts">1 point</span></p>
+    <h4>In one sentence, what happens during the decode stage of the cycle?</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer</span>The CPU works out what is required from the instruction it has just fetched.</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-cpu-decode">
+        <label for="sm-cpu-decode">My answer was close enough — award myself the point</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MEMORY ============ -->
+<div class="panel" id="panel-memory">
+  <h2 class="section-title">Internal memory <span class="tag">RAM &amp; ROM</span></h2>
+  <p>Both RAM and ROM are types of <strong>primary storage</strong> — memory directly connected to the CPU — but they behave very differently.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Feature</th><th>RAM</th><th>ROM</th></tr>
+      <tr><td>Stores</td><td>Data &amp; programs currently in use</td><td>The boot file (start-up instructions, including the BIOS)</td></tr>
+      <tr><td>Capacity</td><td>Variable — can be increased to improve performance</td><td>Fixed — cannot be increased</td></tr>
+      <tr><td>Contents</td><td>Temporary</td><td>Permanent</td></tr>
+      <tr><td>Read/Write</td><td>Read &amp; write</td><td>Read only</td></tr>
+      <tr><td>Volatile?</td><td>Volatile — contents lost when powered off</td><td>Non-volatile — contents survive power loss</td></tr>
+      <tr><td>Speed</td><td>Very fast — much faster than secondary storage</td><td>Fast, but slower than RAM</td></tr>
+    </table>
+  </div>
+  <p class="note">Data and instructions must be copied from secondary storage into RAM before the CPU can use them. ROM is a small chip located on the motherboard.</p>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 3 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click whether each statement describes RAM or ROM.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="ram">
+        <span class="term">Volatile — loses its contents when the power is off</span>
+        <span class="choices"><button data-choice="ram">RAM</button><button data-choice="rom">ROM</button></span>
+      </div>
+      <div class="classify-item" data-answer="rom">
+        <span class="term">Contains the BIOS</span>
+        <span class="choices"><button data-choice="ram">RAM</button><button data-choice="rom">ROM</button></span>
+      </div>
+      <div class="classify-item" data-answer="ram">
+        <span class="term">Capacity can be increased</span>
+        <span class="choices"><button data-choice="ram">RAM</button><button data-choice="rom">ROM</button></span>
+      </div>
+      <div class="classify-item" data-answer="rom">
+        <span class="term">Read-only memory</span>
+        <span class="choices"><button data-choice="ram">RAM</button><button data-choice="rom">ROM</button></span>
+      </div>
+      <div class="classify-item" data-answer="ram">
+        <span class="term">Holds data and programs currently in use</span>
+        <span class="choices"><button data-choice="ram">RAM</button><button data-choice="rom">ROM</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="2">
+    <p class="task-label"><span>Task 4 · Worked example</span><span class="pts">2 points</span></p>
+    <h4>State two characteristics of RAM.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your two characteristics here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Can be read from and written to · is volatile memory · is temporary storage</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ram-chars" data-points="2">
+        <label for="sm-ram-chars">My answer covered two valid characteristics — award myself both points</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INPUT ============ -->
+<div class="panel" id="panel-input">
+  <h2 class="section-title">Input devices <span class="tag">getting data in</span></h2>
+  <p><strong>Input devices</strong> are hardware components that let users put data or commands into a computer system, which the computer then processes to produce an output.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
+      <tr><td>Keyboard</td><td>General data entry</td><td>Repetitive strain injury; slower than direct entry</td></tr>
+      <tr><td>Numeric keypad</td><td>ATMs, chip &amp; PIN devices</td><td>Small buttons; layouts vary</td></tr>
+      <tr><td>Mouse / pointing device</td><td>Precise on-screen selection</td><td>RSI; needs a flat surface</td></tr>
+      <tr><td>Remote control</td><td>Controlling a TV or hi-fi from a distance</td><td>Needs line-of-sight; easily lost; needs batteries</td></tr>
+      <tr><td>Joystick / driving wheel</td><td>Gaming and simulators</td><td>Expensive; limited use outside gaming</td></tr>
+      <tr><td>Touchscreen</td><td>Smartphones and tablets</td><td>Gets dirty/scratched; less precise than a mouse</td></tr>
+      <tr><td>Scanner</td><td>Converting paper documents to electronic form</td><td>High quality scans are slow</td></tr>
+      <tr><td>Digital camera</td><td>Capturing photos/video</td><td>Compression can reduce quality</td></tr>
+      <tr><td>Microphone</td><td>Voice input, hands-free control</td><td>Variable accuracy; needs known keywords</td></tr>
+      <tr><td>Analogue sensor</td><td>Measuring temperature, light, sound, humidity</td><td>Needs calibration; output must be converted to digital (ADC)</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="2">
+    <p class="task-label"><span>Task 5 · Worked example</span><span class="pts">2 points</span></p>
+    <h4>A house contains a microprocessor-controlled central heating system. Identify two input devices that would be used in this system.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your two input devices here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Keypad · temperature sensor · override switch for timing · touchscreen · remote control / smartphone / tablet</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-heating" data-points="2">
+        <label for="sm-heating">My answer named two valid devices — award myself both points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 6 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="2">
+      <p class="q">1. A greenhouse needs to automatically monitor temperature and humidity with no human involved. Which input device fits best?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Numeric keypad</button>
+        <button class="opt" data-idx="1">Joystick</button>
+        <button class="opt" data-idx="2">Analogue sensor</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. Which input device is most likely to cause repetitive strain injury with heavy daily use?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Microphone</button>
+        <button class="opt" data-idx="1">Keyboard</button>
+        <button class="opt" data-idx="2">Remote control</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. A visually impaired user wants hands-free control of their smart home. Which input device best supports this?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Microphone</button>
+        <button class="opt" data-idx="1">Touchscreen</button>
+        <button class="opt" data-idx="2">Joystick</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DDE ============ -->
+<div class="panel" id="panel-dde">
+  <h2 class="section-title">Direct data entry <span class="tag">little or no human input</span></h2>
+  <p>A <strong>direct data entry (DDE)</strong> device inputs data into a computer with little or no human interaction — collection and transfer happen automatically.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
+      <tr><td>Magnetic stripe reader</td><td>Debit/credit cards</td><td>Stripes can get damaged; reader needs close contact</td></tr>
+      <tr><td>Chip &amp; PIN reader</td><td>Card payments</td><td>Requires a PIN; possible skimming</td></tr>
+      <tr><td>RFID reader</td><td>Contactless payment, security tags, location tracking</td><td>Signals can be intercepted or jammed</td></tr>
+      <tr><td>Optical Mark Recognition (OMR)</td><td>Reading marks on exam papers</td><td>Limited to specific forms; can't read handwriting</td></tr>
+      <tr><td>Optical Character Recognition (OCR)</td><td>Converting printed/typed text into digital data</td><td>Struggles with complex layouts or unusual fonts</td></tr>
+      <tr><td>Barcode reader</td><td>Reading barcode labels at a till</td><td>Needs line-of-sight; barcodes can be damaged</td></tr>
+      <tr><td>QR scanner</td><td>Reading QR codes</td><td>Can store malicious code; several formats exist</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="4">
+    <p class="task-label"><span>Task 7 · Worked example, as multiple choice</span><span class="pts">4 points</span></p>
+    <h4>For each use of data capture, choose the most appropriate direct data entry device. Devices must be different in each case.</h4>
+
+    <div class="mcq" data-answer="1">
+      <p class="q">a) Contactless credit cards</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Barcode reader</button>
+        <button class="opt" data-idx="1">RFID reader</button>
+        <button class="opt" data-idx="2">OMR</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">b) Multiple choice answers on an exam paper</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">OCR</button>
+        <button class="opt" data-idx="1">Chip &amp; PIN reader</button>
+        <button class="opt" data-idx="2">OMR</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">c) Scanning items at a computerised till</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Barcode reader</button>
+        <button class="opt" data-idx="1">RFID reader</button>
+        <button class="opt" data-idx="2">Magnetic stripe reader</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">d) Converting a printed letter into an editable text document</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">OMR</button>
+        <button class="opt" data-idx="1">OCR</button>
+        <button class="opt" data-idx="2">QR scanner</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OUTPUT ============ -->
+<div class="panel" id="panel-output">
+  <h2 class="section-title">Output devices <span class="tag">getting results out</span></h2>
+  <p><strong>Output devices</strong> receive information from a computer system and present it to the user, communicating the results of processing or commands.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
+      <tr><td>CRT monitor</td><td>Legacy displays, works with light pens</td><td>Heavy; runs hot; high power use</td></tr>
+      <tr><td>LCD monitor</td><td>Everyday displays</td><td>Colour/contrast vary with viewing angle</td></tr>
+      <tr><td>LED monitor</td><td>Modern displays</td><td>More expensive than LCD</td></tr>
+      <tr><td>Touchscreen (output)</td><td>Combined display and input</td><td>Smudges; calibration issues</td></tr>
+      <tr><td>Multimedia projector</td><td>Presentations to a large audience</td><td>Needs a darkened room; expensive bulbs</td></tr>
+      <tr><td>Laser printer</td><td>Fast, high-volume office printing</td><td>Expensive to buy</td></tr>
+      <tr><td>Inkjet printer</td><td>High-quality home printing</td><td>Slower; higher cost per page</td></tr>
+      <tr><td>Dot matrix printer</td><td>Multi-part carbon forms, long print runs</td><td>Noisy; low print quality</td></tr>
+      <tr><td>Plotter</td><td>Technical drawings and blueprints</td><td>Slow; expensive; large</td></tr>
+      <tr><td>3D printer</td><td>Prototyping, custom/medical objects</td><td>Slow; limited materials; very expensive</td></tr>
+      <tr><td>Speakers</td><td>Audio output</td><td>Sound quality varies with price</td></tr>
+      <tr><td>Actuators</td><td>Controlling motors, pumps, switches</td><td>Needs a DAC interface; mechanical wear</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="4">
+    <p class="task-label"><span>Task 8 · Worked example, as multiple choice</span><span class="pts">4 points</span></p>
+    <h4>Complete each sentence by choosing the most appropriate device.</h4>
+
+    <div class="mcq" data-answer="2">
+      <p class="q">a) A ______ produces output in the form of solid objects.</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Speaker</button>
+        <button class="opt" data-idx="1">Monitor</button>
+        <button class="opt" data-idx="2">3D printer</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">b) A ______ produces output in the form of sound.</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Plotter</button>
+        <button class="opt" data-idx="1">Speaker</button>
+        <button class="opt" data-idx="2">Actuator</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">c) A school wants to show slides to a full hall of 200 students. Which output device fits best?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Multimedia projector</button>
+        <button class="opt" data-idx="1">Touchscreen</button>
+        <button class="opt" data-idx="2">Dot matrix printer</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">d) A warehouse needs to print multi-part despatch forms continuously, all day, as cheaply as possible. Which printer fits best?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Inkjet printer</button>
+        <button class="opt" data-idx="1">Laser printer</button>
+        <button class="opt" data-idx="2">Dot matrix printer</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STORAGE ============ -->
+<div class="panel" id="panel-storage">
+  <h2 class="section-title">Storage</h2>
+  <p>A <strong>storage device</strong> reads from and writes to storage media, providing non-volatile <strong>secondary (backing) storage</strong> — used to store data and programs when they're not actively in RAM. There are three types:</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Type</th><th>How it stores data</th><th>General strengths / weaknesses</th></tr>
+      <tr><td>Magnetic</td><td>Uses magnetic polarity on a disk or tape</td><td>High capacity, low cost per GB — but has moving parts, so it's less durable and portable, and can be noisy</td></tr>
+      <tr><td>Solid state</td><td>Uses electronic circuits, no moving parts</td><td>Very fast, durable and portable — but expensive per GB with limited write cycles</td></tr>
+      <tr><td>Optical</td><td>Uses a laser to burn pits and lands into a disk</td><td>Very cheap and durable — but low capacity and slow access speed, and easily scratched</td></tr>
+    </table>
+  </div>
+  <p class="note">Don't confuse storage <em>devices</em> (the hardware, like a bookshelf) with storage <em>media</em> (what's stored in it, like the books) — e.g. a DVD (media) is read by a DVD drive (device).</p>
+
+  <h3>Common storage media</h3>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Media</th><th>Typical use</th><th>Type</th></tr>
+      <tr><td>Hard disk drive (HDD)</td><td>General-purpose storage in computers and servers</td><td>Magnetic</td></tr>
+      <tr><td>Portable hard disk</td><td>External backup and transfer</td><td>Magnetic</td></tr>
+      <tr><td>Magnetic tape</td><td>Large-volume backup and archiving</td><td>Magnetic</td></tr>
+      <tr><td>CD</td><td>Audio and software distribution</td><td>Optical</td></tr>
+      <tr><td>DVD</td><td>Higher-capacity video/data/software</td><td>Optical</td></tr>
+      <tr><td>Blu-ray</td><td>High-definition video, high-capacity data</td><td>Optical</td></tr>
+      <tr><td>Solid state drive (SSD)</td><td>Fast internal storage for modern computers</td><td>Solid state</td></tr>
+      <tr><td>Portable SSD</td><td>Fast external transfer and backup</td><td>Solid state</td></tr>
+      <tr><td>USB memory stick</td><td>Portable transfer between devices</td><td>Solid state</td></tr>
+      <tr><td>Flash memory card (SD/XD)</td><td>Smartphones and digital cameras</td><td>Solid state</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 9 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which type of storage each media belongs to.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="mag">
+        <span class="term">Magnetic tape</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+      <div class="classify-item" data-answer="sol">
+        <span class="term">USB memory stick</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+      <div class="classify-item" data-answer="opt">
+        <span class="term">Blu-ray disc</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+      <div class="classify-item" data-answer="mag">
+        <span class="term">Hard disk drive (HDD)</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+      <div class="classify-item" data-answer="sol">
+        <span class="term">Flash memory card (SD)</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+      <div class="classify-item" data-answer="opt">
+        <span class="term">DVD</span>
+        <span class="choices"><button data-choice="mag">Magnetic</button><button data-choice="sol">Solid state</button><button data-choice="opt">Optical</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="7">
+    <p class="task-label"><span>Task 10 · Worked example</span><span class="pts">7 points</span></p>
+    <h4>A program collects a large amount of data. This could be stored using either a fixed solid-state drive (SSD) or cloud storage.</h4>
+
+    <div class="sub-q">
+      <label>a) Describe four advantages to a school of using cloud storage rather than the SSD.</label>
+      <textarea placeholder="Type your four advantages here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Greater storage capacity · data can be sent to/from the cloud from any device · storage can be increased without adding physical devices · many people can share the data · the school only pays for the storage used · there's an automatic backup of data</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-cloud-adv" data-points="4">
+        <label for="sm-cloud-adv">My answer covered four valid advantages — award myself all four points</label>
+      </div>
+    </div>
+
+    <div class="sub-q">
+      <label>b) Describe three disadvantages to a school of using cloud storage rather than the SSD.</label>
+      <textarea placeholder="Type your three disadvantages here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>More security issues, as multiple copies of the data are stored · the school loses control over the storage of the data · cloud storage has an ongoing cost · users need a reliable connection to store data · users need an internet connection to access data</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-cloud-dis" data-points="3">
+        <label for="sm-cloud-dis">My answer covered three valid disadvantages — award myself all three points</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Components of Computer Systems — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Order (sequence) tasks ----
+  document.querySelectorAll('.task[data-task="order"]').forEach(function(task){
+    const items = task.querySelectorAll('.order-item');
+    const feedback = task.querySelector('.order-feedback');
+    let expectedNext = 1;
+    let mistakeMade = false;
+
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        const order = parseInt(item.dataset.order, 10);
+        if(mistakeMade){ return; }
+        if(order === expectedNext){
+          item.classList.add('correct');
+          item.querySelector('.num').textContent = expectedNext;
+          item.disabled = true;
+          addScore(1);
+          expectedNext++;
+          if(expectedNext > items.length){
+            feedback.textContent = 'Correct sequence — well done.';
+            feedback.className = 'order-feedback ok';
+          }
+        } else {
+          item.classList.add('incorrect');
+          mistakeMade = true;
+          items.forEach(function(other){
+            other.disabled = true;
+            if(!other.classList.contains('correct')){
+              other.querySelector('.num').textContent = other.dataset.order;
+            }
+          });
+          feedback.textContent = 'Not quite — the correct order is now numbered above.';
+          feedback.className = 'order-feedback bad';
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
