@@ -405,17 +405,59 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
   }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:720px;
+    margin:0 auto;
+    padding:14px 24px 0;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono);
+    font-size:12.5px;
+    text-decoration:none;
+    color:var(--paper-dim);
+    border:1px solid var(--trace);
+    padding:8px 13px;
+    border-radius:var(--radius);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{
+    opacity:.4;
+    pointer-events:none;
+  }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){
+    nav.theory-nav a span.full{display:none;}
+  }
 </style>
 </head>
 <body>
 
 <div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">17</span></div>
 
+<nav class="theory-nav">
+  <a class="disabled" href="#" aria-disabled="true">← <span class="full">Previous theory</span></a>
+  <span class="spacer"></span>
+  <a href="components-of-computer-systems-igcse-ict.html"><span class="full">Next theory:</span> Components of Computer Systems →</a>
+</nav>
+
 <header class="hero">
   <p class="kicker">Cambridge IGCSE ICT · Theory 1</p>
   <h1 class="title">Hardware &amp; Software</h1>
   <p>Every computer system is built from two things working together: the physical parts you can touch, and the instructions that tell those parts what to do. This page walks through both, plus how computers turn the analogue world into the 1s and 0s they actually understand.</p>
-
+  <div class="hero-meta">
+    <span>Hardware</span>
+    <span>Software</span>
+    <span>Operating systems</span>
+    <span>Analogue &amp; digital data</span>
+  </div>
 </header>
 
 <nav class="toc">
@@ -525,7 +567,7 @@
 
 <!-- ============ SOFTWARE ============ -->
 <section id="software">
-  <h2 class="section-title">Software</h2>
+  <h2 class="section-title">Software <span class="tag">the instructions</span></h2>
   <p><strong>Software</strong> is the set of programs that control the hardware. It lives on the computer system but can't be physically touched. Software splits into two categories: <strong>application software</strong> and <strong>system software</strong>.</p>
 
   <h3>Application software</h3>
@@ -747,7 +789,7 @@
 </div>
 
 <footer>
-  Cambridge IGCSE ICT · Hardware &amp; Software
+  Cambridge IGCSE ICT · Hardware &amp; Software — built for revision, points are just for you.
 </footer>
 
 <script>
