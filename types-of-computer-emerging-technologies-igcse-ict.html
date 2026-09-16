@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Types of Computer &amp; Emerging Technologies — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">16</span></div>
+
+<nav class="theory-nav">
+  <a href="components-of-computer-systems-igcse-ict.html">← <span class="full">Previous theory:</span> Components of Computer Systems</a>
+  <span class="spacer"></span>
+  <a class="disabled" href="#" aria-disabled="true"><span class="full">Next theory</span> →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Theory 3</p>
+  <h1 class="title">Types of Computer &amp; Emerging Technologies</h1>
+  <p>Not every computer looks the same, and not every task suits the same type of machine. This page compares desktop and mobile computers, then looks at two technologies reshaping how we use them: artificial intelligence and extended reality.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="computers">Desktop &amp; mobile computers</button>
+  <button class="tab-btn" data-panel="emerging">Emerging technologies</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ DESKTOP & MOBILE ============ -->
+<div class="panel active" id="panel-computers">
+  <h2 class="section-title">Desktop computers</h2>
+  <p>A <strong>desktop computer</strong> is designed to stay in one place, such as on a desk. It traditionally has separate parts — a monitor, the computer itself, and a keyboard &amp; mouse. Desktop computers are typically <strong>more powerful</strong> than mobile computers, and their parts are <strong>upgradable</strong>, so performance can be improved by replacing components.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Office &amp; business</th><th>Education</th><th>Gaming &amp; entertainment</th></tr>
+      <tr><td>Word processing, financial modelling, email, data backup, video/image editing, project management, video conferencing</td><td>Online learning, research, content creation, multimedia presentations, online collaboration and communication</td><td>Online gaming, streaming, social media, browsing</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Mobile computers</h2>
+  <p>A <strong>mobile computer</strong> is designed to be portable — a laptop, smartphone or tablet. It has built-in components (screen, keyboard/trackpad or touchscreen). Mobile computers are typically <strong>less powerful</strong> than desktops, because of power constraints from their size and the need to preserve battery life. Their components are integrated, so they're <strong>not easily upgradable</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Laptop</th><th>Smartphone</th><th>Tablet / phablet</th></tr>
+      <tr><td>Lightweight, low power consumption, less room than a desktop, touchscreen interface</td><td>Small physical size, easy to carry, long battery life, slower data transfer rates</td><td>Larger screen than a smartphone, ideal for media &amp; browsing, limited expandability, uses Bluetooth/Wi-Fi/4G/5G</td></tr>
+    </table>
+  </div>
+
+  <h3>Uses of mobile computers</h3>
+  <div class="block">
+    <ul>
+      <li><strong>Office &amp; business</strong> — remote access to office applications, email on the go, mobile payments, calendars</li>
+      <li><strong>Education</strong> — e-books, educational apps, note-taking and research</li>
+      <li><strong>Gaming &amp; entertainment</strong> — mobile games, streaming, social media</li>
+      <li><strong>Remotely controlled devices</strong> — smart home control, surveillance access, controlling drones</li>
+      <li><strong>Other</strong> — sat nav, online banking, photos, translation</li>
+    </ul>
+  </div>
+
+  <h3>Advantages &amp; disadvantages of mobile computers</h3>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Portability — easy to carry and use on the go</td><td>Limited expandability — difficult to upgrade hardware</td></tr>
+      <tr><td>Flexibility — access to the internet and resources from anywhere</td><td>Less powerful than desktop computers</td></tr>
+      <tr><td>Multi-functionality — used for many different tasks</td><td>Shorter battery life — needs frequent charging</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="select" data-points="2">
+    <p class="task-label"><span>Task 1 · Worked example</span><span class="pts">2 points</span></p>
+    <h4>Select two input devices that could be used in a smartphone.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox"> HDD</label>
+      <label class="select-item"><input type="checkbox"> Magnetic stripe reader</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Microphone</label>
+      <label class="select-item"><input type="checkbox"> Mouse</label>
+      <label class="select-item"><input type="checkbox"> Remote control</label>
+      <label class="select-item"><input type="checkbox"> Speaker</label>
+      <label class="select-item"><input type="checkbox"> Touchpad</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Touch screen</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 2 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. Which best explains why desktop computers are typically more powerful than mobile computers?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">They are cheaper to buy</button>
+        <button class="opt" data-idx="1">They aren't constrained by size and battery life</button>
+        <button class="opt" data-idx="2">They use a touchscreen</button>
+        <button class="opt" data-idx="3">They connect to Wi-Fi</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. Which of these is a genuine disadvantage of mobile computers compared to desktops?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Portability</button>
+        <button class="opt" data-idx="1">Limited expandability</button>
+        <button class="opt" data-idx="2">Access to the internet anywhere</button>
+        <button class="opt" data-idx="3">Multi-functionality</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">3. A user wants a larger screen than a smartphone for media consumption and browsing, but doesn't need a keyboard. Which device fits best?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Desktop computer</button>
+        <button class="opt" data-idx="1">Laptop</button>
+        <button class="opt" data-idx="2">Tablet / phablet</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EMERGING TECH ============ -->
+<div class="panel" id="panel-emerging">
+  <h2 class="section-title">Artificial Intelligence (AI)</h2>
+  <p><strong>Artificial intelligence</strong> is a machine that can simulate intelligent behaviours similar to a human. An AI system can:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Learn</strong> — acquire new information</li>
+      <li><strong>Decide</strong> — analyse and make choices</li>
+      <li><strong>Act autonomously</strong> — take actions without human input</li>
+    </ul>
+  </div>
+  <p>There are two main types of AI:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Weak AI (narrow AI)</strong> — designed to perform a specific task or set of tasks</li>
+      <li><strong>Strong AI (artificial general intelligence, AGI)</strong> — designed to perform any intellectual task a human can do</li>
+    </ul>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Increased efficiency</td><td>Job losses</td></tr>
+      <tr><td>Increased accuracy</td><td>Potential for biased decision making</td></tr>
+      <tr><td>Scalability</td><td>Ethical concerns over its use</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Extended Reality (XR)</h2>
+  <p><strong>Extended reality</strong> blends the virtual and real worlds to create immersion. Its two popular forms are virtual reality and augmented reality.</p>
+
+  <h3>Virtual reality (VR)</h3>
+  <div class="block">
+    <ul>
+      <li>Tries to shut out the "real world" and immerse the user in a fully simulated environment</li>
+      <li>Blocks out the real world using a headset with a built-in 360° screen</li>
+      <li>Users often interact with the virtual world through motion tracking</li>
+    </ul>
+  </div>
+
+  <h3>Augmented reality (AR)</h3>
+  <div class="block">
+    <ul>
+      <li>Overlays digital information or graphics onto the real world</li>
+      <li>Users are not fully immersed — they can still see and interact with what's in front of them</li>
+      <li>Viewed via a smartphone or headset</li>
+    </ul>
+  </div>
+
+  <p class="note">XR is used in gaming, education and training for more engaging experiences, and applied in architecture, medicine and retail for better visualisation — but it raises concerns about addiction and excessive screen time.</p>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 3 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click whether each statement describes virtual reality (VR) or augmented reality (AR).</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="vr">
+        <span class="term">Blocks out the real world using a headset</span>
+        <span class="choices"><button data-choice="vr">VR</button><button data-choice="ar">AR</button></span>
+      </div>
+      <div class="classify-item" data-answer="ar">
+        <span class="term">Overlays digital information onto the real world</span>
+        <span class="choices"><button data-choice="vr">VR</button><button data-choice="ar">AR</button></span>
+      </div>
+      <div class="classify-item" data-answer="ar">
+        <span class="term">The user is not fully immersed and can interact with what's in front of them</span>
+        <span class="choices"><button data-choice="vr">VR</button><button data-choice="ar">AR</button></span>
+      </div>
+      <div class="classify-item" data-answer="vr">
+        <span class="term">Uses motion tracking inside a fully simulated environment</span>
+        <span class="choices"><button data-choice="vr">VR</button><button data-choice="ar">AR</button></span>
+      </div>
+      <div class="classify-item" data-answer="ar">
+        <span class="term">Viewed by pointing a smartphone camera at a real object</span>
+        <span class="choices"><button data-choice="vr">VR</button><button data-choice="ar">AR</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Task 4 · Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. A chess program that can only ever play chess, however well, is an example of:</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Strong AI / AGI</button>
+        <button class="opt" data-idx="1">Weak AI / narrow AI</button>
+        <button class="opt" data-idx="2">Extended reality</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">2. Which of these is listed as a disadvantage of AI?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Increased efficiency</button>
+        <button class="opt" data-idx="1">Scalability</button>
+        <button class="opt" data-idx="2">Job losses</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 5 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>Some smartphones let a user point their camera at an object to display information about it — like an item appearing in a search engine. This is augmented reality. One example is mobile games where characters appear to walk in the street. Explain, using examples, other ways augmented reality could be used in everyday life.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Gathering information about a building, painting or product · used as a direction finder, e.g. navigating an airport or shopping mall · visualising what something would look like in real life, e.g. trying on clothes, makeup or placing furniture · pointing it at a word for a translation or definition · used by police for facial recognition</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ar" data-points="4">
+        <label for="sm-ar">My answer covered four valid examples — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Types of Computer &amp; Emerging Technologies — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      feedback.textContent = correctChecked === totalCorrect
+        ? 'Both correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = correctChecked === totalCorrect ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+</body>
+</html>
