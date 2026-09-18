@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Effects of Using IT — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15px; max-width:60%;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">38</span></div>
+
+<nav class="theory-nav">
+  <a href="networks-igcse-ict.html">← <span class="full">Previous theory:</span> Networks</a>
+  <span class="spacer"></span>
+  <a href="ict-applications-igcse-ict.html"><span class="full">Next theory:</span> ICT Applications →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Theory 5</p>
+  <h1 class="title">Effects of Using IT</h1>
+  <p>Microprocessors quietly run a huge amount of modern life — from the heating in your home to the plane overhead — and that brings real trade-offs. This page covers how those devices affect lifestyle, transport and security, plus the health issues that come from spending long hours in front of a screen.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="micro">Microprocessor-controlled devices</button>
+  <button class="tab-btn" data-panel="health">Health issues</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ MICROPROCESSOR-CONTROLLED DEVICES ============ -->
+<div class="panel active" id="panel-micro">
+  <h2 class="section-title">What is a microprocessor?</h2>
+  <p>A microprocessor is <strong>an integrated circuit (IC) that contains a central processing unit (CPU)</strong>. The microprocessor is responsible for <strong>executing instructions</strong>.</p>
+
+  <h3>Data security issues</h3>
+  <p>Any device fitted with a microprocessor <strong>is open to cybercriminal activity</strong>. Microprocessor-controlled devices give hackers more opportunities — for example:</p>
+  <div class="block">
+    <ul>
+      <li>Hacking smart home systems to control security devices such as cameras and locks</li>
+      <li>Hacking smart-controlled heating systems to monitor patterns of when heating is on and off — data which can be used to track when people are at home or not</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Monitoring &amp; controlling devices</h2>
+  <p>Microprocessors are used in a home to monitor and control devices such as central heating systems, security alarm systems, and home entertainment systems, among others. The use of microprocessors in the home can have a positive and negative impact on <strong>lifestyle</strong>, <strong>leisure</strong>, and <strong>physical fitness</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Lifestyle</th><th>Leisure</th><th>Physical fitness</th></tr>
+      <tr><td>Less manual tasks</td><td>More time to do other things</td><td>Loss of fitness due to lack of manual tasks</td></tr>
+      <tr><td>Devices can be controlled outside of the home (e.g. turning on the heating on the way home)</td><td>Connected activities — e.g. fitness trackers can connect with friends for virtual competition</td><td>People become lazy as they depend on devices</td></tr>
+      <tr><td>Live security alerts sent straight to a smartphone or computer</td><td>Integrated entertainment — e.g. Smart TVs offer voice control and personalisation</td><td>Unrealistic expectations, e.g. comparing a user's progress to others' data</td></tr>
+      <tr><td>Less manual tasks can lead to an unhealthy lifestyle</td><td>Users can become tech dependent and put limits on their creativity</td><td>Biometric data is not always accurate</td></tr>
+    </table>
+  </div>
+
+  <h3>Social interactions</h3>
+  <p>The use of smart devices such as tablets, TVs and phones allows for better communication. There are positive impacts of using technology, such as:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Less expensive</strong> to stay connected, compared to telephone, post, etc.</li>
+      <li><strong>Easier to make new friends</strong></li>
+      <li><strong>Easier to find people</strong> with similar interests</li>
+    </ul>
+  </div>
+  <p>There are also negatives of using technology, such as:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Social isolation</strong></li>
+      <li><strong>Increased anxiety</strong> from a lack of interaction</li>
+      <li>The way people behave online compared to offline</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Monitoring &amp; controlling transport</h2>
+  <p>Microprocessors are used to monitor and control transport systems such as traffic management (e.g. smart motorways), ANPR (Automatic Number Plate Recognition), air traffic control in airports, and railway signalling.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Less human error, reducing the number of accidents</td><td>If the system fails, the whole transport system is stopped</td></tr>
+      <tr><td>Efficient scheduling means more trains and aeroplanes can run</td><td>Open to being attacked by cybercriminals</td></tr>
+      <tr><td>ANPR can automatically penalise offences, and check for insurance and cars reported stolen</td><td>ANPR is collecting data — a privacy concern</td></tr>
+      <tr><td>Smart motorways can adapt to traffic in real time, reducing journey times and delays</td><td>Design flaws can lead to safety concerns</td></tr>
+    </table>
+  </div>
+
+  <h3>Autonomous vehicles</h3>
+  <p>Autonomous vehicles make use of <strong>sensors, cameras, actuators and microprocessors</strong> to get a vehicle from point A to point B without human intervention. Autonomous vehicles rely on <strong>complex algorithms</strong> to work alongside the hardware.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Better for the environment due to efficiency</td><td>Expensive</td></tr>
+      <tr><td>Safer — no human error</td><td>Security concerns, software updates and patches</td></tr>
+      <tr><td>Reduced traffic congestion due to more efficient speed, braking and lane capacity</td><td>Higher maintenance</td></tr>
+      <tr><td></td><td>Could lead to unemployment</td></tr>
+      <tr><td></td><td>User reluctance to new technology</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Worked example</span><span class="pts">4 points</span></p>
+    <h4>Microprocessor-controlled devices in the home have had positive effects on people's lifestyles. One positive effect is that we can now set a cooker to switch on whilst we are out so that we arrive home to a cooked meal. Describe the positive effects of using other microprocessor-controlled devices in the home.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Microprocessor-controlled devices reduce the need for people to do manual tasks at home · people can use them for physical fitness tracking · people have more time to spend on leisure activities, shopping or socialising · increased sense of security as homes are protected with burglar/smoke/fire alarms · smart fridges can improve a healthy lifestyle and reduce food waste by automatically ordering fresh food · devices can be set remotely using a smartphone · saves fuel, as heating or air conditioning isn't left on all day · reduces injuries by using microprocessor-controlled lights outside</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-micro-home" data-points="4">
+        <label for="sm-micro-home">My answer covered four valid effects — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click whether each statement is about lifestyle, leisure, or physical fitness.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="life"><span class="term">Devices can be controlled outside of the home, e.g. turning on the heating on the way home</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+      <div class="classify-item" data-answer="leisure"><span class="term">Fitness trackers can connect with friends for virtual competition</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+      <div class="classify-item" data-answer="fitness"><span class="term">People become lazy as they depend on devices</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+      <div class="classify-item" data-answer="life"><span class="term">Live security alerts are sent straight to a smartphone</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+      <div class="classify-item" data-answer="leisure"><span class="term">Smart TVs offer voice control and personalisation</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+      <div class="classify-item" data-answer="fitness"><span class="term">Biometric data is not always accurate</span><span class="choices"><button data-choice="life">Lifestyle</button><button data-choice="leisure">Leisure</button><button data-choice="fitness">Physical fitness</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click whether each statement is an advantage or a disadvantage of using microprocessors in transport and autonomous vehicles.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="adv"><span class="term">ANPR can automatically check for insurance and cars reported stolen</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">If the system fails, the whole transport system is stopped</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="adv"><span class="term">Reduced traffic congestion due to more efficient speed and lane capacity</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">Could lead to unemployment</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="adv"><span class="term">Smart motorways can adapt to traffic in real time</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">Open to attack by cybercriminals</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="4">
+    <p class="task-label"><span>Quick check</span><span class="pts">4 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What is a microprocessor?</p><div class="opts"><button class="opt" data-idx="0">A type of secondary storage device</button><button class="opt" data-idx="1">An integrated circuit that contains a CPU</button><button class="opt" data-idx="2">A wireless access point</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">2. Why are microprocessor-controlled devices considered a data security risk?</p><div class="opts"><button class="opt" data-idx="0">They are open to cybercriminal / hacking activity</button><button class="opt" data-idx="1">They use too much electricity</button><button class="opt" data-idx="2">They cannot connect to the internet</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">3. Which of these is listed as a negative impact of technology on social interactions?</p><div class="opts"><button class="opt" data-idx="0">Easier to find people with similar interests</button><button class="opt" data-idx="1">Less expensive to stay connected</button><button class="opt" data-idx="2">Social isolation</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">4. Alongside sensors, cameras and actuators, what do autonomous vehicles rely on to operate without human input?</p><div class="opts"><button class="opt" data-idx="0">A single fixed instruction set</button><button class="opt" data-idx="1">Complex algorithms</button><button class="opt" data-idx="2">Manual override switches only</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ HEALTH ISSUES ============ -->
+<div class="panel" id="panel-health">
+  <h2 class="section-title">Health issues</h2>
+  <p>Health issues are a common side effect of the <strong>prolonged use of IT</strong> at home or in the workplace. There are strategies that should be in place to help prevent: repetitive strain injury (RSI), back/neck problems, eye strain, and headaches.</p>
+
+  <h3>Repetitive strain injury (RSI)</h3>
+  <p>RSI is damage to the fingers, wrists and joints, traditionally caused by <strong>prolonged use of a keyboard and mouse</strong>.</p>
+  <div class="block">
+    <p><strong>Effects:</strong> pain, numbness, weakness, stiffness.</p>
+    <p><strong>To eliminate or reduce the risk, a user should:</strong></p>
+    <ul>
+      <li>Have the correct posture (angle of arms to the keyboard and mouse)</li>
+      <li>Use a wrist support if necessary</li>
+      <li>Take regular breaks</li>
+      <li>Make use of ergonomic keyboards</li>
+    </ul>
+  </div>
+
+  <h3>Back/neck problems</h3>
+  <p>Back and neck problems are caused by <strong>sitting in front of a computer screen for prolonged periods of time</strong>.</p>
+  <div class="block">
+    <p><strong>Effects:</strong> pain, stiffness, muscle spasms, weakness, numbness or tingling, sciatica, difficulty sleeping.</p>
+    <p><strong>To eliminate or reduce the risk, a user should:</strong></p>
+    <ul>
+      <li>Use adjustable chairs</li>
+      <li>Take regular breaks</li>
+      <li>Use a foot rest</li>
+    </ul>
+  </div>
+
+  <h3>Eye strain</h3>
+  <p>Eye strain is caused by <strong>staring at a computer screen for prolonged periods of time</strong>, or by incorrect lighting causing reflections.</p>
+  <div class="block">
+    <p><strong>Effects:</strong> headaches, vision problems (blurred, double, light sensitivity), discomfort.</p>
+    <p><strong>To eliminate or reduce the risk, a user should:</strong></p>
+    <ul>
+      <li>Take regular breaks</li>
+      <li>Use an anti-glare screen filter</li>
+      <li>Change from a CRT to an LCD monitor</li>
+    </ul>
+  </div>
+
+  <h3>Headaches</h3>
+  <p>Headaches are caused by a combination of factors, including <strong>poor lighting, flickering screens, reflections, and fatigue</strong>.</p>
+  <div class="block">
+    <p><strong>To eliminate or reduce the risk, a user should:</strong></p>
+    <ul>
+      <li>Take regular breaks</li>
+      <li>Have regular eye tests</li>
+      <li>Use an anti-glare screen filter</li>
+    </ul>
+  </div>
+
+  <div class="task" data-task="classify" data-points="8">
+    <p class="task-label"><span>Sort it</span><span class="pts">8 points</span></p>
+    <h4>Click which health issue each effect belongs to.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="rsi"><span class="term">Numbness in the fingers and wrists</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="back"><span class="term">Muscle spasms</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="eye"><span class="term">Blurred or double vision</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="head"><span class="term">Caused by flickering screens</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="back"><span class="term">Sciatica</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="rsi"><span class="term">Traditionally caused by prolonged use of a keyboard and mouse</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="eye"><span class="term">Light sensitivity</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="head"><span class="term">Caused by a combination of poor lighting and reflections</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which health issue each prevention strategy is for.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="rsi"><span class="term">Use an ergonomic keyboard</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="rsi"><span class="term">Use a wrist support if necessary</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="back"><span class="term">Use an adjustable chair</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="back"><span class="term">Use a foot rest</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="eye"><span class="term">Change from a CRT to an LCD monitor</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+      <div class="classify-item" data-answer="head"><span class="term">Have regular eye tests</span><span class="choices"><button data-choice="rsi">RSI</button><button data-choice="back">Back/neck</button><button data-choice="eye">Eye strain</button><button data-choice="head">Headaches</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="4">
+    <p class="task-label"><span>Quick check</span><span class="pts">4 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What traditionally causes RSI?</p><div class="opts"><button class="opt" data-idx="0">Poor lighting in the room</button><button class="opt" data-idx="1">Prolonged use of a keyboard and mouse</button><button class="opt" data-idx="2">Sitting too far from the screen</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. Which of these is listed as an effect of eye strain?</p><div class="opts"><button class="opt" data-idx="0">Sciatica</button><button class="opt" data-idx="1">Muscle spasms</button><button class="opt" data-idx="2">Vision problems such as blurred or double vision</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. Which of these is listed as a cause of headaches?</p><div class="opts"><button class="opt" data-idx="0">Flickering screens</button><button class="opt" data-idx="1">Using an ergonomic keyboard</button><button class="opt" data-idx="2">Using an adjustable chair</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">4. Which health issue can cause sciatica and difficulty sleeping?</p><div class="opts"><button class="opt" data-idx="0">Eye strain</button><button class="opt" data-idx="1">Back/neck problems</button><button class="opt" data-idx="2">RSI</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Effects of Using IT — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICT Applications — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:780px; margin:0 auto; padding: 0 24px 120px; }
+
+  nav.theory-nav{
+    max-width:780px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:780px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:62ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:780px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:7px 11px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+  ol{padding-left:22px; margin:10px 0;}
+  ol li{margin:3px 0; font-size:15.5px;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .diagram-box{
+    background:#0c110e; border:1px solid var(--trace); border-radius:var(--radius);
+    padding:14px 10px; margin:18px 0 6px; text-align:center;
+  }
+  .diagram-box svg{ width:100%; height:auto; max-width:420px; }
+  .diagram-caption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); margin-top:6px; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:14.5px; max-width:58%;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:11.5px; padding:6px 9px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:780px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="bubble" viewBox="0 0 20 20">
+      <ellipse cx="10" cy="10" rx="9" ry="9" fill="none" stroke="var(--paper-dim)" stroke-width="1.6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">129</span></div>
+
+<nav class="theory-nav">
+  <a href="effects-of-using-it-igcse-ict.html">← <span class="full">Previous theory:</span> Effects of Using IT</a>
+  <span class="spacer"></span>
+  <a class="disabled" href="#" aria-disabled="true"><span class="full">Next theory</span> →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Theory 6</p>
+  <h1 class="title">ICT Applications</h1>
+  <p>From newsletters to satellite navigation, this is the big one: a tour of where ICT actually shows up in the real world — communication media, modelling, robotics, school systems, booking systems, banking, medicine, expert systems, retail, recognition systems, and satellites.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="comm">Communication</button>
+  <button class="tab-btn" data-panel="model">Computer modelling</button>
+  <button class="tab-btn" data-panel="ccs">Computer controlled systems</button>
+  <button class="tab-btn" data-panel="school">School management</button>
+  <button class="tab-btn" data-panel="booking">Online booking</button>
+  <button class="tab-btn" data-panel="banking">Banking</button>
+  <button class="tab-btn" data-panel="medicine">Medicine</button>
+  <button class="tab-btn" data-panel="expert">Expert systems</button>
+  <button class="tab-btn" data-panel="retail">Retail industry</button>
+  <button class="tab-btn" data-panel="recognition">Recognition systems</button>
+  <button class="tab-btn" data-panel="satellite">Satellite systems</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ COMMUNICATION ============ -->
+<div class="panel active" id="panel-comm">
+  <h2 class="section-title">Communication media</h2>
+  <p>Communication media describes the <strong>tools and channels for sharing information</strong> between a sender and a receiver. It can be both electronic and physical.</p>
+
+  <h3>Newsletters</h3>
+  <p>Periodic publications, often used to inform, educate, or entertain subscribers about specific topics. Usually distributed through email or as printed copies, and suitable for organisations, schools and clubs to keep members up to date.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Cost effective; measurable results; easy to personalise; targeted; increases brand awareness</td><td>Low engagement; SPAM filters can unintentionally block them; limited interactivity; can get lost in a busy inbox</td></tr>
+    </table>
+  </div>
+
+  <h3>Posters</h3>
+  <p>Visual presentations that convey information or promote events or products, combining text, images and graphics to grab attention.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Cost effective; wide reach; versatile; long shelf life in the right space</td><td>Limited information; lack of interactivity; can be removed or defaced; cannot be updated</td></tr>
+    </table>
+  </div>
+
+  <h3>Websites</h3>
+  <p>Online platforms that provide information or services, accessible through the internet using a web browser. Useful for businesses, educational institutions and individuals to share information, sell products, or offer services.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Media rich; links to other websites; easy navigation; global audience</td><td>Can be hacked; risk of pharming; maintenance can be expensive</td></tr>
+    </table>
+  </div>
+
+  <h3>Multimedia presentations</h3>
+  <p>Digital presentations that combine various forms of media, such as text, images, audio and video — used in education, business and entertainment to present information in a visually engaging way.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Media rich; interactive; transitions/animations to highlight key information</td><td>Special equipment required; often needs internet access; easy to create a bad presentation; visuals can take focus from the overall message</td></tr>
+    </table>
+  </div>
+
+  <h3>Audio &amp; video</h3>
+  <p><strong>Audio</strong> is sound recordings such as podcasts, music and radio shows, which can be streamed or downloaded for offline listening — suitable for information, entertainment or education. <strong>Video</strong> is moving images with or without sound, used for entertainment, education or promotional purposes; typical platforms include YouTube, Vimeo and social media websites.</p>
+
+  <h3>Media streaming</h3>
+  <p>The real-time transmission of audio and video files over the internet, allowing users to access content without downloading it to their device. Popular services include Spotify, Netflix and YouTube.</p>
+
+  <h3>E-Publications</h3>
+  <p>Digital versions of printed materials, such as eBooks, eMagazines and eNewspapers, read on electronic devices such as eReaders, tablets and smartphones. They offer benefits like portability, searchability, and adjustable text size.</p>
+
+  <h2 class="section-title" style="margin-top:36px;">Mobile communication</h2>
+  <p>Mobile communication involves <strong>transmitting information between people and devices using radio waves</strong>. Smartphones use a subscriber identity module (<strong>SIM</strong>) card to link the device to a network carrier, allowing calls and messages. Smartphone features include:</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Feature</th><th>Description</th></tr>
+      <tr><td>SMS messaging</td><td>Quick communication; messages are stored on the device and can be read at any time; uses virtual keyboards and predictive text</td></tr>
+      <tr><td>Phone calls</td><td>Simple voice communication; requires cellular reception</td></tr>
+      <tr><td>Voice over Internet Protocol (VoIP)</td><td>Audio and visual communication via the internet; requires extra apps; can make/receive calls via smartphone, tablet or computer; needs a forward-facing camera for video calls</td></tr>
+      <tr><td>Accessing the internet</td><td>Requires cellular reception on the move; web pages are optimised for smartphone access; automatically uses Wi-Fi when in range and connected</td></tr>
+      <tr><td>Mobile payments</td><td>Uses NFC</td></tr>
+      <tr><td>Camera</td><td>Built-in cameras for video calls; can act as a barcode scanner for QR codes</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which communication medium each description matches.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="news"><span class="term">A periodic publication, often emailed to subscribers to keep members up to date</span><span class="choices"><button data-choice="news">Newsletter</button><button data-choice="poster">Poster</button><button data-choice="web">Website</button></span></div>
+      <div class="classify-item" data-answer="poster"><span class="term">A visual presentation combining text, images and graphics that can be defaced or removed once put up</span><span class="choices"><button data-choice="news">Newsletter</button><button data-choice="poster">Poster</button><button data-choice="web">Website</button></span></div>
+      <div class="classify-item" data-answer="web"><span class="term">Accessed through a browser and carries a risk of pharming</span><span class="choices"><button data-choice="news">Newsletter</button><button data-choice="poster">Poster</button><button data-choice="web">Website</button></span></div>
+      <div class="classify-item" data-answer="stream"><span class="term">Real-time transmission of audio/video without downloading it first</span><span class="choices"><button data-choice="stream">Media streaming</button><button data-choice="epub">E-Publication</button><button data-choice="multi">Multimedia presentation</button></span></div>
+      <div class="classify-item" data-answer="epub"><span class="term">A digital version of a printed book, read on an eReader or tablet</span><span class="choices"><button data-choice="stream">Media streaming</button><button data-choice="epub">E-Publication</button><button data-choice="multi">Multimedia presentation</button></span></div>
+      <div class="classify-item" data-answer="multi"><span class="term">Combines text, images, audio and video, often with transitions and animations</span><span class="choices"><button data-choice="stream">Media streaming</button><button data-choice="epub">E-Publication</button><button data-choice="multi">Multimedia presentation</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What links a smartphone to a network carrier so it can make calls and send messages?</p><div class="opts"><button class="opt" data-idx="0">An NFC chip</button><button class="opt" data-idx="1">A SIM card</button><button class="opt" data-idx="2">A QR code</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. Which feature requires a forward-facing camera to work?</p><div class="opts"><button class="opt" data-idx="0">SMS messaging</button><button class="opt" data-idx="1">Mobile payments</button><button class="opt" data-idx="2">Video calls via VoIP</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. What technology do mobile payments on a smartphone typically use?</p><div class="opts"><button class="opt" data-idx="0">NFC</button><button class="opt" data-idx="1">OMR</button><button class="opt" data-idx="2">FHSS</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ COMPUTER MODELLING ============ -->
+<div class="panel" id="panel-model">
+  <h2 class="section-title">Computer modelling</h2>
+  <p>Computer modelling is <strong>using a computer to simulate a real-life system</strong> in order to study its behaviour in different scenarios. The simulation uses a model to help <strong>predict how the system will work</strong> in unusual circumstances. Examples of modelling applications include personal finance, bridge and building design, flood water management, traffic management, and weather forecasting.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Cheaper than building the real thing; easier to try a range of scenarios; safer — can simulate hazardous environments, e.g. a power station; faster — can speed up variables that would impact results, e.g. climate change; testing can be done before real-life construction begins</td><td>A computer model will never be 100% accurate; results are only as good as the model designed and data entered; possible human error in the design could skew results</td></tr>
+    </table>
+  </div>
+
+  <h3>Modelling applications</h3>
+  <div class="block">
+    <ul>
+      <li><strong>Personal finance</strong> — using a spreadsheet to test "what if" scenarios, e.g. the financial impact on a family if household income were to go down</li>
+      <li><strong>Bridge and building design</strong> — architects use 3D computer models to test scenarios: for bridges, how much traffic it can take, the effects of natural vibrations and different weather conditions, and what impact an accident would have on structural integrity; for buildings, the effects of weather, simulating fire evacuation protocols, and what impact a fire would have on structural integrity</li>
+      <li><strong>Flood water management</strong> — computer models allow risk assessments of high-risk flooding areas, using variables like different rivers/sea inlets, time of day, previous flood behaviours and possible obstructions; an automated system allows real-time monitoring, data collection and faster response to changing conditions, e.g. advance warning to people</li>
+      <li><strong>Traffic management</strong> — computer models let users see the effect of traffic and accidents on major road networks, using data such as time of day, number of vehicles passing a junction, and factors like pedestrians crossing or accidents, to optimise traffic light timings; once modelling is successful, optimised systems can be built and installed</li>
+      <li><strong>Weather forecasting</strong> — sensors collect data such as air pressure, wind speed, air temperature and humidity and send it to a central computer; the model predicts weather patterns for the next few days, and actual weather is compared to the modelled data to check accuracy and identify areas of the model to modify</li>
+    </ul>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click which modelling application each scenario describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="finance"><span class="term">Using a spreadsheet to test what would happen if household income fell</span><span class="choices"><button data-choice="finance">Finance</button><button data-choice="bridge">Bridge/building</button><button data-choice="flood">Flood</button><button data-choice="traffic">Traffic</button><button data-choice="weather">Weather</button></span></div>
+      <div class="classify-item" data-answer="bridge"><span class="term">Testing how much traffic a structure can take and the effect of natural vibrations</span><span class="choices"><button data-choice="finance">Finance</button><button data-choice="bridge">Bridge/building</button><button data-choice="flood">Flood</button><button data-choice="traffic">Traffic</button><button data-choice="weather">Weather</button></span></div>
+      <div class="classify-item" data-answer="flood"><span class="term">Assessing risk in high-risk areas using data on rivers, sea inlets and past events</span><span class="choices"><button data-choice="finance">Finance</button><button data-choice="bridge">Bridge/building</button><button data-choice="flood">Flood</button><button data-choice="traffic">Traffic</button><button data-choice="weather">Weather</button></span></div>
+      <div class="classify-item" data-answer="traffic"><span class="term">Optimising traffic light timings at a junction using vehicle count data</span><span class="choices"><button data-choice="finance">Finance</button><button data-choice="bridge">Bridge/building</button><button data-choice="flood">Flood</button><button data-choice="traffic">Traffic</button><button data-choice="weather">Weather</button></span></div>
+      <div class="classify-item" data-answer="weather"><span class="term">Sensors collect air pressure and humidity data to predict the next few days</span><span class="choices"><button data-choice="finance">Finance</button><button data-choice="bridge">Bridge/building</button><button data-choice="flood">Flood</button><button data-choice="traffic">Traffic</button><button data-choice="weather">Weather</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. Why is computer modelling often safer than testing the real thing?</p><div class="opts"><button class="opt" data-idx="0">It always gives 100% accurate results</button><button class="opt" data-idx="1">It can simulate hazardous environments without real risk</button><button class="opt" data-idx="2">It removes the need for any data entry</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. What is a key limitation of any computer model?</p><div class="opts"><button class="opt" data-idx="0">It cannot be used for weather forecasting</button><button class="opt" data-idx="1">It always costs more than building the real thing</button><button class="opt" data-idx="2">It will never be 100% accurate</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. Results from a computer model are only as good as what?</p><div class="opts"><button class="opt" data-idx="0">The model design and the data entered</button><button class="opt" data-idx="1">The speed of the internet connection</button><button class="opt" data-idx="2">The number of sensors used</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+
+<!-- ============ COMPUTER CONTROLLED SYSTEMS ============ -->
+<div class="panel" id="panel-ccs">
+  <h2 class="section-title">Computer controlled systems</h2>
+  <p>A computer controlled system uses computers and software to <strong>control, monitor and manage processes, machines or devices</strong>. Its effectiveness depends on the quality of the software, hardware and input data.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Increased efficiency and productivity, due to working 24/7</td><td>High initial investment and maintenance costs</td></tr>
+      <tr><td>Greater precision and accuracy</td><td>Job displacement for human workers</td></tr>
+      <tr><td>Ability to operate in hazardous environments</td><td>Dependency on reliable software and hardware</td></tr>
+      <tr><td>Reduced human error and fatigue</td><td>Lack of flexibility and adaptability to unexpected situations</td></tr>
+      <tr><td>Can work with large or delicate items</td><td>Requires costly backup systems</td></tr>
+    </table>
+  </div>
+
+  <h3>Robotics</h3>
+  <p>Robotics is the principle of a robot <strong>carrying out a task</strong> by <strong>following a precise set of programmed instructions</strong>. Robots can be categorised into two groups:</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Dumb robots</th><th>Smart robots</th></tr>
+      <tr><td>Repeat the same programmed instructions over and over again (no AI). E.g. a car assembly line</td><td>Carry out more complex tasks and can adapt and learn (AI). E.g. assisting surgeons in delicate procedures</td></tr>
+    </table>
+  </div>
+  <p>The development of artificial intelligence, including the increased use of machine learning and robotics, raises ethical and legal issues such as: <strong>accountability</strong>, <strong>safety</strong>, <strong>algorithmic bias</strong>, and <strong>legal liability</strong>.</p>
+
+  <h3>The role of robots</h3>
+  <p>Robots play a crucial role in many areas:</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Scenario</th><th>Role</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Industry</td><td>Quality inspector</td><td>Advanced vision to inspect products for defects, improving quality control</td><td>May not work on defects that might require human judgement</td></tr>
+      <tr><td>Transport</td><td>Warehouse worker</td><td>Efficient at finding, moving and packing; less reliant on manual labour</td><td>High infrastructure costs and potential safety concerns for human workers sharing the same space</td></tr>
+      <tr><td>Agriculture</td><td>Planting &amp; seeding machine</td><td>Precise planting at optimum depths and distances</td><td>High upfront costs; may struggle with uneven terrain and changing weather conditions</td></tr>
+      <tr><td>Medicine</td><td>Rehabilitation therapist</td><td>Personalised physical therapy exercises to aid recovery</td><td>Doesn't provide emotional support</td></tr>
+      <tr><td>Domestic</td><td>Sous chef</td><td>Assists with meal prep by doing basic duties (chopping, measuring, following basic recipes)</td><td>Limited ability and capabilities</td></tr>
+      <tr><td>Entertainment</td><td>Educational robot</td><td>Interactive learning experiences for children, increased engagement</td><td>High cost; cannot replace the guidance of human teachers</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Worked example</span><span class="pts">6 points</span></p>
+    <h4>The European Space Agency (ESA) is building a new space telescope to orbit the Earth and search for distant galaxies. The ESA is using computer controlled robots to build the lens of the telescope. Discuss the advantages and disadvantages of using computer controlled robots rather than humans to build the lens.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:100px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (up to 4 advantages, up to 4 disadvantages)</span><strong>Advantages:</strong> robots can work in sterile areas where humans would need protective clothing; can easily transfer large delicate items; can work 24/7 continuously; are cheaper in the long run as they aren't paid; are more accurate, as the lens needs to be precise; allow more frequent checking of the equipment/lens; do boring or laborious work; can find issues more quickly; can carry out the task far quicker.<br><br><strong>Disadvantages:</strong> very expensive to buy, or higher cost in the short term; maintenance is very expensive; difficult to re-program when changes are made; requires expensive backup systems; replaces skilled workers, leading to de-skilling; needs constant observation, increasing the cost of maintenance crews; if something goes wrong, it may be difficult to find the error.</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ccs-lens" data-points="6">
+        <label for="sm-ccs-lens">My answer covered both advantages and disadvantages with explanation — award myself all six points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Sort it</span><span class="pts">4 points</span></p>
+    <h4>Click whether each statement describes a dumb robot or a smart robot.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="dumb"><span class="term">Repeats the same programmed instructions over and over, with no AI</span><span class="choices"><button data-choice="dumb">Dumb robot</button><button data-choice="smart">Smart robot</button></span></div>
+      <div class="classify-item" data-answer="smart"><span class="term">Can adapt and learn using artificial intelligence</span><span class="choices"><button data-choice="dumb">Dumb robot</button><button data-choice="smart">Smart robot</button></span></div>
+      <div class="classify-item" data-answer="dumb"><span class="term">Example: a robot on a car assembly line</span><span class="choices"><button data-choice="dumb">Dumb robot</button><button data-choice="smart">Smart robot</button></span></div>
+      <div class="classify-item" data-answer="smart"><span class="term">Example: a robot assisting a surgeon in a delicate procedure</span><span class="choices"><button data-choice="dumb">Dumb robot</button><button data-choice="smart">Smart robot</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. Which of these is an ethical or legal issue raised by increased use of AI and robotics?</p><div class="opts"><button class="opt" data-idx="0">Reduced electricity bills</button><button class="opt" data-idx="1">Algorithmic bias</button><button class="opt" data-idx="2">Improved handwriting recognition</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. A robot inspecting products on a production line for defects is acting as a:</p><div class="opts"><button class="opt" data-idx="0">Sous chef</button><button class="opt" data-idx="1">Rehabilitation therapist</button><button class="opt" data-idx="2">Quality inspector</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. What is a disadvantage of computer controlled systems generally?</p><div class="opts"><button class="opt" data-idx="0">High initial investment and maintenance costs</button><button class="opt" data-idx="1">Reduced precision and accuracy</button><button class="opt" data-idx="2">Cannot operate in hazardous environments</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ SCHOOL MANAGEMENT SYSTEMS ============ -->
+<div class="panel" id="panel-school">
+  <h2 class="section-title">School management systems</h2>
+  <p>A school management system is a <strong>software solution</strong> designed to <strong>centralise and streamline</strong> a school's administrative tasks. Data is stored centrally to improve efficiency. Processes it can include: registration &amp; attendance, recording learner performance, and computer aided learning (CAL).</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Streamlined administration and record-keeping; improved communication between teachers, students and parents (which can be automated); centralised access to information and resources; data-driven decision-making and insights for teachers and administrators; information is more up to date; information can be obtained quickly in an emergency; patterns of absence can be found quickly, helping to tackle truancy/lateness</td><td>Cost; transition can be time consuming and complex; training is required; dependent on technology; data security concerns</td></tr>
+    </table>
+  </div>
+
+  <h3>Registration &amp; attendance</h3>
+  <p>Traditional ways of recording attendance involve a teacher manually inputting data. IT systems make other methods possible, for example magnetic stripe cards and/or biometrics.</p>
+
+  <h3>Recording learner performance</h3>
+  <p>IT systems give teachers a plethora of information which can be analysed to identify class and individual strengths and areas for development. Data can be used to inform teaching strategies, provide individual progress reports, and critically analyse class/teacher performance.</p>
+
+  <h3>Computer aided learning (CAL)</h3>
+  <p>CAL is designed to <strong>enhance, not replace</strong>, traditional classroom teaching. It allows students to work on individual development areas, and can provide interactive revision resources to aid exam performance.</p>
+
+  <div class="task" data-task="open" data-points="5">
+    <p class="task-label"><span>Worked example</span><span class="pts">5 points</span></p>
+    <h4>A school is setting up a new computerised system to manage many aspects of the school administration.</h4>
+    <div class="sub-q">
+      <label>a) Describe how this system can be used to manage student registration and attendance.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>A student scans a card, or a teacher records the student as present on the computer system · the system records the time of arrival · the system sends the data to the school administration database · the data is searched in the database · if a student arrives after a certain time, their attendance record is flagged as late/absent · attendance/lateness records are automatically printed or sent to parents · letters/texts are automatically sent to parents about absenteeism/lateness · parents can log in to check attendance/lateness records</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-school-a" data-points="3">
+        <label for="sm-school-a">My answer covered three valid steps — award myself three points</label>
+      </div>
+    </div>
+    <div class="sub-q">
+      <label>b) Describe the benefits of using this system.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Information is more up to date · information about a student can be obtained quickly after a fire or emergency · information regarding patterns of absence can be found quickly · helps tackle truancy/lateness · parents can be informed automatically about patterns of lateness/attendance · lateness is entered consistently across the school · automatic lateness reports can be generated for a form tutor · accurate/up to date records if there is a fire · speeds up the process as attendance isn't marked manually</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-school-b" data-points="2">
+        <label for="sm-school-b">My answer covered two valid benefits — award myself two points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Sort it</span><span class="pts">4 points</span></p>
+    <h4>Click whether each statement is an advantage or disadvantage of a school management system.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="adv"><span class="term">Patterns of absence can be found quickly, helping tackle truancy</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">Staff require training to use the new system correctly</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="adv"><span class="term">Information can be obtained quickly in an emergency</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">There are data security concerns to manage</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What is computer aided learning (CAL) designed to do?</p><div class="opts"><button class="opt" data-idx="0">Fully replace classroom teachers</button><button class="opt" data-idx="1">Enhance, not replace, traditional classroom teaching</button><button class="opt" data-idx="2">Only be used for taking attendance</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">2. Alongside magnetic stripe cards, what other method can IT systems use for registration?</p><div class="opts"><button class="opt" data-idx="0">Biometrics</button><button class="opt" data-idx="1">Barometers</button><button class="opt" data-idx="2">RFID tape measures</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ ONLINE BOOKING SYSTEMS ============ -->
+<div class="panel" id="panel-booking">
+  <h2 class="section-title">Online booking systems</h2>
+  <p>An online booking system is a computer system that <strong>allows customers to purchase tickets for events online</strong>. Examples of industries that use these systems:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Travel</strong> — booking flights, hotels and package holidays</li>
+      <li><strong>Music</strong> — reserving tickets for live music events</li>
+      <li><strong>Film</strong> — booking cinema tickets, allowing customers to pick a seat</li>
+      <li><strong>Sport</strong> — purchasing tickets to sporting events, choosing a view</li>
+    </ul>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Convenience and accessibility (24/7 booking); instant confirmation and ticketing; ability to compare prices and options; promotions and personalised offers; faster to change/cancel; automated reminders via email/text; repeated bookings can easily be made; staff are freed up to do other things</td><td>Potential for technical issues and downtime; possible security and privacy concerns; transaction and booking fees; impersonal and less tailored customer service; internet-connected devices required; staff may lose their job</td></tr>
+    </table>
+  </div>
+
+  <h3>Case study: reserving a cinema seat</h3>
+  <p>After the user logs in, the following process takes place:</p>
+  <ol>
+    <li>Customer selects the film they want to watch</li>
+    <li>Customer chooses a date</li>
+    <li>The database is searched, and times and availability are displayed on the screen</li>
+    <li>Customer chooses a suitable time</li>
+    <li>The seating chart is displayed, showing available/taken seats</li>
+    <li>Customer clicks on an available seat</li>
+    <li>Total price is displayed on the screen</li>
+    <li>Customer can choose another seat, or click confirm to continue to payment</li>
+    <li>Seat(s) are temporarily made unavailable for booking by any other user</li>
+    <li>Customer checks their personal details are correct and enters payment information</li>
+    <li>Payment is taken and a confirmation message is displayed</li>
+    <li>Payment receipt and QR code (e-ticket) are emailed</li>
+    <li>The database is updated to make the seats unavailable</li>
+  </ol>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Worked example</span><span class="pts">6 points</span></p>
+    <h4>RockIT Airlines representatives use a computer booking system to book flights for customers. A representative types in the customer reference number, number of passengers, departure time, departure date, departure airport and destination airport. Describe the processing and outputs involved in making the booking.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:100px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any six of)</span>Available flights are displayed · the booking database is searched for the customer reference number · a matching record is retrieved · customer details are displayed on screen · the booking database is searched for matching departure and destination airports · if the flight is correct, the date/time is found · the system checks if seats/tickets/flights are available · if unavailable, an error message is output · the price is output · if seats are available, the seat is flagged as booked (if not, the flag is removed) · the number of seats/tickets available is reduced by the number booked · e-ticket details are output and sent to the customer · a receipt is printed or a verification email is sent</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-booking" data-points="6">
+        <label for="sm-booking">My answer covered six valid processing/output steps — award myself all six points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click whether each statement is an advantage or disadvantage of online booking systems.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="adv"><span class="term">Bookings can be made 24 hours a day, 7 days a week</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">There may be transaction and booking fees</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="adv"><span class="term">Customers get instant confirmation and ticketing</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">Customer service can feel impersonal and less tailored</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+      <div class="classify-item" data-answer="dis"><span class="term">Requires an internet-connected device to use</span><span class="choices"><button data-choice="adv">Advantage</button><button data-choice="dis">Disadvantage</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="2"><p class="q">1. When a customer clicks confirm on a cinema seat, what temporarily happens to that seat?</p><div class="opts"><button class="opt" data-idx="0">It is permanently deleted from the database</button><button class="opt" data-idx="1">Nothing changes until payment is fully processed days later</button><button class="opt" data-idx="2">It is made unavailable to other users while payment is completed</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">2. What is typically emailed to a customer after a successful online booking?</p><div class="opts"><button class="opt" data-idx="0">Their bank PIN</button><button class="opt" data-idx="1">A payment receipt and QR code e-ticket</button><button class="opt" data-idx="2">A blank seating chart</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ BANKING APPLICATIONS ============ -->
+<div class="panel" id="panel-banking">
+  <h2 class="section-title">Banking applications</h2>
+
+  <h3>ATM</h3>
+  <p>An Automatic Teller Machine (ATM) provides customers with <strong>convenient access to financial transactions</strong> 24/7, including: withdrawing cash, depositing cash or cheques, checking account balance, mini statements, bill paying, and money transfers.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Convenient access to banking services; available 24/7; reduced waiting time; global access to funds</td><td>Cash withdrawal limits; risk of theft or fraud; limited services compared to bank branches; technical issues and machine downtime; some banks charge for using ATMs</td></tr>
+    </table>
+  </div>
+
+  <h3>EFT and EFTPOS</h3>
+  <p>Electronic Funds Transfer (<strong>EFT</strong>) is a way of moving money from one account to another, used primarily for salary deposits, bill payments, and online purchases.</p>
+  <p>Electronic Funds Transfer at the Point of Sale (<strong>EFTPOS</strong>) is used by retailers to allow customers to make purchases using a debit or credit card. The process involves:</p>
+  <div class="block">
+    <ul>
+      <li>Data is read from the chip (using RFID/NFC if it's a contactless payment)</li>
+      <li>The business's bank computer contacts the customer's bank computer</li>
+      <li>The card is checked to see if it is valid</li>
+      <li>If valid, the transaction continues; if not, it is terminated</li>
+      <li>An authorisation code is sent to the business</li>
+      <li>The price of the item is deducted from the customer's account</li>
+      <li>This money is added to the business's account</li>
+    </ul>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Fast and efficient; reduces paperwork; lower transaction costs; EFT transactions can be disputed for up to 60 days</td><td>Risk of online fraud; technical issues; requires an internet connection; requires immediate funds available</td></tr>
+    </table>
+  </div>
+
+  <h3>Internet banking</h3>
+  <p>Internet banking is a <strong>secure online platform</strong> for accessing and controlling a person's bank account, accessed via a secure website or a bank's official app. It allows transfers, bill payments, account management and more.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Convenience and 24/7 access; easy account management; reduced need for branch visits (saving time and money); interest rates may be better; easier to shop around for the best account</td><td>Security of transactions; requires a reliable internet connection; more risk of fraud; easier to make errors (e.g. typing in the wrong information); physical cash can't be deposited or withdrawn this way</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Worked example</span><span class="pts">4 points</span></p>
+    <h4>Adam is paying his bill in a restaurant using a contactless debit card. Describe the computer processing involved in Electronic Funds Transfer (EFT) using contactless cards.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>The reader checks the amount to pay is less than the contactless limit · the data is read from the chip using RFID/NFC · the restaurant's bank computer contacts the customer's bank computer · the card is checked to see if it's valid · if valid, the transaction continues (if not, it's terminated) · an authorisation code is sent to the restaurant · the price of the meal is deducted from the customer's account and added to the restaurant's account</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-eft" data-points="4">
+        <label for="sm-eft">My answer covered four valid steps — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which banking application each feature belongs to.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="atm"><span class="term">Provides mini statements and lets a customer withdraw cash 24/7</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+      <div class="classify-item" data-answer="eftpos"><span class="term">Reads a card's chip using RFID/NFC to complete an in-store purchase</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+      <div class="classify-item" data-answer="internet"><span class="term">Accessed via a secure website or app to manage an account remotely</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+      <div class="classify-item" data-answer="atm"><span class="term">Has cash withdrawal limits and can charge a usage fee</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+      <div class="classify-item" data-answer="internet"><span class="term">Physical cash cannot be deposited or withdrawn using this method</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+      <div class="classify-item" data-answer="eftpos"><span class="term">Sends an authorisation code to the business before completing a sale</span><span class="choices"><button data-choice="atm">ATM</button><button data-choice="eftpos">EFTPOS</button><button data-choice="internet">Internet banking</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What does EFT stand for?</p><div class="opts"><button class="opt" data-idx="0">Extra Fast Transaction</button><button class="opt" data-idx="1">Electronic Funds Transfer</button><button class="opt" data-idx="2">External File Transmission</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">2. For how long can an EFT transaction typically be disputed?</p><div class="opts"><button class="opt" data-idx="0">Up to 60 days</button><button class="opt" data-idx="1">Up to 24 hours</button><button class="opt" data-idx="2">Indefinitely</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">3. What happens if a card is found not to be valid during an EFTPOS transaction?</p><div class="opts"><button class="opt" data-idx="0">The transaction continues anyway</button><button class="opt" data-idx="1">The customer's account is charged double</button><button class="opt" data-idx="2">The transaction is terminated</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ COMPUTERS IN MEDICINE ============ -->
+<div class="panel" id="panel-medicine">
+  <h2 class="section-title">Computers in medicine</h2>
+
+  <h3>Information systems</h3>
+  <p>An information system is a purpose-built system designed to <strong>collect, store, process, distribute and use information</strong>. In a hospital, an information system would be used to: access patient medical records, schedule appointments, manage medication dispensing, facilitate communication between doctors/nurses/other healthcare providers, and public health reporting. Information systems are used by healthcare professionals for making informed decisions about patient care.</p>
+
+  <h3>3D printers</h3>
+  <p>A 3D printer is a machine capable of <strong>outputting three-dimensional objects</strong> from a digital file. 3D printing starts with creating a 3D model using computer aided design (CAD). Benefits include being able to fully customise models on the computer before printing, and prototyping.</p>
+
+  <h4 style="font-family:var(--mono); font-size:13.5px; color:var(--copper-bright); margin:20px 0 6px;">3D printers in medicine</h4>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Application</th><th>Details</th></tr>
+      <tr><td>Printing of prosthetics</td><td>Custom-made prosthetic limbs or body parts; can be tailored to a patient's specific needs; faster and more affordable than traditional methods</td></tr>
+      <tr><td>Tissue engineering</td><td>3D printing of living cells to create functional tissues; can repair or replace damaged organs; potential to reduce the need for organ donations</td></tr>
+      <tr><td>Artificial blood vessels</td><td>Printed using biodegradable materials; can be used in surgeries to replace damaged vessels; allows for improved blood flow and faster healing</td></tr>
+      <tr><td>Customised medicines</td><td>3D printed pills with precise doses and drug combinations; tailored to a patient's specific needs and conditions; potential to improve medication adherence and effectiveness</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click whether each use belongs to hospital information systems or 3D printing in medicine.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="info"><span class="term">Accessing patient medical records</span><span class="choices"><button data-choice="info">Information system</button><button data-choice="print">3D printing</button></span></div>
+      <div class="classify-item" data-answer="print"><span class="term">Creating custom-made prosthetic limbs</span><span class="choices"><button data-choice="info">Information system</button><button data-choice="print">3D printing</button></span></div>
+      <div class="classify-item" data-answer="info"><span class="term">Scheduling patient appointments</span><span class="choices"><button data-choice="info">Information system</button><button data-choice="print">3D printing</button></span></div>
+      <div class="classify-item" data-answer="print"><span class="term">Printing artificial blood vessels from biodegradable materials</span><span class="choices"><button data-choice="info">Information system</button><button data-choice="print">3D printing</button></span></div>
+      <div class="classify-item" data-answer="print"><span class="term">Producing pills with precise, patient-specific drug doses</span><span class="choices"><button data-choice="info">Information system</button><button data-choice="print">3D printing</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What does a 3D model for printing typically start life as?</p><div class="opts"><button class="opt" data-idx="0">A spreadsheet</button><button class="opt" data-idx="1">A computer aided design (CAD) file</button><button class="opt" data-idx="2">A barcode</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. What is one potential benefit of 3D printed tissue engineering?</p><div class="opts"><button class="opt" data-idx="0">It eliminates the need for hospitals entirely</button><button class="opt" data-idx="1">It replaces the need for information systems</button><button class="opt" data-idx="2">It could reduce the need for organ donations</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ EXPERT SYSTEMS ============ -->
+<div class="panel" id="panel-expert">
+  <h2 class="section-title">Expert systems</h2>
+  <p>An expert system <strong>mimics human knowledge and experience</strong>, using a combination of the two to <strong>solve problems</strong> or <strong>answer questions</strong>. Examples include equipment troubleshooting and repair, technical support, and medical diagnosis systems. Expert systems share five key characteristics:</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Component</th><th>Role</th></tr>
+      <tr><td>Knowledge base</td><td>A database of facts used to generate rules that solve problems and make decisions</td></tr>
+      <tr><td>Rule base</td><td>A set of rules or logic used to apply the knowledge in the knowledge base to specific problems</td></tr>
+      <tr><td>Inference engine</td><td>A program that applies the rules in the rule base to the facts in the knowledge base to solve problems</td></tr>
+      <tr><td>Interface</td><td>A way for users to interact with the system and provide input</td></tr>
+      <tr><td>Explanation system</td><td>Provides users with explanation and reasoning behind decisions or recommendations, and gives a percentage probability of the accuracy of its conclusions</td></tr>
+    </table>
+  </div>
+
+  <h3>Case study: movie recommendation system</h3>
+  <div class="block">
+    <p><strong>Inputs:</strong> favourite genres/directors; ratings of movies watched (stars, thumbs up/down); previous movie searches (keywords).</p>
+    <p><strong>Inference engine:</strong> matching similar movies to a user's history (based on director, genre, actor, reviews); filtering movies with similar characteristics to those previously watched; filtering movies based on what users with similar tastes have watched or liked.</p>
+    <p><strong>Output:</strong> a personalised list of movie recommendations.</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Consistent results; faster responses; can store large amounts of data; unbiased</td><td>Only as good as the data entered; responses can be cold and lack human emotion; requires training to use correctly</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="7">
+    <p class="task-label"><span>Worked example</span><span class="pts">7 points</span></p>
+    <h4>Expert systems are used by doctors.</h4>
+    <div class="sub-q">
+      <label>a) Describe how an expert system can be used to diagnose illnesses.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any five of)</span>An interactive user interface appears · questions are asked about the illness · yes/no type answers are given to the questions · answers lead to further questions · the inference engine searches the knowledge base, using the rule base · probabilities/possibilities of diagnoses and treatments are displayed · the system displays the way it achieved its solution/conclusion (explanation)</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-expert-a" data-points="5">
+        <label for="sm-expert-a">My answer covered five valid steps — award myself five points</label>
+      </div>
+    </div>
+    <div class="sub-q">
+      <label>b) Name two other applications of expert systems.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Mineral prospecting · car engine fault diagnosis · chess games · tax queries · career recommendations · movie recommendations on streaming platforms</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-expert-b" data-points="2">
+        <label for="sm-expert-b">My answer named two valid applications — award myself two points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click which expert system component each description matches.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="know"><span class="term">A database of facts used to generate rules</span><span class="choices"><button data-choice="know">Knowledge base</button><button data-choice="rule">Rule base</button><button data-choice="infer">Inference engine</button><button data-choice="int">Interface</button><button data-choice="exp">Explanation system</button></span></div>
+      <div class="classify-item" data-answer="rule"><span class="term">A set of logic used to apply knowledge to specific problems</span><span class="choices"><button data-choice="know">Knowledge base</button><button data-choice="rule">Rule base</button><button data-choice="infer">Inference engine</button><button data-choice="int">Interface</button><button data-choice="exp">Explanation system</button></span></div>
+      <div class="classify-item" data-answer="infer"><span class="term">Applies the rules to the facts in order to solve the problem</span><span class="choices"><button data-choice="know">Knowledge base</button><button data-choice="rule">Rule base</button><button data-choice="infer">Inference engine</button><button data-choice="int">Interface</button><button data-choice="exp">Explanation system</button></span></div>
+      <div class="classify-item" data-answer="int"><span class="term">The way a user interacts with the system and gives input</span><span class="choices"><button data-choice="know">Knowledge base</button><button data-choice="rule">Rule base</button><button data-choice="infer">Inference engine</button><button data-choice="int">Interface</button><button data-choice="exp">Explanation system</button></span></div>
+      <div class="classify-item" data-answer="exp"><span class="term">Gives the reasoning behind a decision and a probability of accuracy</span><span class="choices"><button data-choice="know">Knowledge base</button><button data-choice="rule">Rule base</button><button data-choice="infer">Inference engine</button><button data-choice="int">Interface</button><button data-choice="exp">Explanation system</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="2"><p class="q">1. Which of these is listed as a disadvantage of expert systems?</p><div class="opts"><button class="opt" data-idx="0">Consistent results</button><button class="opt" data-idx="1">Unbiased responses</button><button class="opt" data-idx="2">Responses can be cold and lack human emotion</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">2. What does the explanation system in an expert system provide?</p><div class="opts"><button class="opt" data-idx="0">The user interface only</button><button class="opt" data-idx="1">Reasoning behind decisions and a probability of accuracy</button><button class="opt" data-idx="2">The initial facts in the knowledge base</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ RETAIL INDUSTRY ============ -->
+<div class="panel" id="panel-retail">
+  <h2 class="section-title">Computers in the retail industry</h2>
+
+  <h3>POS &amp; EFTPOS</h3>
+  <p>Point of Sale (<strong>POS</strong>) is a computer terminal used to read product barcodes. Barcodes are used in an <strong>automatic stock control system</strong> in shops. This process involves:</p>
+  <div class="block">
+    <ul>
+      <li>Every barcode is assigned to a product in stock</li>
+      <li>Each product record contains its price, stock level, and a description</li>
+      <li>When a barcode is matched with a record, the information is transferred to the POS terminal and the price is displayed on screen</li>
+      <li>The stock level is reduced by one</li>
+      <li>If the current stock level falls below a minimum reorder level, it automatically triggers a restocking process</li>
+    </ul>
+  </div>
+  <p>Electronic Funds Transfer at the Point of Sale (<strong>EFTPOS</strong>) is how a payment is made using a card or an electronic device such as a smartphone. Examples include Chip and Pin, Contactless, and Near Field Communication (NFC):</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Chip and Pin</th><th>Contactless</th><th>NFC</th></tr>
+      <tr><td>Enhances security with two-factor authentication; requires customers to enter a PIN</td><td>Allows for faster transactions; enables customers to tap their card on the terminal</td><td>Facilitates payments through smartphones and other devices; increases convenience for customers</td></tr>
+    </table>
+  </div>
+
+  <h3>Internet shopping</h3>
+  <p>Internet shopping is the <strong>act of purchasing goods or services online</strong> through a website or mobile app. Online stores are accessible through web browsers, with a wide variety of products available, and are convenient — often open 24/7.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages to the customer</th><th>Disadvantages to the customer</th></tr>
+      <tr><td>Time-saving and convenient (shop from home/on the go, avoid queues); greater product variety (access to a global market, easy price comparison); customisation options (personalise items, tailor purchases); potential cost savings (competitive pricing, online sales and promotions)</td><td>Security concerns (risk of fraud/identity theft, need to provide personal/financial information); limited physical interaction (can't touch or try products, possibly leading to dissatisfaction or returns); delivery delays and fees (waiting for shipping, extra shipping/handling costs); impersonal customer service (difficulty resolving issues, lack of face-to-face interaction)</td></tr>
+      <tr><th colspan="2" style="text-align:left;">To the business</th></tr>
+      <tr><td>Can target prices, products and services at specific groups based on buying data; can update stock availability and prices more quickly than a physical store; cheaper to publicise special offers than mail shots; international customer base; increased profits due to lower overheads, e.g. fewer staff</td><td>Increased competition; digital fraud and security concerns; technical issues and downtime; costs of delivery and returns; customer trust; inventory management; depersonalisation; online reviews; dependency on internet infrastructure; logistical challenges; legal and regulatory compliance; increased customer expectations</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Worked example</span><span class="pts">4 points</span></p>
+    <h4>Modern supermarkets have automated stock control systems, which use data from the checkouts. Describe how food items can be ordered by an automated stock control system so they are delivered before the stock in the supermarket runs out.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Each item is scanned/the barcode is read at the POS terminal · the barcode is searched for in the database · the quantity of products is reduced · the stock database is updated · when the minimum stock/reorder level is reached, the re-order quantity is read and the goods are flagged as ordered · the automated stock system sends a signal to the warehouse computer to order new items · the warehouse sends the items to the supermarket · the flags are removed and the stock control system updates stock levels with the new stock</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-retail" data-points="4">
+        <label for="sm-retail">My answer covered four valid steps — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click whether each internet shopping effect applies mainly to the customer or the business.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="cust"><span class="term">Can't touch or try a product before buying it</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+      <div class="classify-item" data-answer="biz"><span class="term">Can update stock availability and prices faster than a physical store</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+      <div class="classify-item" data-answer="cust"><span class="term">May need to wait for delivery and pay shipping fees</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+      <div class="classify-item" data-answer="biz"><span class="term">Faces increased competition and digital fraud concerns</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+      <div class="classify-item" data-answer="cust"><span class="term">Can compare products and prices from a global market easily</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+      <div class="classify-item" data-answer="biz"><span class="term">Can benefit from lower overheads, e.g. needing fewer staff</span><span class="choices"><button data-choice="cust">Customer</button><button data-choice="biz">Business</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What triggers an automatic restocking process at a POS terminal?</p><div class="opts"><button class="opt" data-idx="0">The till drawer being opened</button><button class="opt" data-idx="1">Stock level falling below a minimum reorder level</button><button class="opt" data-idx="2">The store closing for the night</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. Which EFTPOS method requires a customer to enter a PIN?</p><div class="opts"><button class="opt" data-idx="0">Contactless</button><button class="opt" data-idx="1">NFC</button><button class="opt" data-idx="2">Chip and Pin</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. Which of these is a genuine disadvantage of internet shopping for the customer?</p><div class="opts"><button class="opt" data-idx="0">Limited physical interaction with the product</button><button class="opt" data-idx="1">Access to a wider global market</button><button class="opt" data-idx="2">Ability to compare prices easily</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ RECOGNITION SYSTEMS ============ -->
+<div class="panel" id="panel-recognition">
+  <h2 class="section-title">Recognition systems</h2>
+  <p>A recognition system is a way of using <strong>computer technology to automatically identify something</strong>. Common examples include facial recognition, speech recognition, and optical character recognition.</p>
+
+  <h3>OMR</h3>
+  <p>Optical Mark Recognition (<strong>OMR</strong>) detects marked areas on paper using a special machine to read the marks. Examples include multiple-choice examinations, barcodes, and QR codes — it automates data collection and entry.</p>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
+      <g font-family="JetBrains Mono" font-size="9" fill="var(--paper-dim)">
+        <text x="30" y="20">1</text>
+        <use href="#bubble" x="45" y="10" width="16" height="16"/><text x="53" y="21" text-anchor="middle" fill="var(--paper-dim)" font-size="8">A</text>
+        <use href="#bubble" x="65" y="10" width="16" height="16"/><text x="73" y="21" text-anchor="middle" fill="var(--paper-dim)" font-size="8">B</text>
+        <rect x="85" y="10" width="16" height="16" rx="2" fill="var(--brick)" opacity="0.35" stroke="var(--brick)" stroke-width="1.6"/><text x="93" y="21" text-anchor="middle" fill="var(--paper)" font-size="8">C</text>
+        <use href="#bubble" x="105" y="10" width="16" height="16"/><text x="113" y="21" text-anchor="middle" fill="var(--paper-dim)" font-size="8">D</text>
+
+        <text x="30" y="50">2</text>
+        <use href="#bubble" x="45" y="40" width="16" height="16"/><text x="53" y="51" text-anchor="middle" fill="var(--paper-dim)" font-size="8">A</text>
+        <rect x="65" y="40" width="16" height="16" rx="2" fill="var(--brick)" opacity="0.35" stroke="var(--brick)" stroke-width="1.6"/><text x="73" y="51" text-anchor="middle" fill="var(--paper)" font-size="8">B</text>
+        <use href="#bubble" x="85" y="40" width="16" height="16"/><text x="93" y="51" text-anchor="middle" fill="var(--paper-dim)" font-size="8">C</text>
+        <use href="#bubble" x="105" y="40" width="16" height="16"/><text x="113" y="51" text-anchor="middle" fill="var(--paper-dim)" font-size="8">D</text>
+
+        <text x="30" y="80">3</text>
+        <use href="#bubble" x="45" y="70" width="16" height="16"/><text x="53" y="81" text-anchor="middle" fill="var(--paper-dim)" font-size="8">A</text>
+        <use href="#bubble" x="65" y="70" width="16" height="16"/><text x="73" y="81" text-anchor="middle" fill="var(--paper-dim)" font-size="8">B</text>
+        <use href="#bubble" x="85" y="70" width="16" height="16"/><text x="93" y="81" text-anchor="middle" fill="var(--paper-dim)" font-size="8">C</text>
+        <rect x="105" y="70" width="16" height="16" rx="2" fill="var(--brick)" opacity="0.35" stroke="var(--brick)" stroke-width="1.6"/><text x="113" y="81" text-anchor="middle" fill="var(--paper)" font-size="8">D</text>
+      </g>
+      <line x1="160" y1="15" x2="230" y2="85" stroke="var(--gold)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="225" y1="80" x2="240" y2="95" stroke="var(--copper-bright)" stroke-width="9" stroke-linecap="round"/>
+      <text x="250" y="115" font-family="JetBrains Mono" font-size="10" fill="var(--paper-dim)">reads the marked bubble</text>
+    </svg>
+    <p class="diagram-caption">OMR — a machine reads which bubble has been marked on each row</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Fast and efficient data collection; reduces manual entry errors</td><td>Limited to predetermined responses; sensitive to poor marking or smudging</td></tr>
+    </table>
+  </div>
+
+  <h3>OCR</h3>
+  <p>Optical Character Recognition (<strong>OCR</strong>) converts printed or handwritten text into digital format. It's useful for digitising documents, and assists in searching and editing text. Automated Number Plate Recognition (<strong>ANPR</strong>) is an example of OCR, e.g. reading number plates for controlled entry/exit at airport parking.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>No staff required; faster, no need to stop and take tickets, etc.; stops cars parking illegally, as they cannot enter without authorisation</td><td>Privacy concerns, as number plates are recorded; number plates can be cloned; dirty or broken number plates can't be read; lack of staff could lead to vandalism</td></tr>
+    </table>
+  </div>
+
+  <h3>RFID &amp; NFC</h3>
+  <p>Radio Frequency Identification Devices (<strong>RFID</strong>) use radio waves to identify and track objects — for example stock tracking, passports, vehicles, and contactless payment. RFID tags are made of a microchip and antenna, and can be <strong>passive</strong> (uses energy from the reader) or <strong>active</strong> (has its own power source).</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Use</th><th>Details</th></tr>
+      <tr><td>Stock tracking</td><td>Livestock tracking on a farm; keeping track of animals' location and medical data; active tags used due to the distance involved</td></tr>
+      <tr><td>Passports</td><td>Passive chips in passports; read by a reader to decrypt data stored on the chip, e.g. personal details, photo, fingerprints</td></tr>
+      <tr><td>Vehicles</td><td>Tracks progress on an assembly line; used on toll roads to automate payment and raise barriers; entry and exit to car parks</td></tr>
+    </table>
+  </div>
+  <p>Near Field Communication (<strong>NFC</strong>) is a subset of RFID which allows communication between two devices in very close proximity. NFC can also be passive or active. Smartphones use active NFC to allow contactless payments by tapping the phone on a reader, and can also exchange data with another phone by tapping together (usually back to back).</p>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Worked example</span><span class="pts">6 points</span></p>
+    <h4>A farmer has purchased a computerised feeding system for her goats. A goat has an RFID tag attached to its ear, which is recognised by the computer. The system uses a passive RFID tag.</h4>
+    <div class="sub-q">
+      <label>a) Describe how the RFID tag can be activated.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>The RFID reader sends radio waves/signals to the antenna in the tag · the tag sends a radio wave/signal back to the reader · the radio waves move from the tag's antenna to the microchip · a signal is generated and sent back to the RF system · the RF wave is detected by the reader, which interprets the data</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-rfid-a" data-points="3">
+        <label for="sm-rfid-a">My answer covered three valid steps — award myself three points</label>
+      </div>
+    </div>
+    <div class="sub-q">
+      <label>b) Describe how RFID technology will be used to give the correct feed to the animal.</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>The goat passes the RFID reader · the RFID reader extracts data from the tag · the ID is compared with data stored in the database · the feed for the goat is then selected/identified/read from the database</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-rfid-b" data-points="3">
+        <label for="sm-rfid-b">My answer covered three valid steps — award myself three points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which recognition technology each statement describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="omr"><span class="term">Detects marked bubbles on a multiple-choice exam sheet</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+      <div class="classify-item" data-answer="ocr"><span class="term">Converts a photo of printed text into an editable digital document</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+      <div class="classify-item" data-answer="rfid"><span class="term">Used to track livestock location using an active tag</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+      <div class="classify-item" data-answer="nfc"><span class="term">Lets two smartphones exchange data by tapping together</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+      <div class="classify-item" data-answer="ocr"><span class="term">ANPR, used to read number plates at a car park barrier</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+      <div class="classify-item" data-answer="rfid"><span class="term">A passive chip embedded in a passport, storing a photo and fingerprints</span><span class="choices"><button data-choice="omr">OMR</button><button data-choice="ocr">OCR</button><button data-choice="rfid">RFID</button><button data-choice="nfc">NFC</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. What is a disadvantage of OMR?</p><div class="opts"><button class="opt" data-idx="0">It requires no staff to operate</button><button class="opt" data-idx="1">It's limited to predetermined responses</button><button class="opt" data-idx="2">It can read handwritten essays accurately</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. What powers a passive RFID tag?</p><div class="opts"><button class="opt" data-idx="0">A built-in battery</button><button class="opt" data-idx="1">Solar power</button><button class="opt" data-idx="2">Energy from the reader</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. Which of these is a privacy concern raised by ANPR?</p><div class="opts"><button class="opt" data-idx="0">Number plates are recorded</button><button class="opt" data-idx="1">It requires a member of staff at all times</button><button class="opt" data-idx="2">It cannot process contactless payments</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ SATELLITE SYSTEMS ============ -->
+<div class="panel" id="panel-satellite">
+  <h2 class="section-title">Satellite systems</h2>
+
+  <h3>GPS</h3>
+  <p>Global Positioning System (<strong>GPS</strong>) is a satellite system used to <strong>track the exact location</strong> of an object. It uses orbiting satellites to receive, amplify and transmit signals, using radio frequencies to communicate between satellites and ground stations. GPS requires a direct line of sight.</p>
+  <div class="block">
+    <p><strong>Case study — sat nav in a car:</strong> the position/location of the car is calculated using GPS software; data is transmitted every few seconds; an algorithm calculates the speed/location of the car; the map is updated every few seconds.</p>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Wide coverage area; real-time data transmission; improved communication in remote locations; accurate location tracking</td><td>Expensive setup and maintenance; signal interference due to weather or obstacles; limited bandwidth and capacity; privacy concerns and potential for surveillance</td></tr>
+    </table>
+  </div>
+
+  <h3>GIS</h3>
+  <p>A Geographic Information System (<strong>GIS</strong>) is a powerful computer system that acts as a <strong>database for geographic data</strong>. Any data with a location component can be stored, such as physical features (rivers, mountains, roads), man-made features (buildings, utilities like electricity/water/gas), and social/economic data (demographics, crime rates, property value). Two main features of a GIS: <strong>analysing</strong> geographic data to find patterns/trends/relationships, and <strong>visualising</strong> geographic data using maps.</p>
+  <p>Examples of GIS use: assigning the closest emergency services to an emergency; businesses analysing customer demographics, competitors and gaps in the market; tracking deforestation, monitoring pollution, and mapping wildlife habitats.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Overlaying data based on location reveals hidden patterns; visual representations allow for better decision making; automation; better communication and collaboration</td><td>Cost; only as good as the data it uses; needs specialised training to understand visual elements properly; data privacy concerns</td></tr>
+    </table>
+  </div>
+
+  <h3>Media communication</h3>
+  <p>Media communication is a system of <strong>creating, transmitting, storing and delivering media content</strong> using a global network of satellites. Media transmission includes TV signals, radio signals, and internet data. Media communication systems can also act as relays, bouncing signals over a large distance — for example broadcasting live events to a global audience, and ensuring a wider reach to geographically hard-to-reach places.</p>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Global coverage; high bandwidth; cheaper, no cables required; secure encrypted transmissions</td><td>Time delays can cause audio/video sync issues; bad weather can affect the quality of the signal received; satellites need regular monitoring and maintenance</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Worked example</span><span class="pts">4 points</span></p>
+    <h4>Modern-day drivers rely less on paper maps and more on satellite navigation systems (satnav). Describe the inputs, outputs and processing of a satnav when used by a driver to reach a destination.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>The destination is input by the driver · the exact position of the vehicle is continually calculated using GPS, using data from 3 or 4 satellites · the on-board computer contains pre-stored road maps · the car's position is displayed on the map/route · an algorithm calculates the route from the current position to the destination, making allowances for traffic jams/roadworks · the car system receives regular updates on traffic conditions · outputs the journey time/ETA/voice directions · outputs speed limits or camera/speed warnings</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-satnav" data-points="4">
+        <label for="sm-satnav">My answer covered four valid inputs/outputs/processing steps — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which satellite system each statement describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="gps"><span class="term">Requires a direct line of sight to orbiting satellites to track exact location</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+      <div class="classify-item" data-answer="gis"><span class="term">A database that stores and analyses data with a location component</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+      <div class="classify-item" data-answer="media"><span class="term">Relays TV, radio and internet signals over long distances</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+      <div class="classify-item" data-answer="gis"><span class="term">Used by a business to analyse competitors and find gaps in the market</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+      <div class="classify-item" data-answer="gps"><span class="term">Used by a sat nav to calculate a car's speed and location every few seconds</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+      <div class="classify-item" data-answer="media"><span class="term">Can suffer time delays that cause audio/video sync issues</span><span class="choices"><button data-choice="gps">GPS</button><button data-choice="gis">GIS</button><button data-choice="media">Media communication</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0"><p class="q">1. What does GPS require in order to work?</p><div class="opts"><button class="opt" data-idx="0">A direct line of sight to satellites</button><button class="opt" data-idx="1">A wired Ethernet connection</button><button class="opt" data-idx="2">A Bluetooth pairing with a satellite</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. Which two main features define a GIS?</p><div class="opts"><button class="opt" data-idx="0">Streaming and downloading</button><button class="opt" data-idx="1">Pairing and encrypting</button><button class="opt" data-idx="2">Analysing and visualising geographic data</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">3. What can bad weather affect in a media communication system?</p><div class="opts"><button class="opt" data-idx="0">The colour of the satellite</button><button class="opt" data-idx="1">The quality of the signal received</button><button class="opt" data-idx="2">The number of channels available</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · ICT Applications — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
