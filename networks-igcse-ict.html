@@ -411,23 +411,31 @@
   <p>A network bridge is a device used to <strong>connect two local area networks (LANs) together</strong> to create one larger network. Unlike a switch or hub, bridges only connect local area networks together.</p>
 
   <div class="diagram-box">
-    <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
-      <text x="80" y="16" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--sage)">LAN 1</text>
-      <text x="320" y="16" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="var(--sage)">LAN 2</text>
-      <use href="#dev" x="20" y="30" width="45" height="32"/>
-      <use href="#dev" x="95" y="30" width="45" height="32"/>
-      <use href="#dev" x="20" y="90" width="45" height="32"/>
-      <use href="#dev" x="95" y="90" width="45" height="32"/>
-      <use href="#dev" x="260" y="30" width="45" height="32"/>
-      <use href="#dev" x="335" y="30" width="45" height="32"/>
-      <use href="#dev" x="260" y="90" width="45" height="32"/>
-      <use href="#dev" x="335" y="90" width="45" height="32"/>
-      <rect x="163" y="60" width="74" height="30" rx="3" fill="#0c110e" stroke="var(--copper-bright)" stroke-width="2"/>
-      <text x="200" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" fill="var(--copper-bright)">BRIDGE</text>
-      <line x1="140" y1="75" x2="163" y2="75" stroke="var(--copper-bright)" stroke-width="2"/>
-      <line x1="237" y1="75" x2="260" y2="75" stroke="var(--copper-bright)" stroke-width="2"/>
+    <svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+      <use href="#dev" x="14" y="12" width="42" height="30"/>
+      <use href="#dev" x="62" y="12" width="42" height="30"/>
+      <use href="#dev" x="110" y="12" width="42" height="30"/>
+      <rect x="40" y="95" width="90" height="30" rx="3" fill="#0c110e" stroke="var(--sage)" stroke-width="2"/>
+      <text x="85" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--sage)">LAN 1</text>
+      <line x1="35" y1="42" x2="70" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
+      <line x1="83" y1="42" x2="85" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
+      <line x1="131" y1="42" x2="100" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
+
+      <rect x="165" y="95" width="90" height="30" rx="3" fill="#0c110e" stroke="var(--copper-bright)" stroke-width="2.2"/>
+      <text x="210" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--copper-bright)">BRIDGE</text>
+      <line x1="130" y1="110" x2="165" y2="110" stroke="var(--copper-bright)" stroke-width="2"/>
+      <line x1="255" y1="110" x2="290" y2="110" stroke="var(--copper-bright)" stroke-width="2"/>
+
+      <rect x="290" y="95" width="90" height="30" rx="3" fill="#0c110e" stroke="var(--sage)" stroke-width="2"/>
+      <text x="335" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--sage)">LAN 2</text>
+      <use href="#dev" x="264" y="12" width="42" height="30"/>
+      <use href="#dev" x="312" y="12" width="42" height="30"/>
+      <use href="#dev" x="360" y="12" width="42" height="30"/>
+      <line x1="285" y1="42" x2="320" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
+      <line x1="333" y1="42" x2="335" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
+      <line x1="381" y1="42" x2="350" y2="95" stroke="var(--trace)" stroke-width="1.4"/>
     </svg>
-    <p class="diagram-caption">A bridge joins two separate LANs into one larger network</p>
+    <p class="diagram-caption">Each LAN's computers connect to their LAN, and the bridge joins the two LANs into one larger network</p>
   </div>
 
   <div class="task" data-task="open" data-points="2">
