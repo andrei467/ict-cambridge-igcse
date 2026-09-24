@@ -119,6 +119,13 @@
 
   .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
 
+  .diagram-box{
+    background:#0c110e; border:1px solid var(--trace); border-radius:var(--radius);
+    padding:14px 10px; margin:18px 0 6px; text-align:center;
+  }
+  .diagram-box svg{ width:100%; height:auto; max-width:380px; }
+  .diagram-caption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); margin-top:6px; }
+
   /* Interactive task frame */
   .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
   .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
@@ -260,9 +267,9 @@
 <div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">36</span></div>
 
 <nav class="theory-nav">
-  <a href="index.html">← <span class="full">Previous theory:</span> Hardware &amp; Software</a>
+  <a href="hardware-software-igcse-ict.html">← <span class="full">Previous theory:</span> Hardware &amp; Software</a>
   <span class="spacer"></span>
-  <a href="types-of-computer-emerging-technologies-igcse-ict.html" aria-disabled="true"><span class="full">Next theory: Types of Computer & Emerging Technologies</span> →</a>
+  <a href="types-of-computer-emerging-technologies-igcse-ict.html"><span class="full">Next theory:</span> Types of Computer &amp; Emerging Technologies →</a>
 </nav>
 
 <header class="hero">
@@ -299,6 +306,41 @@
 
   <h3>The fetch-execute cycle</h3>
   <p>The CPU runs through this cycle billions of times per second:</p>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 130 30 A 100 100 0 0 1 224 92" fill="none" stroke="var(--sage)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead1)"/>
+      <path d="M 224 168 A 100 100 0 0 1 130 230" fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead2)"/>
+      <path d="M 36 168 A 100 100 0 0 1 36 92" fill="none" stroke="var(--copper-bright)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead3)"/>
+      <defs>
+        <marker id="arrHead1" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--sage)"/></marker>
+        <marker id="arrHead2" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--gold)"/></marker>
+        <marker id="arrHead3" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--copper-bright)"/></marker>
+      </defs>
+
+      <rect x="88" y="8" width="84" height="30" rx="4" fill="rgba(127,166,138,0.15)" stroke="var(--sage)" stroke-width="1.6"/>
+      <text x="130" y="28" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--sage)">FETCH</text>
+
+      <rect x="178" y="122" width="90" height="30" rx="4" fill="rgba(215,184,114,0.15)" stroke="var(--gold)" stroke-width="1.6"/>
+      <text x="223" y="142" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--gold)">DECODE</text>
+
+      <rect x="42" y="222" width="90" height="30" rx="4" fill="rgba(201,138,75,0.15)" stroke="var(--copper-bright)" stroke-width="1.6"/>
+      <text x="87" y="242" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--copper-bright)">EXECUTE</text>
+
+      <g transform="translate(130,130)">
+        <rect x="-38" y="-26" width="76" height="52" rx="3" fill="#161e1a" stroke="var(--paper-dim)" stroke-width="1.8"/>
+        <rect x="-20" y="-14" width="40" height="28" rx="1.5" fill="none" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="-38" y1="-16" x2="-46" y2="-16" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="-38" y1="-4" x2="-46" y2="-4" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="-38" y1="8" x2="-46" y2="8" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="38" y1="-16" x2="46" y2="-16" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="38" y1="-4" x2="46" y2="-4" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <line x1="38" y1="8" x2="46" y2="8" stroke="var(--paper-dim)" stroke-width="1.3"/>
+      </g>
+    </svg>
+    <p class="diagram-caption">The fetch-execute cycle — the CPU loops through fetch, decode and execute, billions of times a second</p>
+  </div>
+
   <div class="block">
     <ul>
       <li><strong>Fetch</strong> — the next instruction or data is fetched from RAM and brought to the CPU</li>
@@ -402,17 +444,18 @@
 
   <div class="table-scroll">
     <table>
-      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
-      <tr><td>Keyboard</td><td>General data entry</td><td>Repetitive strain injury; slower than direct entry</td></tr>
-      <tr><td>Numeric keypad</td><td>ATMs, chip &amp; PIN devices</td><td>Small buttons; layouts vary</td></tr>
-      <tr><td>Mouse / pointing device</td><td>Precise on-screen selection</td><td>RSI; needs a flat surface</td></tr>
-      <tr><td>Remote control</td><td>Controlling a TV or hi-fi from a distance</td><td>Needs line-of-sight; easily lost; needs batteries</td></tr>
-      <tr><td>Joystick / driving wheel</td><td>Gaming and simulators</td><td>Expensive; limited use outside gaming</td></tr>
-      <tr><td>Touchscreen</td><td>Smartphones and tablets</td><td>Gets dirty/scratched; less precise than a mouse</td></tr>
-      <tr><td>Scanner</td><td>Converting paper documents to electronic form</td><td>High quality scans are slow</td></tr>
-      <tr><td>Digital camera</td><td>Capturing photos/video</td><td>Compression can reduce quality</td></tr>
-      <tr><td>Microphone</td><td>Voice input, hands-free control</td><td>Variable accuracy; needs known keywords</td></tr>
-      <tr><td>Analogue sensor</td><td>Measuring temperature, light, sound, humidity</td><td>Needs calibration; output must be converted to digital (ADC)</td></tr>
+      <tr><th>Device</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Keyboard<br><span class="note">(entering data into a computer)</span></td><td>Easy method of entering data; very common</td><td>Repetitive strain injury; slow to enter data compared to direct data entry</td></tr>
+      <tr><td>Numeric keypad<br><span class="note">(ATMs, chip and PIN devices)</span></td><td>Fast; easy to use</td><td>Size of buttons can impede some users; button layouts not always the same</td></tr>
+      <tr><td>Pointing device<br><span class="note">(mouse)</span></td><td>Intuitive and precise control; fast to make on-screen choices</td><td>RSI (strain on wrist); requires a flat surface; people with disabilities can find them difficult to use</td></tr>
+      <tr><td>Remote control<br><span class="note">(TV, hi-fi remotes)</span></td><td>Easy to use; can control from a distance</td><td>May require line-of-sight; easily lost; needs regular battery replacements</td></tr>
+      <tr><td>Pointing device<br><span class="note">(joystick/driving wheel)</span></td><td>Enhances gameplay/simulation experience; improves realism; accurate</td><td>Expensive; limited use outside of gaming and simulators</td></tr>
+      <tr><td>Touchscreen<br><span class="note">(smartphones &amp; tablets)</span></td><td>Intuitive; no need for a separate pointing device; easy to keep clean</td><td>Screens can get dirty; easily scratched; less precise than a mouse</td></tr>
+      <tr><td>Scanner<br><span class="note">(convert paper documents to electronic)</span></td><td>Accurate reproduction; easy to share and store; combined with barcodes becomes a DDE</td><td>Quality depends on resolution; high quality means it can be slow</td></tr>
+      <tr><td>Digital camera<br><span class="note">(taking photos/videos)</span></td><td>Vast amounts can be captured; no developing; easy to share</td><td>Storage compression can lead to a loss in quality; need to be tech-savvy to use effectively</td></tr>
+      <tr><td>Microphone<br><span class="note">(input speech, sensor to pick up sounds)</span></td><td>Hands-free input; can be used for voice recognition; fast</td><td>Variable quality; verbal inputs can be inaccurate; need to remember key words/phrases</td></tr>
+      <tr><td>Analogue sensor<br><span class="note">(measures temperature, light, sound, humidity, etc.)</span></td><td>Generally accurate; provides real-time information; automatic; can collect data from places where they may be a threat to human life</td><td>May require calibration; data must be converted to digital data (ADC); data may need to be checked for accuracy</td></tr>
+      <tr><td>Light pen<br><span class="note">(select/write on screen)</span></td><td>Accuracy for fine detail; small &amp; lightweight; easy to use</td><td>Lag; only works on certain types of screen; dated technology</td></tr>
     </table>
   </div>
 
@@ -470,14 +513,15 @@
 
   <div class="table-scroll">
     <table>
-      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
-      <tr><td>Magnetic stripe reader</td><td>Debit/credit cards</td><td>Stripes can get damaged; reader needs close contact</td></tr>
-      <tr><td>Chip &amp; PIN reader</td><td>Card payments</td><td>Requires a PIN; possible skimming</td></tr>
-      <tr><td>RFID reader</td><td>Contactless payment, security tags, location tracking</td><td>Signals can be intercepted or jammed</td></tr>
-      <tr><td>Optical Mark Recognition (OMR)</td><td>Reading marks on exam papers</td><td>Limited to specific forms; can't read handwriting</td></tr>
-      <tr><td>Optical Character Recognition (OCR)</td><td>Converting printed/typed text into digital data</td><td>Struggles with complex layouts or unusual fonts</td></tr>
-      <tr><td>Barcode reader</td><td>Reading barcode labels at a till</td><td>Needs line-of-sight; barcodes can be damaged</td></tr>
-      <tr><td>QR scanner</td><td>Reading QR codes</td><td>Can store malicious code; several formats exist</td></tr>
+      <tr><th>Device</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Magnetic stripe reader<br><span class="note">(debit/credit cards)</span></td><td>Fast; simple to use; secure (unreadable)</td><td>Magnetic stripes can get damaged and become unreadable; reader must be in close contact</td></tr>
+      <tr><td>Chip and PIN reader</td><td>Secure; reduced fraud risk</td><td>Requires PIN input; potential for skimming; high payment limits are an issue for stolen cards</td></tr>
+      <tr><td>RFID reader (read only)<br><span class="note">(contactless payment)</span></td><td>Fast transaction (no PIN); data wirelessly transferred securely; retailers don't have to access customer credit/debit information</td><td>Transaction limit is smaller; RFID signals can be read/intercepted</td></tr>
+      <tr><td>RFID reader<br><span class="note">(security tags on clothes, location tracking)</span></td><td>Very fast; data can be sent both ways; bulk detection</td><td>Radio waves can be blocked/jammed; tag collisions; possible to hack</td></tr>
+      <tr><td>Optical Mark Recognition (OMR)<br><span class="note">(reads marks on exam papers in pen/pencil)</span></td><td>Fast processing; reduced human error</td><td>Limited to specific forms; cannot read handwriting; form must be completed accurately</td></tr>
+      <tr><td>Optical Character Recognition (OCR)<br><span class="note">(text to digital data)</span></td><td>Fast data entry; accurate and less error prone</td><td>Can struggle with complex layouts; font dependent; not always 100% accurate; expensive</td></tr>
+      <tr><td>Barcode reader<br><span class="note">(reads barcode labels)</span></td><td>Fast and accurate; low cost; allows for automatic stock control; tried &amp; trusted</td><td>Requires line-of-sight; barcodes are easily damaged; barcodes can be swapped/altered by consumers</td></tr>
+      <tr><td>QR scanner<br><span class="note">(QR codes)</span></td><td>Can store more data than barcodes; versatile uses; easy to read; can be encrypted</td><td>QR codes can store malicious code; several different QR code formats exist</td></tr>
     </table>
   </div>
 
@@ -531,19 +575,19 @@
 
   <div class="table-scroll">
     <table>
-      <tr><th>Device</th><th>Typical use</th><th>Watch out for</th></tr>
-      <tr><td>CRT monitor</td><td>Legacy displays, works with light pens</td><td>Heavy; runs hot; high power use</td></tr>
-      <tr><td>LCD monitor</td><td>Everyday displays</td><td>Colour/contrast vary with viewing angle</td></tr>
-      <tr><td>LED monitor</td><td>Modern displays</td><td>More expensive than LCD</td></tr>
-      <tr><td>Touchscreen (output)</td><td>Combined display and input</td><td>Smudges; calibration issues</td></tr>
-      <tr><td>Multimedia projector</td><td>Presentations to a large audience</td><td>Needs a darkened room; expensive bulbs</td></tr>
-      <tr><td>Laser printer</td><td>Fast, high-volume office printing</td><td>Expensive to buy</td></tr>
-      <tr><td>Inkjet printer</td><td>High-quality home printing</td><td>Slower; higher cost per page</td></tr>
-      <tr><td>Dot matrix printer</td><td>Multi-part carbon forms, long print runs</td><td>Noisy; low print quality</td></tr>
-      <tr><td>Plotter</td><td>Technical drawings and blueprints</td><td>Slow; expensive; large</td></tr>
-      <tr><td>3D printer</td><td>Prototyping, custom/medical objects</td><td>Slow; limited materials; very expensive</td></tr>
-      <tr><td>Speakers</td><td>Audio output</td><td>Sound quality varies with price</td></tr>
-      <tr><td>Actuators</td><td>Controlling motors, pumps, switches</td><td>Needs a DAC interface; mechanical wear</td></tr>
+      <tr><th>Device</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Monitor (CRT)</td><td>Large viewing angles; can be used with light pens</td><td>Run hot; heavy; consume more power than other monitor types</td></tr>
+      <tr><td>Monitor (LCD)</td><td>Low power; lightweight; no flickering; no image burn-in</td><td>Motion blur/ghosting; colour &amp; contrast variable from different viewing angles</td></tr>
+      <tr><td>Monitor (LED)</td><td>No motion blur/ghosting; low power; long life</td><td>More expensive than LCD; contrast can be poor</td></tr>
+      <tr><td>Touch screen (output)</td><td>Intuitive; space-saving</td><td>Susceptible to smudge; potential calibration issues</td></tr>
+      <tr><td>Multimedia projector<br><span class="note">(outputs to a much larger display)</span></td><td>Large display; good for presentations; space saving</td><td>Requires a darkened room; expensive bulbs; needs separate audio; quality is variable</td></tr>
+      <tr><td>Laser printer (dry ink)</td><td>Fast; high-quality prints; lower cost per page</td><td>Expensive initial cost; limited to flat surfaces</td></tr>
+      <tr><td>Inkjet printer (four/five wet inks)</td><td>Lower initial cost; high-quality prints; ink can be refilled</td><td>Slower; higher cost per page; ink may smudge</td></tr>
+      <tr><td>Dot matrix printer (inked ribbon)</td><td>Low cost; can print multi-part forms; very good for long print runs</td><td>Noisy; low print quality; slow</td></tr>
+      <tr><td>Plotters<br><span class="note">(drawing &amp; blueprints)</span></td><td>High accuracy; can print on various materials; inexpensive to run</td><td>Slow; expensive to buy; large size</td></tr>
+      <tr><td>3D printer</td><td>Customisable designs; rapid prototyping; medical benefits</td><td>Limited materials; slow process; counterfeit items easier to produce; very expensive</td></tr>
+      <tr><td>Speakers</td><td>Range of sizes and power outputs; immersive audio; helps people with disabilities</td><td>Expensive for higher quality output; varying sound quality</td></tr>
+      <tr><td>Actuators<br><span class="note">(control motors, pumps, switches, etc.)</span></td><td>Precise movement; programmable; allow automatic control of many devices</td><td>Requires power; potential mechanical wear; requires a DAC interface</td></tr>
     </table>
   </div>
 
@@ -820,6 +864,168 @@
     });
   });
 })();
+(function(){
+  var STORE_KEY = 'ict-lesson-progress::' + location.pathname + '::' + document.title;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(mutator){
+    try {
+      var s = load();
+      mutator(s);
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+    } catch(e){ /* storage unavailable or full — fail silently */ }
+  }
+
+  var subQs      = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="open"] .sub-q'));
+  var classifyIt = Array.prototype.slice.call(document.querySelectorAll('.classify-item'));
+  var mcqs       = Array.prototype.slice.call(document.querySelectorAll('.mcq'));
+  var orderTasks = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="order"]'));
+  var selectTasks= Array.prototype.slice.call(document.querySelectorAll('.task[data-task="select"]'));
+
+  // ---- SAVE: listen alongside the page's own handlers ----
+
+  subQs.forEach(function(sq, i){
+    var key = 'subq-' + i;
+    var ta = sq.querySelector('textarea');
+    var btn = sq.querySelector('.check-btn');
+    var cb = sq.querySelector('.self-mark input[type=checkbox]');
+
+    if(ta) ta.addEventListener('input', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].text = ta.value; });
+    });
+    if(btn) btn.addEventListener('click', function(){
+      save(function(s){
+        s[key] = s[key] || {};
+        s[key].text = ta ? ta.value : '';
+        s[key].checked = !!(ta && ta.value.trim());
+      });
+    });
+    if(cb) cb.addEventListener('change', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].selfMarked = cb.checked; });
+    });
+  });
+
+  classifyIt.forEach(function(item, i){
+    var buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b, bi){
+      b.addEventListener('click', function(){
+        save(function(s){ s['classify-' + i] = bi; });
+      });
+    });
+  });
+
+  mcqs.forEach(function(mcq, i){
+    var opts = mcq.querySelectorAll('.opt');
+    opts.forEach(function(o, oi){
+      o.addEventListener('click', function(){
+        save(function(s){ s['mcq-' + i] = oi; });
+      });
+    });
+  });
+
+  orderTasks.forEach(function(task, ti){
+    var items = task.querySelectorAll('.order-item');
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        save(function(s){
+          var key = 'order-' + ti;
+          s[key] = s[key] || [];
+          s[key].push(item.dataset.order);
+        });
+      });
+    });
+  });
+
+  selectTasks.forEach(function(task, ti){
+    var btn = task.querySelector('.check-select-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      var checkedIdx = [];
+      items.forEach(function(inp, ii){ if(inp.checked) checkedIdx.push(ii); });
+      save(function(s){ s['select-' + ti] = checkedIdx; });
+    });
+  });
+
+  // ---- RESTORE: replay stored answers as real clicks, so the page's
+  // own scoring logic runs exactly as it did originally ----
+
+  (function restore(){
+    var s = load();
+
+    subQs.forEach(function(sq, i){
+      var rec = s['subq-' + i];
+      if(!rec) return;
+      var ta = sq.querySelector('textarea');
+      var btn = sq.querySelector('.check-btn');
+      var cb = sq.querySelector('.self-mark input[type=checkbox]');
+      if(ta && rec.text) ta.value = rec.text;
+      if(rec.checked && btn) btn.click();
+      if(rec.selfMarked && cb){
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+
+    classifyIt.forEach(function(item, i){
+      var bi = s['classify-' + i];
+      if(bi === undefined) return;
+      var buttons = item.querySelectorAll('.choices button');
+      if(buttons[bi]) buttons[bi].click();
+    });
+
+    mcqs.forEach(function(mcq, i){
+      var oi = s['mcq-' + i];
+      if(oi === undefined) return;
+      var opts = mcq.querySelectorAll('.opt');
+      if(opts[oi]) opts[oi].click();
+    });
+
+    orderTasks.forEach(function(task, ti){
+      var seq = s['order-' + ti];
+      if(!seq) return;
+      seq.forEach(function(orderVal){
+        var items = task.querySelectorAll('.order-item');
+        for(var j = 0; j < items.length; j++){
+          if(items[j].dataset.order === orderVal && !items[j].disabled){
+            items[j].click();
+            break;
+          }
+        }
+      });
+    });
+
+    selectTasks.forEach(function(task, ti){
+      var idxArr = s['select-' + ti];
+      if(!idxArr) return;
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      idxArr.forEach(function(ii){ if(items[ii]) items[ii].checked = true; });
+      var btn = task.querySelector('.check-select-btn');
+      if(btn) btn.click();
+    });
+  })();
+
+  // ---- Small "reset my answers" control ----
+  var resetBtn = document.createElement('button');
+  resetBtn.textContent = 'Reset my answers';
+  resetBtn.setAttribute('type', 'button');
+  resetBtn.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;'
+    + 'font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;'
+    + 'color:#a9a294;border-radius:3px;cursor:pointer;';
+  resetBtn.addEventListener('mouseenter', function(){ resetBtn.style.color = '#e9e4d6'; });
+  resetBtn.addEventListener('mouseleave', function(){ resetBtn.style.color = '#a9a294'; });
+  resetBtn.addEventListener('click', function(){
+    if(confirm('Clear all your saved answers on this page?')){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.body.appendChild(resetBtn);
+})();
 </script>
+
 </body>
 </html>
