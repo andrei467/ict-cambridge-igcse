@@ -308,34 +308,35 @@
   <p>The CPU runs through this cycle billions of times per second:</p>
 
   <div class="diagram-box">
-    <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 130 30 A 100 100 0 0 1 224 92" fill="none" stroke="var(--sage)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead1)"/>
-      <path d="M 224 168 A 100 100 0 0 1 130 230" fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead2)"/>
-      <path d="M 36 168 A 100 100 0 0 1 36 92" fill="none" stroke="var(--copper-bright)" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead3)"/>
+    <svg viewBox="0 0 270 270" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <marker id="arrHead1" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--sage)"/></marker>
-        <marker id="arrHead2" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--gold)"/></marker>
-        <marker id="arrHead3" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="var(--copper-bright)"/></marker>
+        <marker id="arrHead1" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#7fa68a"/></marker>
+        <marker id="arrHead2" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#d7b872"/></marker>
+        <marker id="arrHead3" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="7" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#e0a566"/></marker>
       </defs>
 
-      <rect x="88" y="8" width="84" height="30" rx="4" fill="rgba(127,166,138,0.15)" stroke="var(--sage)" stroke-width="1.6"/>
-      <text x="130" y="28" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--sage)">FETCH</text>
+      <path d="M 130 30 A 100 100 0 0 1 224 92" fill="none" stroke="#7fa68a" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead1)"/>
+      <path d="M 224 168 A 100 100 0 0 1 130 220" fill="none" stroke="#d7b872" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead2)"/>
+      <path d="M 36 168 A 100 100 0 0 1 36 92" fill="none" stroke="#e0a566" stroke-width="6" stroke-linecap="round" marker-end="url(#arrHead3)"/>
 
-      <rect x="178" y="122" width="90" height="30" rx="4" fill="rgba(215,184,114,0.15)" stroke="var(--gold)" stroke-width="1.6"/>
-      <text x="223" y="142" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--gold)">DECODE</text>
+      <rect x="30" y="38" width="80" height="30" rx="4" fill="rgba(127,166,138,0.15)" stroke="#7fa68a" stroke-width="1.6"/>
+      <text x="70" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#7fa68a">FETCH</text>
 
-      <rect x="42" y="222" width="90" height="30" rx="4" fill="rgba(201,138,75,0.15)" stroke="var(--copper-bright)" stroke-width="1.6"/>
-      <text x="87" y="242" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="var(--copper-bright)">EXECUTE</text>
+      <rect x="182" y="115" width="80" height="30" rx="4" fill="rgba(215,184,114,0.15)" stroke="#d7b872" stroke-width="1.6"/>
+      <text x="223" y="135" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#d7b872">DECODE</text>
+
+      <rect x="23" y="192" width="80" height="30" rx="4" fill="rgba(201,138,75,0.15)" stroke="#e0a566" stroke-width="1.6"/>
+      <text x="62" y="212" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#e0a566">EXECUTE</text>
 
       <g transform="translate(130,130)">
-        <rect x="-38" y="-26" width="76" height="52" rx="3" fill="#161e1a" stroke="var(--paper-dim)" stroke-width="1.8"/>
-        <rect x="-20" y="-14" width="40" height="28" rx="1.5" fill="none" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="-38" y1="-16" x2="-46" y2="-16" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="-38" y1="-4" x2="-46" y2="-4" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="-38" y1="8" x2="-46" y2="8" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="38" y1="-16" x2="46" y2="-16" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="38" y1="-4" x2="46" y2="-4" stroke="var(--paper-dim)" stroke-width="1.3"/>
-        <line x1="38" y1="8" x2="46" y2="8" stroke="var(--paper-dim)" stroke-width="1.3"/>
+        <rect x="-38" y="-26" width="76" height="52" rx="3" fill="#161e1a" stroke="#a9a294" stroke-width="1.8"/>
+        <rect x="-20" y="-14" width="40" height="28" rx="1.5" fill="none" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="-38" y1="-16" x2="-46" y2="-16" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="-38" y1="-4" x2="-46" y2="-4" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="-38" y1="8" x2="-46" y2="8" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="38" y1="-16" x2="46" y2="-16" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="38" y1="-4" x2="46" y2="-4" stroke="#a9a294" stroke-width="1.3"/>
+        <line x1="38" y1="8" x2="46" y2="8" stroke="#a9a294" stroke-width="1.3"/>
       </g>
     </svg>
     <p class="diagram-caption">The fetch-execute cycle — the CPU loops through fetch, decode and execute, billions of times a second</p>
