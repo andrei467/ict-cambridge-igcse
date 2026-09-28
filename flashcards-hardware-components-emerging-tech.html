@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:640px; margin:0 auto; padding: 0 24px 100px; }
+
+  nav.theory-nav{
+    max-width:640px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav .spacer{flex:1;}
+
+  header.hero{
+    padding:36px 24px 26px; max-width:640px; margin:0 auto; text-align:center;
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,34px);
+    line-height:1.15; margin:0 0 10px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:56ch; margin:0 auto; font-size:16px; }
+
+  .progress-row{
+    max-width:640px; margin:0 auto; padding:18px 24px 0;
+    display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
+  }
+  .progress-bar{ flex:1; height:6px; background:var(--trace-dim); border-radius:4px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--sage); width:0%; transition:width .3s ease; }
+  .progress-text{ white-space:nowrap; }
+
+  .controls-row{
+    max-width:640px; margin:0 auto; padding:10px 24px 0;
+    display:flex; justify-content:flex-end; gap:8px;
+  }
+  .controls-row button{
+    font-family:var(--mono); font-size:11.5px; background:transparent; border:1px solid var(--trace);
+    color:var(--paper-dim); padding:6px 11px; border-radius:var(--radius); cursor:pointer;
+  }
+  .controls-row button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+
+  .stage{ max-width:640px; margin:0 auto; padding:28px 24px 0; }
+
+  .card-scene{
+    perspective:1400px;
+    height:320px;
+  }
+  .card{
+    position:relative;
+    width:100%;
+    height:100%;
+    cursor:pointer;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.2,.7,.3,1);
+  }
+  .card.flipped{ transform: rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0;
+    backface-visibility:hidden;
+    border:1px solid var(--trace);
+    border-radius:6px;
+    background:var(--bg-raised);
+    padding:26px;
+    display:flex;
+    flex-direction:column;
+  }
+  .card-face.back{
+    transform: rotateY(180deg);
+    border-color:var(--sage);
+  }
+  .card-topic{
+    font-family:var(--mono); font-size:11px; color:var(--sage);
+    border:1px solid var(--trace); display:inline-block; padding:2px 8px; border-radius:var(--radius);
+    align-self:flex-start; margin-bottom:16px;
+  }
+  .card-face.back .card-topic{ color:var(--copper-bright); border-color:var(--copper); }
+  .card-label{
+    font-family:var(--mono); font-size:11px; color:var(--paper-dim); margin-bottom:10px; letter-spacing:.03em;
+  }
+  .card-text{
+    font-size:20px; line-height:1.5; color:var(--paper); flex:1; display:flex; align-items:center;
+  }
+  .card-hint{
+    font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:auto; opacity:.8;
+  }
+
+  .action-row{
+    display:flex; gap:12px; margin-top:20px;
+  }
+  .action-btn{
+    flex:1; font-family:var(--mono); font-size:14px; padding:14px 10px; border-radius:var(--radius);
+    cursor:pointer; border:1px solid var(--trace); background:var(--bg-raised); color:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .action-btn:hover{ color:var(--paper); }
+  .action-btn.learning{ border-color:var(--brick); }
+  .action-btn.learning:hover{ background:rgba(193,92,79,0.12); color:var(--paper); }
+  .action-btn.know{ border-color:var(--sage); }
+  .action-btn.know:hover{ background:rgba(127,166,138,0.12); color:var(--paper); }
+  .action-btn kbd{
+    font-family:var(--mono); font-size:10.5px; border:1px solid var(--trace); border-radius:3px; padding:1px 5px; color:var(--paper-dim);
+  }
+
+  .nudge{
+    text-align:center; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim);
+    margin-top:14px; min-height:1.4em;
+  }
+  .nudge.show{ color:var(--copper-bright); }
+
+  .complete-panel{
+    text-align:center; padding:60px 24px; border:1px solid var(--sage); border-radius:6px; background:var(--bg-raised);
+  }
+  .complete-panel h2{ font-family:var(--mono); color:var(--sage); font-size:24px; margin:0 0 12px; }
+  .complete-panel p{ color:var(--paper-dim); margin:0 0 22px; }
+
+  footer{ max-width:640px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); text-align:center; }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    .card-scene{ height:280px; }
+    .card-text{ font-size:18px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .card{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="theory-nav">
+  <a href="types-of-computer-emerging-technologies-igcse-ict.html">← <span class="full">Previous theory:</span> Types of Computer &amp; Emerging Technologies</a>
+  <span class="spacer"></span>
+  <a href="networks-igcse-ict.html"><span class="full">Next theory:</span> Networks →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Flashcards</p>
+  <h1 class="title">Hardware, Components &amp; Emerging Tech</h1>
+  <p>Covers Hardware &amp; Software, Components of Computer Systems, and Types of Computer &amp; Emerging Technologies. Click a card to reveal the answer, then be honest with yourself about whether you actually knew it.</p>
+</header>
+
+<div class="progress-row">
+  <span class="progress-text" id="progress-text">0 mastered · 0 remaining</span>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <span class="progress-text" id="progress-total">of 0</span>
+</div>
+
+<div class="controls-row">
+  <button id="shuffle-btn" type="button">🔀 Shuffle remaining</button>
+</div>
+
+<div class="stage" id="stage">
+  <div class="card-scene">
+    <div class="card" id="card">
+      <div class="card-face front">
+        <span class="card-topic" id="topic-front">Topic</span>
+        <span class="card-label">QUESTION</span>
+        <div class="card-text" id="question-text">Loading…</div>
+        <div class="card-hint">Click the card to reveal the answer</div>
+      </div>
+      <div class="card-face back">
+        <span class="card-topic" id="topic-back">Topic</span>
+        <span class="card-label">ANSWER</span>
+        <div class="card-text" id="answer-text"></div>
+        <div class="card-hint">Click again to flip back</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn learning" id="btn-learning" type="button">← Still learning</button>
+    <button class="action-btn know" id="btn-know" type="button">I know this →</button>
+  </div>
+  <p class="nudge" id="nudge"></p>
+</div>
+
+<div class="stage" id="complete-stage" style="display:none;">
+  <div class="complete-panel">
+    <h2>Deck complete!</h2>
+    <p>You've marked every card as known. Nice work.</p>
+    <button id="restart-btn" type="button">Restart deck</button>
+  </div>
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Flashcards — your progress is saved automatically on this device.
+</footer>
+
+<script>
+(function(){
+  // ---- Card data: {id, topic, q, a} ----
+  var CARDS = [
+    // ===== Hardware & Software =====
+    {id:"hs1", topic:"Hardware & Software", q:"What is hardware?", a:"The physical components of a computer system."},
+    {id:"hs2", topic:"Hardware & Software", q:"What does the CPU do?", a:"Acts as the brain of the computer, processing instructions."},
+    {id:"hs3", topic:"Hardware & Software", q:"What is the motherboard?", a:"Connects all important components together so they can communicate."},
+    {id:"hs4", topic:"Hardware & Software", q:"What is RAM?", a:"Fast, working memory used by the computer while it's running."},
+    {id:"hs5", topic:"Hardware & Software", q:"What is ROM?", a:"Memory that holds the instructions the computer needs to start up."},
+    {id:"hs6", topic:"Hardware & Software", q:"What does a GPU (graphics card) do?", a:"Processes images and video."},
+    {id:"hs7", topic:"Hardware & Software", q:"What does a sound card do?", a:"Processes audio."},
+    {id:"hs8", topic:"Hardware & Software", q:"What does a NIC (Network Interface Card) do?", a:"Provides a wired connection to a network."},
+    {id:"hs9", topic:"Hardware & Software", q:"Give an example of an input device.", a:"A mouse or keyboard — allows the user to put data in."},
+    {id:"hs10", topic:"Hardware & Software", q:"Give an example of an output device.", a:"A monitor — outputs the results of processing."},
+    {id:"hs11", topic:"Hardware & Software", q:"What is software?", a:"A set of programs that control the hardware; it can't be physically touched."},
+    {id:"hs12", topic:"Hardware & Software", q:"What are the two categories of software?", a:"Application software and system software."},
+    {id:"hs13", topic:"Hardware & Software", q:"What is application software?", a:"Software chosen by a user to carry out a specific task."},
+    {id:"hs14", topic:"Hardware & Software", q:"Name a category of application software.", a:"Word processing, spreadsheet, database management, control/measurement, video/graphics/audio editing, or CAD."},
+    {id:"hs15", topic:"Hardware & Software", q:"What is system software?", a:"Software essential for the operation of a computer, giving a platform to run applications."},
+    {id:"hs16", topic:"Hardware & Software", q:"What does a compiler do?", a:"Translates high-level programming languages into machine code."},
+    {id:"hs17", topic:"Hardware & Software", q:"What does a linker do?", a:"Combines object files into a single executable program."},
+    {id:"hs18", topic:"Hardware & Software", q:"What does a device driver do?", a:"Controls hardware components and peripherals."},
+    {id:"hs19", topic:"Hardware & Software", q:"What is an operating system?", a:"Software that provides an interface between the user and the hardware."},
+    {id:"hs20", topic:"Hardware & Software", q:"Name a function of an operating system.", a:"Controlling I/O devices, managing applications, dealing with errors, maintaining security, or logging events."},
+    {id:"hs21", topic:"Hardware & Software", q:"What is a user interface?", a:"How the user interacts with the operating system."},
+    {id:"hs22", topic:"Hardware & Software", q:"What is a CLI?", a:"Command Line Interface — the user types text-based commands."},
+    {id:"hs23", topic:"Hardware & Software", q:"What is a GUI?", a:"Graphical User Interface — visual elements like windows, icons, menus and pointers."},
+    {id:"hs24", topic:"Hardware & Software", q:"Give an example of a dialogue-based interface.", a:"Amazon Alexa or Siri."},
+    {id:"hs25", topic:"Hardware & Software", q:"Give an example of a gesture-based interface.", a:"A smartphone touchscreen — swipe, pinch, zoom."},
+    {id:"hs26", topic:"Hardware & Software", q:"What is an advantage of a CLI over a GUI?", a:"Uses fewer system resources and is good for automating tasks."},
+    {id:"hs27", topic:"Hardware & Software", q:"What is an advantage of a GUI over a CLI?", a:"Intuitive and user-friendly, requiring no previous knowledge."},
+    {id:"hs28", topic:"Hardware & Software", q:"What is analogue data?", a:"Continuous data that can change gradually and smoothly."},
+    {id:"hs29", topic:"Hardware & Software", q:"What is digital data?", a:"Data represented in binary format — 1s and 0s."},
+    {id:"hs30", topic:"Hardware & Software", q:"What does ADC do?", a:"Analogue-to-Digital Conversion — samples an analogue signal and converts it into binary code."},
+    {id:"hs31", topic:"Hardware & Software", q:"What does DAC do?", a:"Digital-to-Analogue Conversion — converts digital values back into a continuous analogue signal."},
+    {id:"hs32", topic:"Hardware & Software", q:"Why does a higher sample rate in ADC give better accuracy?", a:"It captures more detail of the original analogue signal — but takes up more storage space."},
+
+    // ===== Components of Computer Systems =====
+    {id:"ccs1", topic:"Components of Computer Systems", q:"What is the purpose of the CPU?", a:"To fetch, decode and execute instructions."},
+    {id:"ccs2", topic:"Components of Computer Systems", q:"What are the three stages of the fetch-execute cycle?", a:"Fetch, Decode, Execute."},
+    {id:"ccs3", topic:"Components of Computer Systems", q:"What happens during the Fetch stage?", a:"The next instruction or data is fetched from RAM and brought to the CPU."},
+    {id:"ccs4", topic:"Components of Computer Systems", q:"What happens during the Decode stage?", a:"The CPU works out what is required from the instruction."},
+    {id:"ccs5", topic:"Components of Computer Systems", q:"What happens during the Execute stage?", a:"The CPU carries out the instruction, e.g. a calculation, storing a result, or fetching more data."},
+    {id:"ccs6", topic:"Components of Computer Systems", q:"What does the ALU do?", a:"Performs calculations and logical comparisons."},
+    {id:"ccs7", topic:"Components of Computer Systems", q:"What does the Control Unit (CU) do?", a:"Directs and coordinates the CPU's operations."},
+    {id:"ccs8", topic:"Components of Computer Systems", q:"What is cache memory?", a:"Very fast, small memory holding data likely to be needed again soon."},
+    {id:"ccs9", topic:"Components of Computer Systems", q:"What are registers?", a:"Tiny, extremely fast storage locations for data being used right now."},
+    {id:"ccs10", topic:"Components of Computer Systems", q:"Is RAM volatile or non-volatile?", a:"Volatile — its contents are lost when the power is off."},
+    {id:"ccs11", topic:"Components of Computer Systems", q:"Is ROM volatile or non-volatile?", a:"Non-volatile — its contents survive a loss of power."},
+    {id:"ccs12", topic:"Components of Computer Systems", q:"Can RAM capacity be increased?", a:"Yes — it's variable, and can be increased to improve performance."},
+    {id:"ccs13", topic:"Components of Computer Systems", q:"Can ROM capacity be increased?", a:"No — its capacity is fixed."},
+    {id:"ccs14", topic:"Components of Computer Systems", q:"Is RAM read-only or read/write?", a:"Read and write."},
+    {id:"ccs15", topic:"Components of Computer Systems", q:"Is ROM read-only or read/write?", a:"Read only."},
+    {id:"ccs16", topic:"Components of Computer Systems", q:"What does RAM store?", a:"Data and programs currently in use — temporarily."},
+    {id:"ccs17", topic:"Components of Computer Systems", q:"What does ROM store?", a:"The boot file / start-up instructions, including the BIOS — permanently."},
+    {id:"ccs18", topic:"Components of Computer Systems", q:"What input device is commonly used at ATMs and chip-and-PIN devices?", a:"A numeric keypad."},
+    {id:"ccs19", topic:"Components of Computer Systems", q:"What is a disadvantage of using a keyboard?", a:"Repetitive strain injury (RSI); it's slower than direct data entry."},
+    {id:"ccs20", topic:"Components of Computer Systems", q:"What is an advantage of a touchscreen?", a:"Intuitive, with no need for a separate pointing device."},
+    {id:"ccs21", topic:"Components of Computer Systems", q:"What must analogue sensor data be converted to before a computer can use it?", a:"Digital data, via ADC."},
+    {id:"ccs22", topic:"Components of Computer Systems", q:"What does a light pen let a user do?", a:"Select or write directly on a screen."},
+    {id:"ccs23", topic:"Components of Computer Systems", q:"What is direct data entry (DDE)?", a:"A device that inputs data into a computer with little or no human interaction."},
+    {id:"ccs24", topic:"Components of Computer Systems", q:"What does a magnetic stripe reader read?", a:"Data stored on debit or credit cards."},
+    {id:"ccs25", topic:"Components of Computer Systems", q:"What does an RFID reader use to identify objects?", a:"Radio waves."},
+    {id:"ccs26", topic:"Components of Computer Systems", q:"What does OMR detect?", a:"Optical Mark Recognition — detects marked areas on paper, e.g. multiple-choice exams."},
+    {id:"ccs27", topic:"Components of Computer Systems", q:"What does OCR do?", a:"Optical Character Recognition — converts printed or handwritten text into digital data."},
+    {id:"ccs28", topic:"Components of Computer Systems", q:"What does a barcode reader require to work?", a:"Line-of-sight with the barcode."},
+    {id:"ccs29", topic:"Components of Computer Systems", q:"What is an advantage of a laser printer?", a:"Fast, high-quality prints, with a lower cost per page."},
+    {id:"ccs30", topic:"Components of Computer Systems", q:"What is a disadvantage of a dot matrix printer?", a:"Noisy and low print quality — though good for multi-part forms."},
+    {id:"ccs31", topic:"Components of Computer Systems", q:"What is a plotter used for?", a:"Technical drawings and blueprints."},
+    {id:"ccs32", topic:"Components of Computer Systems", q:"What does a 3D printer output?", a:"Three-dimensional physical objects."},
+    {id:"ccs33", topic:"Components of Computer Systems", q:"What does an actuator do?", a:"Controls motors, pumps or switches — turns a signal into physical movement."},
+    {id:"ccs34", topic:"Components of Computer Systems", q:"What are the three types of storage?", a:"Magnetic, solid state, and optical."},
+    {id:"ccs35", topic:"Components of Computer Systems", q:"What does magnetic storage use to store data?", a:"Magnetic polarity on a disk or tape."},
+    {id:"ccs36", topic:"Components of Computer Systems", q:"What does solid state storage use to store data?", a:"Electronic circuits — with no moving parts."},
+    {id:"ccs37", topic:"Components of Computer Systems", q:"What does optical storage use to store data?", a:"A laser, which burns pits and lands into a disk."},
+    {id:"ccs38", topic:"Components of Computer Systems", q:"Which storage type is generally fastest, with no moving parts?", a:"Solid state."},
+    {id:"ccs39", topic:"Components of Computer Systems", q:"Which storage type is cheapest per gigabyte, but has the lowest capacity?", a:"Optical."},
+    {id:"ccs40", topic:"Components of Computer Systems", q:"What is \"backing storage\"?", a:"Any non-volatile secondary storage device used for long-term data storage."},
+
+    // ===== Types of Computer & Emerging Technologies =====
+    {id:"tet1", topic:"Types of Computer & Emerging Tech", q:"What is a desktop computer?", a:"A computer designed to stay in one place, e.g. on a desk."},
+    {id:"tet2", topic:"Types of Computer & Emerging Tech", q:"Are desktop computers typically more or less powerful than mobile computers?", a:"More powerful."},
+    {id:"tet3", topic:"Types of Computer & Emerging Tech", q:"Can desktop computer parts usually be upgraded?", a:"Yes — they are upgradable."},
+    {id:"tet4", topic:"Types of Computer & Emerging Tech", q:"What is a mobile computer?", a:"A computer designed to be portable, e.g. a laptop."},
+    {id:"tet5", topic:"Types of Computer & Emerging Tech", q:"Why are mobile computers typically less powerful than desktops?", a:"Power constraints due to size, and a focus on extending battery life."},
+    {id:"tet6", topic:"Types of Computer & Emerging Tech", q:"Can mobile computer components usually be upgraded easily?", a:"No — their components are integrated for size and efficiency."},
+    {id:"tet7", topic:"Types of Computer & Emerging Tech", q:"What characteristic makes a tablet ideal for media consumption?", a:"A larger screen than a smartphone."},
+    {id:"tet8", topic:"Types of Computer & Emerging Tech", q:"Name an advantage of mobile computers.", a:"Portability — easy to carry and use on the go."},
+    {id:"tet9", topic:"Types of Computer & Emerging Tech", q:"Name a disadvantage of mobile computers.", a:"Limited expandability, less power, or shorter battery life."},
+    {id:"tet10", topic:"Types of Computer & Emerging Tech", q:"What is artificial intelligence (AI)?", a:"A machine that can simulate intelligent behaviours similar to a human."},
+    {id:"tet11", topic:"Types of Computer & Emerging Tech", q:"What three things can an AI system do?", a:"Learn, decide, and act autonomously."},
+    {id:"tet12", topic:"Types of Computer & Emerging Tech", q:"What is weak AI (narrow AI)?", a:"AI designed to perform a specific task or set of tasks."},
+    {id:"tet13", topic:"Types of Computer & Emerging Tech", q:"What is strong AI (AGI)?", a:"AI designed to perform any intellectual task that a human can do."},
+    {id:"tet14", topic:"Types of Computer & Emerging Tech", q:"Name an advantage of AI.", a:"Increased efficiency, increased accuracy, or scalability."},
+    {id:"tet15", topic:"Types of Computer & Emerging Tech", q:"Name a disadvantage of AI.", a:"Job losses, potential for biased decision making, or ethical concerns."},
+    {id:"tet16", topic:"Types of Computer & Emerging Tech", q:"What is Extended Reality (XR)?", a:"Technology that blends the virtual and real worlds to create immersion."},
+    {id:"tet17", topic:"Types of Computer & Emerging Tech", q:"What is virtual reality (VR)?", a:"Technology that shuts out the real world and immerses the user in a fully simulated environment."},
+    {id:"tet18", topic:"Types of Computer & Emerging Tech", q:"What is augmented reality (AR)?", a:"Technology that overlays digital information or graphics onto the real world."},
+    {id:"tet19", topic:"Types of Computer & Emerging Tech", q:"How do users typically experience virtual reality?", a:"Through a headset with a built-in 360° screen."},
+    {id:"tet20", topic:"Types of Computer & Emerging Tech", q:"How do users typically experience augmented reality?", a:"Via a smartphone or headset, while still seeing the real world around them."},
+    {id:"tet21", topic:"Types of Computer & Emerging Tech", q:"Give an example use of augmented reality.", a:"Gathering information about an object, navigation, or trying on virtual clothes or makeup."}
+  ];
+
+  var TOTAL = CARDS.length;
+  var STORE_KEY = 'ict-flashcards-progress::v1';
+
+  function loadMastered(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function saveMastered(arr){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+    catch(e){ /* fail silently */ }
+  }
+
+  var mastered = loadMastered();
+  var masteredSet = {};
+  mastered.forEach(function(id){ masteredSet[id] = true; });
+
+  var queue = CARDS.filter(function(c){ return !masteredSet[c.id]; });
+
+  var cardEl = document.getElementById('card');
+  var stage = document.getElementById('stage');
+  var completeStage = document.getElementById('complete-stage');
+  var qText = document.getElementById('question-text');
+  var aText = document.getElementById('answer-text');
+  var topicFront = document.getElementById('topic-front');
+  var topicBack = document.getElementById('topic-back');
+  var progressText = document.getElementById('progress-text');
+  var progressTotal = document.getElementById('progress-total');
+  var progressFill = document.getElementById('progress-fill');
+  var btnLearning = document.getElementById('btn-learning');
+  var btnKnow = document.getElementById('btn-know');
+  var nudge = document.getElementById('nudge');
+  var shuffleBtn = document.getElementById('shuffle-btn');
+  var restartBtn = document.getElementById('restart-btn');
+  var resetLink = document.getElementById('reset-link');
+
+  var isFlipped = false;
+  var nudgeTimer = null;
+
+  function updateProgress(){
+    var masteredCount = TOTAL - queue.length;
+    progressText.textContent = masteredCount + ' mastered · ' + queue.length + ' remaining';
+    progressTotal.textContent = 'of ' + TOTAL;
+    progressFill.style.width = (TOTAL ? (masteredCount / TOTAL * 100) : 0) + '%';
+  }
+
+  function showNudge(msg){
+    nudge.textContent = msg;
+    nudge.classList.add('show');
+    clearTimeout(nudgeTimer);
+    nudgeTimer = setTimeout(function(){ nudge.classList.remove('show'); nudge.textContent=''; }, 1800);
+  }
+
+  function renderCard(){
+    if(queue.length === 0){
+      stage.style.display = 'none';
+      completeStage.style.display = 'block';
+      return;
+    }
+    stage.style.display = 'block';
+    completeStage.style.display = 'none';
+    var c = queue[0];
+    qText.textContent = c.q;
+    aText.textContent = c.a;
+    topicFront.textContent = c.topic;
+    topicBack.textContent = c.topic;
+    isFlipped = false;
+    cardEl.classList.remove('flipped');
+    updateProgress();
+  }
+
+  cardEl.addEventListener('click', function(){
+    isFlipped = !isFlipped;
+    cardEl.classList.toggle('flipped', isFlipped);
+  });
+
+  function handleKnow(){
+    if(!isFlipped){ showNudge('Flip the card first — take a guess before checking.'); return; }
+    var c = queue.shift();
+    if(masteredSet[c.id] !== true){
+      masteredSet[c.id] = true;
+      mastered.push(c.id);
+      saveMastered(mastered);
+    }
+    renderCard();
+  }
+
+  function handleLearning(){
+    if(!isFlipped){ showNudge('Flip the card first — take a guess before checking.'); return; }
+    var c = queue.shift();
+    queue.push(c);
+    renderCard();
+  }
+
+  btnKnow.addEventListener('click', handleKnow);
+  btnLearning.addEventListener('click', handleLearning);
+
+  document.addEventListener('keydown', function(e){
+    if(completeStage.style.display === 'block') return;
+    if(e.code === 'Space' || e.key === 'Enter'){
+      e.preventDefault();
+      isFlipped = !isFlipped;
+      cardEl.classList.toggle('flipped', isFlipped);
+    } else if(e.key === 'ArrowRight'){
+      handleKnow();
+    } else if(e.key === 'ArrowLeft'){
+      handleLearning();
+    }
+  });
+
+  shuffleBtn.addEventListener('click', function(){
+    for(var i = queue.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = queue[i]; queue[i] = queue[j]; queue[j] = tmp;
+    }
+    renderCard();
+  });
+
+  function fullReset(){
+    mastered = [];
+    masteredSet = {};
+    saveMastered(mastered);
+    queue = CARDS.slice();
+    renderCard();
+  }
+
+  restartBtn.addEventListener('click', fullReset);
+  resetLink.addEventListener('click', function(e){
+    e.preventDefault();
+    if(confirm('Reset all flashcard progress on this device?')){
+      fullReset();
+    }
+  });
+
+  renderCard();
+})();
+</script>
+</body>
+</html>
