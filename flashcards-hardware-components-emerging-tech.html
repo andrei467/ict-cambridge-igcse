@@ -57,6 +57,7 @@
   }
   nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
   nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
 
   header.hero{
     padding:36px 24px 26px; max-width:640px; margin:0 auto; text-align:center;
@@ -194,6 +195,7 @@
 </div>
 
 <div class="controls-row">
+  <button id="reset-link" type="button">↺ Reset progress</button>
   <button id="shuffle-btn" type="button">🔀 Shuffle remaining</button>
 </div>
 
