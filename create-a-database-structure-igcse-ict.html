@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create a Database Structure — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101613;--bg-raised:#161e1a;--trace:#496354;--trace-dim:#2b3730;--paper:#e9e4d6;--paper-dim:#a9a294;--copper:#c98a4b;--copper-bright:#e0a566;--gold:#d7b872;--brick:#c15c4f;--sage:#7fa68a;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;--serif:'Source Serif 4',Georgia,serif;--radius:3px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--trace-dim) 1px,transparent 1px),linear-gradient(90deg,var(--trace-dim) 1px,transparent 1px);background-size:42px 42px;background-position:-1px -1px;color:var(--paper);font-family:var(--serif);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+::selection{background:var(--copper);color:#101613}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px 120px}
+header.hero{padding:44px 24px 34px;max-width:760px;margin:0 auto;border-bottom:1px solid var(--trace)}
+.kicker{font-family:var(--mono);font-size:13px;color:var(--sage);margin:0 0 10px}
+h1.title{font-family:var(--mono);font-weight:700;font-size:clamp(24px,5vw,38px);line-height:1.15;margin:0 0 14px}
+.hero p{color:var(--paper-dim);max-width:60ch;margin:0;font-size:17.5px}
+nav.tabs{max-width:760px;margin:0 auto;padding:14px 24px;display:flex;gap:6px;overflow-x:auto;border-bottom:1px solid var(--trace);position:sticky;top:0;background:rgba(16,22,19,.95);backdrop-filter:blur(4px);z-index:30}
+nav.tabs button{font-family:var(--mono);font-size:12.5px;white-space:nowrap;background:transparent;border:1px solid var(--trace);color:var(--paper-dim);padding:8px 13px;border-radius:var(--radius);cursor:pointer;flex-shrink:0;font-weight:400}
+nav.tabs button:hover{color:var(--paper);border-color:var(--paper-dim);background:transparent}
+nav.tabs button.active{background:var(--copper);color:#181008;border-color:var(--copper);font-weight:500}
+.panel{display:none;padding:40px 0 8px}.panel.active{display:block}
+h2.section-title{font-family:var(--mono);font-size:22px;color:var(--copper-bright);margin:0 0 6px}
+h3{font-family:var(--mono);font-size:16px;color:var(--gold);margin:26px 0 8px;font-weight:500}
+p{margin:10px 0}ul{padding-left:22px;margin:10px 0}li{margin:4px 0}
+strong{color:var(--paper);font-weight:600}
+code{font-family:var(--mono);font-size:.88em;color:var(--copper-bright)}
+table{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:15px}
+th,td{border:1px solid var(--trace);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:12px;color:var(--sage);font-weight:500;background:rgba(127,166,138,.06)}
+tr.rec td{background:rgba(127,166,138,.16);color:var(--paper)}
+.table-scroll{overflow-x:auto}
+.cap{font-family:var(--mono);font-size:12px;color:var(--sage);margin:18px 0 0}
+.note{color:var(--paper-dim);font-size:14.5px}
+.block{border-left:2px solid var(--trace);padding-left:18px;margin:18px 0}
+.tables2{display:flex;gap:22px;flex-wrap:wrap}.tables2>div{flex:1;min-width:250px}
+.tables2.stack{flex-direction:column;gap:6px}.tables2.stack>div{min-width:0}
+.diagram{margin:18px 0;border:1px solid var(--trace);border-radius:var(--radius);background:var(--bg-raised);padding:10px;overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:520px;height:auto}
+.task{margin:32px 0;border:1px solid var(--trace);border-radius:var(--radius);background:var(--bg-raised);padding:20px 20px 22px}
+.task-label{font-family:var(--mono);font-size:12px;color:var(--copper-bright);margin:0 0 10px;display:flex;justify-content:space-between}
+.task-label .pts{color:var(--sage)}
+.task h4{margin:0 0 12px;font-weight:600;font-size:16.5px}
+.task .sub-q{margin:18px 0}.task .sub-q:first-of-type{margin-top:0}
+.sub-q label.ql{display:block;font-size:15.5px;margin-bottom:8px}
+textarea{width:100%;min-height:52px;background:#0c110e;border:1px solid var(--trace);border-radius:var(--radius);color:var(--paper);font-family:var(--serif);font-size:15.5px;padding:10px 12px;resize:vertical}
+textarea:focus,button:focus-visible,.opt:focus-visible{outline:2px solid var(--copper-bright);outline-offset:1px}
+.row{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
+button{font-family:var(--mono);font-size:13px;background:var(--copper);color:#181008;border:none;padding:9px 15px;border-radius:var(--radius);cursor:pointer;font-weight:500}
+button:hover{background:var(--copper-bright)}button:disabled{opacity:.5;cursor:default}
+.error-msg{color:var(--brick);font-family:var(--mono);font-size:13px;margin-top:8px;display:none}.error-msg.show{display:block}
+.answer-reveal{display:none;margin-top:12px;padding:12px 14px;background:rgba(127,166,138,.08);border-left:2px solid var(--sage);border-radius:0 var(--radius) var(--radius) 0}
+.answer-reveal.show{display:block}
+.answer-reveal .lbl{font-family:var(--mono);font-size:11.5px;color:var(--sage);display:block;margin-bottom:5px}
+.self-mark{display:none;align-items:center;gap:8px;margin-top:12px;font-family:var(--mono);font-size:13px;color:var(--paper-dim)}
+.self-mark.show{display:flex}
+.self-mark input{width:17px;height:17px;accent-color:var(--gold);cursor:pointer}.self-mark label{cursor:pointer}
+.mcq{margin:20px 0}.mcq:first-of-type{margin-top:0}
+.mcq p.q{font-size:15.5px;margin:0 0 10px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;background:#0c110e;border:1px solid var(--trace);color:var(--paper);padding:10px 13px;border-radius:var(--radius);font-family:var(--serif);font-size:15px;font-weight:400}
+.opt:hover:not(:disabled){border-color:var(--copper);background:#0c110e}
+.opt.correct{border-color:var(--sage);background:rgba(127,166,138,.14)}
+.opt.incorrect{border-color:var(--brick);background:rgba(193,92,79,.14)}
+.opt:disabled{cursor:default;opacity:1}
+.mcq-feedback,.select-feedback{font-family:var(--mono);font-size:13px;margin-top:8px;min-height:1.2em}
+.ok{color:var(--sage)}.bad{color:var(--brick)}
+.classify-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--trace-dim);flex-wrap:wrap}
+.classify-item:last-child{border-bottom:none}
+.classify-item .term{font-size:15.5px;flex:1;min-width:200px}
+.classify-item .choices{display:flex;gap:8px;flex-wrap:wrap}
+.classify-item .choices button{background:transparent;border:1px solid var(--trace);color:var(--paper-dim);font-size:12px;padding:6px 10px;font-weight:400}
+.classify-item .choices button.correct{background:rgba(127,166,138,.16);border-color:var(--sage);color:var(--paper)}
+.classify-item .choices button.incorrect{background:rgba(193,92,79,.16);border-color:var(--brick);color:var(--paper)}
+.select-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.select-item{display:flex;align-items:center;gap:10px;background:#0c110e;border:1px solid var(--trace);padding:10px 13px;border-radius:var(--radius);font-size:15px;cursor:pointer}
+.select-item input{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0}
+.select-item.correct{border-color:var(--sage);background:rgba(127,166,138,.14)}
+.select-item.incorrect{border-color:var(--brick);background:rgba(193,92,79,.14)}
+.select-item.missed{border-color:var(--gold);background:rgba(215,184,114,.1)}
+#score-badge{position:fixed;top:14px;right:14px;z-index:50;font-family:var(--mono);font-size:13px;background:var(--bg-raised);border:1px solid var(--copper);color:var(--copper-bright);padding:8px 13px;border-radius:var(--radius);box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#score-badge .n{color:var(--gold);font-weight:700}
+footer{max-width:760px;margin:0 auto;padding:40px 24px 0;font-family:var(--mono);font-size:12.5px;color:var(--paper-dim)}
+svg text{font-family:var(--mono)}
+@media(max-width:600px){body{font-size:16px}header.hero{padding:36px 20px 26px}#score-badge{top:auto;bottom:14px;right:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">25</span></div>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Databases</p>
+  <h1 class="title">Create a Database Structure</h1>
+  <p>How data is organised so it can be stored, found and updated without mistakes. This page covers the two types of database, then fields, data types and the keys that link tables together.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="types">Types of database</button>
+  <button class="tab-btn" data-panel="keys">Fields, data types &amp; keys</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ TYPES OF DATABASE ============ -->
+<div class="panel active" id="panel-types">
+  <h2 class="section-title">What is a database?</h2>
+  <p>A <strong>database</strong> is a structured, persistent collection of data. It allows easy storage, retrieval and management of information. Electronic databases have key benefits:</p>
+  <div class="block"><ul>
+    <li>Easier to <strong>add, delete, modify and update</strong> data</li>
+    <li>Data can be <strong>backed up and copied</strong> more easily</li>
+    <li><strong>Multiple users</strong>, from multiple locations, can access the same database at the same time</li>
+  </ul></div>
+  <p>There are two main types: <strong>flat file</strong> and <strong>relational</strong>.</p>
+
+  <h2 class="section-title" style="margin-top:36px">Flat file database</h2>
+  <p>A <strong>flat file database</strong> stores all data in a <strong>single table</strong>. It is simple and easy to understand, but causes data <strong>redundancy</strong>, <strong>inefficient</strong> storage and is <strong>harder</strong> to maintain.</p>
+  <p class="cap">Flat file table of students</p>
+  <div class="table-scroll"><table>
+    <tr><th>ID</th><th>first_name</th><th>last_name</th><th>Personal tutor</th><th>FormRoom</th></tr>
+    <tr><td>1</td><td>sam</td><td>smith</td><td>Roger Hinds</td><td>6b</td></tr>
+    <tr><td>2</td><td>fred</td><td>lynch</td><td>Jess Little</td><td>8j</td></tr>
+    <tr><td>3</td><td>depak</td><td>noor</td><td>Roger Hinds</td><td>6b</td></tr>
+    <tr><td>4</td><td>archie</td><td>henns</td><td>Mary Kent</td><td>8k</td></tr>
+    <tr><td>5</td><td>helga</td><td>jordan</td><td>Mary Kent</td><td>8k</td></tr>
+    <tr><td>6</td><td>lizzy</td><td>bell</td><td>Mary Kent</td><td>8k</td></tr>
+    <tr><td>7</td><td>xavier</td><td>horten</td><td>Jack Berry</td><td>3m</td></tr>
+  </table></div>
+  <div class="block"><ul>
+    <li>The tutor and form room information <strong>repeats</strong>, which is inefficient.</li>
+    <li>If a tutor changed their name, you would need to find <strong>all</strong> instances of that name and change them.</li>
+    <li>Missing any would leave the table with <strong>inconsistent data</strong>.</li>
+  </ul></div>
+
+  <h2 class="section-title" style="margin-top:36px">Relational database</h2>
+  <p>A <strong>relational database</strong> organises data into <strong>multiple tables</strong>. It uses <strong>keys</strong> to connect related data, which <strong>reduces data redundancy</strong>, makes efficient use of storage and is easier to maintain.</p>
+  <p>It solves the flat file problems: the tutor information moves to a new table, and a <strong>foreign key</strong> in the student table (<code>TutorID</code>) links each student to their tutor.</p>
+  <div class="tables2">
+    <div><p class="cap">Students</p><div class="table-scroll"><table>
+      <tr><th>ID</th><th>first_name</th><th>last_name</th><th>TutorID</th></tr>
+      <tr><td>1</td><td>sam</td><td>smith</td><td>1</td></tr>
+      <tr><td>2</td><td>fred</td><td>lynch</td><td>2</td></tr>
+      <tr><td>3</td><td>depak</td><td>noor</td><td>1</td></tr>
+      <tr><td>4</td><td>archie</td><td>henns</td><td>3</td></tr>
+      <tr><td>5</td><td>helga</td><td>jordan</td><td>3</td></tr>
+      <tr><td>6</td><td>lizzy</td><td>bell</td><td>3</td></tr>
+      <tr><td>7</td><td>xavier</td><td>horten</td><td>4</td></tr>
+    </table></div></div>
+    <div><p class="cap">Tutors</p><div class="table-scroll"><table>
+      <tr><th>TutorID</th><th>Tutor Name</th><th>FormRoom</th></tr>
+      <tr><td>1</td><td>Roger Hinds</td><td>6b</td></tr>
+      <tr><td>2</td><td>Jess Little</td><td>8j</td></tr>
+      <tr><td>3</td><td>Mary Kent</td><td>8k</td></tr>
+      <tr><td>4</td><td>Jack Berry</td><td>3m</td></tr>
+    </table></div></div>
+  </div>
+  <p>Now each tutor's name and form room is stored <strong>only once</strong>. If one piece of data changes, it is updated across the <strong>entire database</strong> and inconsistency is avoided.</p>
+
+  <h2 class="section-title" style="margin-top:36px">Tables &amp; records</h2>
+  <p>A <strong>table</strong> is a complete set of records about the same subject or topic. A <strong>record</strong> is a complete set of fields about a single entity in a table (a <strong>row</strong>). Here the highlighted row is one record in the <code>cars</code> table.</p>
+  <p class="cap">cars</p>
+  <div class="table-scroll"><table>
+    <tr><th>car_id</th><th>make</th><th>model</th><th>colour</th><th>price</th></tr>
+    <tr><td>1</td><td>Peugeot</td><td>2008</td><td>Red</td><td>24950</td></tr>
+    <tr><td>2</td><td>Mazda</td><td>MX5</td><td>Blue</td><td>17995</td></tr>
+    <tr class="rec"><td>3</td><td>Citroen</td><td>DS4</td><td>Black</td><td>21450</td></tr>
+    <tr><td>4</td><td>Ford</td><td>Puma</td><td>White</td><td>19500</td></tr>
+  </table></div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 1 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="2">
+      <p class="q">1. Which statement describes a flat file database?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">It organises data into multiple tables linked by keys</button>
+        <button class="opt" data-idx="1">It can only be used by one person at a time</button>
+        <button class="opt" data-idx="2">It stores all data in a single table</button>
+        <button class="opt" data-idx="3">It stores data using only foreign keys</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">2. In the flat file table of students, what is the main problem with the repeated tutor and form room data?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">It causes redundant data and risks inconsistency</button>
+        <button class="opt" data-idx="1">It stops new students being added</button>
+        <button class="opt" data-idx="2">It makes the table too small</button>
+        <button class="opt" data-idx="3">It removes the ID field</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="3">
+      <p class="q">3. In the relational version, a tutor changes their name. What needs updating?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Every student record for that tutor</button>
+        <button class="opt" data-idx="1">Every table in the database</button>
+        <button class="opt" data-idx="2">Both tables, in every row</button>
+        <button class="opt" data-idx="3">Only the one record in the Tutors table</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 2 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click whether each statement describes a flat file or a relational database.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="rel"><span class="term">Organises data into multiple tables</span><span class="choices"><button data-choice="flat">Flat file</button><button data-choice="rel">Relational</button></span></div>
+      <div class="classify-item" data-answer="flat"><span class="term">Causes data redundancy and inefficient storage</span><span class="choices"><button data-choice="flat">Flat file</button><button data-choice="rel">Relational</button></span></div>
+      <div class="classify-item" data-answer="flat"><span class="term">Missing one instance of a changed name leaves inconsistent data</span><span class="choices"><button data-choice="flat">Flat file</button><button data-choice="rel">Relational</button></span></div>
+      <div class="classify-item" data-answer="rel"><span class="term">Uses a foreign key such as TutorID to link students to tutors</span><span class="choices"><button data-choice="flat">Flat file</button><button data-choice="rel">Relational</button></span></div>
+      <div class="classify-item" data-answer="flat"><span class="term">Stores all of its data in a single table</span><span class="choices"><button data-choice="flat">Flat file</button><button data-choice="rel">Relational</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 3 · Select</span><span class="pts">3 points</span></p>
+    <h4>Select the three benefits of using an electronic database.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox"> Data can never be lost</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Data can be backed up and copied more easily</label>
+      <label class="select-item"><input type="checkbox"> Duplicate data is stored in every table</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Multiple users in different locations can access it at the same time</label>
+      <label class="select-item"><input type="checkbox"> It does not need any storage space</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Data is easier to add, delete, modify and update</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+</div>
+
+<!-- ============ FIELDS, DATA TYPES & KEYS ============ -->
+<div class="panel" id="panel-keys">
+  <h2 class="section-title">Fields &amp; data types</h2>
+  <p>A <strong>field</strong> is a single piece of data in a table (a <strong>column</strong>). <code>make</code> is a field in the <code>cars</code> table. A <strong>data type</strong> is the type of data a field can hold, and it is defined when designing the table.</p>
+  <div class="table-scroll"><table>
+    <tr><th>Data type</th><th>Holds</th><th>In the cars table</th></tr>
+    <tr><td>Numeric</td><td>Whole or decimal numbers</td><td><code>car_id</code>, <code>price</code></td></tr>
+    <tr><td>Character / string</td><td>Text data</td><td><code>make</code>, <code>model</code>, <code>colour</code></td></tr>
+    <tr><td>Date / time</td><td>Dates and times</td><td>none in this table</td></tr>
+    <tr><td>Boolean</td><td>True or false values</td><td>none in this table</td></tr>
+  </table></div>
+
+  <h2 class="section-title" style="margin-top:36px">Primary &amp; foreign keys</h2>
+  <p>A <strong>primary key</strong> is a <strong>unique field</strong> that identifies a record in a table. <code>order_id</code> is the primary key of <code>orders</code>, and <code>customer_id</code> is the primary key of <code>customers</code>.</p>
+  <p>A <strong>foreign key</strong> is a field in a table that refers to the <strong>primary key in another table</strong>. It links tables and creates relationships. In <code>orders</code>, <code>customer_id</code> is a foreign key: it links an order back to the customer who made it.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 640 300" role="img" aria-label="The orders table links to the customers table through customer_id. Many orders can belong to one customer.">
+      <g stroke="#496354" fill="none" stroke-width="1.5">
+        <rect x="20" y="30" width="250" height="200" rx="3" fill="#0c110e"/>
+        <rect x="370" y="30" width="250" height="200" rx="3" fill="#0c110e"/>
+        <line x1="20" y1="62" x2="270" y2="62"/><line x1="370" y1="62" x2="620" y2="62"/>
+      </g>
+      <g font-size="13" fill="#d7b872"><text x="34" y="52" font-weight="700">orders</text><text x="384" y="52" font-weight="700">customers</text></g>
+      <g font-size="13" fill="#e9e4d6">
+        <text x="34" y="92">order_id</text><text x="34" y="122">product</text><text x="34" y="152">total</text><text x="34" y="182" fill="#e0a566">customer_id</text>
+        <text x="384" y="92" fill="#e0a566">customer_id</text><text x="384" y="122">forename</text><text x="384" y="152">surname</text><text x="384" y="182">phone</text><text x="384" y="212">country</text>
+      </g>
+      <g font-size="11" font-weight="700">
+        <text x="232" y="92" fill="#7fa68a">PK</text><text x="232" y="182" fill="#c15c4f">FK</text><text x="582" y="92" fill="#7fa68a">PK</text>
+      </g>
+      <g stroke="#e0a566" stroke-width="2" fill="none">
+        <path d="M280 178 H320 V88 H358"/>
+        <path d="M292 178 L280 170 M292 178 L280 186"/>
+        <path d="M358 76 V100"/>
+      </g>
+      <g font-size="11" fill="#a9a294"><text x="287" y="160">many</text><text x="326" y="76">one</text></g>
+      <text x="320" y="272" font-size="12" fill="#a9a294" text-anchor="middle">Many orders can be made by one customer</text>
+    </svg>
+  </div>
+
+  <div class="tables2 stack">
+    <div><p class="cap">orders</p><div class="table-scroll"><table>
+      <tr><th>order_id</th><th>product</th><th>total</th><th>customer_id</th></tr>
+      <tr><td>1</td><td>Paper</td><td>500</td><td>5</td></tr>
+      <tr><td>2</td><td>Pen</td><td>10</td><td>2</td></tr>
+      <tr><td>3</td><td>Marker</td><td>120</td><td>3</td></tr>
+      <tr><td>4</td><td>Ruler</td><td>1000</td><td>1</td></tr>
+      <tr><td>5</td><td>Erasers</td><td>20</td><td>4</td></tr>
+    </table></div></div>
+    <div><p class="cap">customers</p><div class="table-scroll"><table>
+      <tr><th>customer_id</th><th>forename</th><th>surname</th><th>phone</th><th>country</th></tr>
+      <tr><td>1</td><td>John</td><td>Smith</td><td>07373 929122</td><td>UK</td></tr>
+      <tr><td>2</td><td>Iram</td><td>Iravani</td><td>07234 543422</td><td>Iraq</td></tr>
+      <tr><td>3</td><td>Wu</td><td>Zhang</td><td>04563 523427</td><td>China</td></tr>
+      <tr><td>4</td><td>Anne</td><td>James</td><td>09378 482894</td><td>USA</td></tr>
+      <tr><td>5</td><td>Khalid</td><td>Shirvani</td><td>02343 536522</td><td>France</td></tr>
+    </table></div></div>
+  </div>
+
+  <h3>Key database terminology</h3>
+  <div class="table-scroll"><table>
+    <tr><th>Term</th><th>Definition</th></tr>
+    <tr><td>Table</td><td>A collection of records with a similar structure</td></tr>
+    <tr><td>Record</td><td>A group of related fields, representing one data entry</td></tr>
+    <tr><td>Field</td><td>A single piece of data in a record</td></tr>
+    <tr><td>Data type</td><td>Type of data held in a field</td></tr>
+    <tr><td>Primary key</td><td>A unique identifier for each record in a table. Usually an ID number</td></tr>
+    <tr><td>Foreign key</td><td>A field in a table that refers to the primary key in another table. Used to link tables and create relationships</td></tr>
+  </table></div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 4 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Click the most suitable data type for each field.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="str"><span class="term"><code>make</code> (Peugeot, Mazda, Ford)</span><span class="choices"><button data-choice="num">Numeric</button><button data-choice="str">String</button><button data-choice="date">Date/Time</button><button data-choice="bool">Boolean</button></span></div>
+      <div class="classify-item" data-answer="date"><span class="term"><code>DateJoined</code> (2024-01-19)</span><span class="choices"><button data-choice="num">Numeric</button><button data-choice="str">String</button><button data-choice="date">Date/Time</button><button data-choice="bool">Boolean</button></span></div>
+      <div class="classify-item" data-answer="num"><span class="term"><code>price</code> (24950)</span><span class="choices"><button data-choice="num">Numeric</button><button data-choice="str">String</button><button data-choice="date">Date/Time</button><button data-choice="bool">Boolean</button></span></div>
+      <div class="classify-item" data-answer="bool"><span class="term"><code>Authorised</code> (yes or no, true or false)</span><span class="choices"><button data-choice="num">Numeric</button><button data-choice="str">String</button><button data-choice="date">Date/Time</button><button data-choice="bool">Boolean</button></span></div>
+      <div class="classify-item" data-answer="str"><span class="term"><code>colour</code> (Red, Blue, Black)</span><span class="choices"><button data-choice="num">Numeric</button><button data-choice="str">String</button><button data-choice="date">Date/Time</button><button data-choice="bool">Boolean</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="4">
+    <p class="task-label"><span>Task 5 · Read the diagram</span><span class="pts">4 points</span></p>
+    <p class="note" style="margin-top:0">Use the orders and customers tables above.</p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. Which field is the primary key of the <code>customers</code> table?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">phone</button>
+        <button class="opt" data-idx="1">customer_id</button>
+        <button class="opt" data-idx="2">country</button>
+        <button class="opt" data-idx="3">order_id</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="3">
+      <p class="q">2. Which field in the <code>orders</code> table is a foreign key?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">order_id</button>
+        <button class="opt" data-idx="1">product</button>
+        <button class="opt" data-idx="2">total</button>
+        <button class="opt" data-idx="3">customer_id</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. What does the foreign key in <code>orders</code> do?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Links each order back to the customer who made it</button>
+        <button class="opt" data-idx="1">Uniquely identifies each order</button>
+        <button class="opt" data-idx="2">Stores the customer's phone number</button>
+        <button class="opt" data-idx="3">Sorts the table into order</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">4. Which statement about a primary key is true?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">It refers to a field in another table</button>
+        <button class="opt" data-idx="1">Its value can be repeated in several records</button>
+        <button class="opt" data-idx="2">It is a unique field that identifies each record</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="3">
+    <p class="task-label"><span>Task 6 · Worked example</span><span class="pts">3 points</span></p>
+    <h4>A relational database has been developed for a dance club to store information about their members and the styles of dance they practise. It has two tables: Members and Styles.</h4>
+    <div class="tables2">
+      <div><p class="cap">Members</p><div class="table-scroll"><table>
+        <tr><th>MemberID</th><th>FirstName</th><th>LastName</th><th>DateJoined</th></tr>
+        <tr><td>1</td><td>Zarmeen</td><td>Hussain</td><td>2024-01-19</td></tr>
+        <tr><td>2</td><td>Fyn</td><td>Ball</td><td>2024-02-01</td></tr>
+        <tr><td>3</td><td>George</td><td>Johnson</td><td>2024-02-25</td></tr>
+        <tr><td>4</td><td>Ella</td><td>Franks</td><td>2024-03-04</td></tr>
+      </table></div></div>
+      <div><p class="cap">Styles</p><div class="table-scroll"><table>
+        <tr><th>StyleID</th><th>MemberID</th><th>Style</th><th>DateStarted</th></tr>
+        <tr><td>1</td><td>1</td><td>Hip Hop</td><td>2024-01-22</td></tr>
+        <tr><td>2</td><td>1</td><td>Ballroom</td><td>2024-02-13</td></tr>
+        <tr><td>3</td><td>3</td><td>Contemporary</td><td>2024-03-01</td></tr>
+        <tr><td>4</td><td>2</td><td>Street</td><td>2024-03-07</td></tr>
+      </table></div></div>
+    </div>
+    <div class="sub-q">
+      <label class="ql">(a) State one benefit of using relational databases. [1]</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first. That's how you actually learn it.</p>
+      <div class="answer-reveal"><span class="lbl">Answer (either)</span>Reduces data redundancy · reduces data inconsistency</div>
+      <div class="self-mark"><input type="checkbox" id="sm-a" data-points="1"><label for="sm-a">My answer was correct: award myself 1 point</label></div>
+    </div>
+    <div class="sub-q">
+      <label class="ql">(b) State the name of the field from the Members table that is most suitable to use as the primary key. [1]</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first. That's how you actually learn it.</p>
+      <div class="answer-reveal"><span class="lbl">Answer</span>MemberID <span class="note">(ignore case; no mark if inside quotation marks; no mark if there is an obvious space, e.g. "Member ID")</span></div>
+      <div class="self-mark"><input type="checkbox" id="sm-b" data-points="1"><label for="sm-b">My answer was correct: award myself 1 point</label></div>
+    </div>
+    <div class="sub-q">
+      <label class="ql">(c) State the name of the field from the Styles table that is a foreign key. [1]</label>
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first. That's how you actually learn it.</p>
+      <div class="answer-reveal"><span class="lbl">Answer</span>MemberID <span class="note">(it refers to the primary key of the Members table)</span></div>
+      <div class="self-mark"><input type="checkbox" id="sm-c" data-points="1"><label for="sm-c">My answer was correct: award myself 1 point</label></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="2">
+    <p class="task-label"><span>Task 7 · Explain it</span><span class="pts">2 points</span></p>
+    <h4>Explain how using a foreign key in a relational database avoids inconsistent data. Use the students and tutors tables as your example.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first. That's how you actually learn it.</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Each tutor's name and form room is stored only once, in the Tutors table · students are linked to their tutor by the foreign key TutorID, so the details are not repeated · if a tutor's data changes, only one piece of data is edited and it is updated across the entire database · so no records are left holding an old value</div>
+      <div class="self-mark"><input type="checkbox" id="sm-d" data-points="2"><label for="sm-d">My answer covered two valid points: award myself 2 points</label></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var scoreEl=document.getElementById('score-val'),score=0;
+  function addScore(n){score=Math.max(0,score+n);scoreEl.textContent=score}
+
+  var tabBtns=document.querySelectorAll('.tab-btn'),panels=document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){btn.addEventListener('click',function(){
+    tabBtns.forEach(function(b){b.classList.remove('active')});
+    panels.forEach(function(p){p.classList.remove('active')});
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.panel).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  })});
+
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    var btn=sq.querySelector('.check-btn'),ta=sq.querySelector('textarea'),err=sq.querySelector('.error-msg'),
+        reveal=sq.querySelector('.answer-reveal'),mark=sq.querySelector('.self-mark'),cb=mark.querySelector('input');
+    btn.addEventListener('click',function(){
+      if(!ta.value.trim()){err.classList.add('show');reveal.classList.remove('show');mark.classList.remove('show');ta.focus();return}
+      err.classList.remove('show');reveal.classList.add('show');mark.classList.add('show');
+    });
+    cb.addEventListener('change',function(){var p=parseInt(cb.dataset.points||'1',10);addScore(cb.checked?p:-p)});
+  });
+
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    var ans=item.dataset.answer,buttons=item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){b.addEventListener('click',function(){
+      buttons.forEach(function(o){o.disabled=true});
+      if(b.dataset.choice===ans){b.classList.add('correct');addScore(1)}
+      else{b.classList.add('incorrect');buttons.forEach(function(o){if(o.dataset.choice===ans)o.classList.add('correct')})}
+    })});
+  });
+
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    var c=mcq.dataset.answer,opts=mcq.querySelectorAll('.opt'),fb=mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){opt.addEventListener('click',function(){
+      opts.forEach(function(o){o.disabled=true});
+      if(opt.dataset.idx===c){opt.classList.add('correct');fb.textContent='Correct.';fb.className='mcq-feedback ok';addScore(1)}
+      else{opt.classList.add('incorrect');opts.forEach(function(o){if(o.dataset.idx===c)o.classList.add('correct')});
+        fb.textContent='Not quite — the correct answer is highlighted above.';fb.className='mcq-feedback bad'}
+    })});
+  });
+
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    var items=task.querySelectorAll('.select-item'),btn=task.querySelector('.check-select-btn'),fb=task.querySelector('.select-feedback'),total=0;
+    items.forEach(function(i){if(i.querySelector('input').dataset.correct==='true')total++});
+    btn.addEventListener('click',function(){
+      var got=0,wrong=0;
+      items.forEach(function(item){
+        var inp=item.querySelector('input'),ok=inp.dataset.correct==='true';inp.disabled=true;
+        if(inp.checked&&ok){item.classList.add('correct');got++}
+        else if(inp.checked){item.classList.add('incorrect');wrong++}
+        else if(ok){item.classList.add('missed')}
+      });
+      addScore(Math.max(0,got-wrong));btn.disabled=true;
+      fb.textContent=(got===total&&!wrong)?'All correct — well done.':'Gold: correct answers you didn\'t pick. Red: incorrect picks (each one cancels a point).';
+      fb.className='select-feedback '+((got===total&&!wrong)?'ok':'bad');
+    });
+  });
+})();
+
+(function(){
+  var KEY='ict-lesson-progress::'+location.pathname+'::'+document.title;
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+  function save(fn){try{var s=load();fn(s);localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+  var $$=function(q){return Array.prototype.slice.call(document.querySelectorAll(q))};
+  var subQs=$$('.task[data-task="open"] .sub-q'),cls=$$('.classify-item'),mcqs=$$('.mcq'),sels=$$('.task[data-task="select"]');
+
+  subQs.forEach(function(sq,i){
+    var k='subq-'+i,ta=sq.querySelector('textarea'),btn=sq.querySelector('.check-btn'),cb=sq.querySelector('.self-mark input');
+    ta.addEventListener('input',function(){save(function(s){s[k]=s[k]||{};s[k].text=ta.value})});
+    btn.addEventListener('click',function(){save(function(s){s[k]=s[k]||{};s[k].text=ta.value;s[k].checked=!!ta.value.trim()})});
+    cb.addEventListener('change',function(){save(function(s){s[k]=s[k]||{};s[k].selfMarked=cb.checked})});
+  });
+  cls.forEach(function(item,i){item.querySelectorAll('.choices button').forEach(function(b,bi){
+    b.addEventListener('click',function(){save(function(s){s['classify-'+i]=bi})})})});
+  mcqs.forEach(function(m,i){m.querySelectorAll('.opt').forEach(function(o,oi){
+    o.addEventListener('click',function(){save(function(s){s['mcq-'+i]=oi})})})});
+  sels.forEach(function(t,ti){t.querySelector('.check-select-btn').addEventListener('click',function(){
+    var idx=[];$$('.select-item input').filter(function(x){return t.contains(x)}).forEach(function(x,ii){if(x.checked)idx.push(ii)});
+    save(function(s){s['select-'+ti]=idx});
+  })});
+
+  (function restore(){
+    var s=load();
+    subQs.forEach(function(sq,i){
+      var r=s['subq-'+i];if(!r)return;
+      var ta=sq.querySelector('textarea'),btn=sq.querySelector('.check-btn'),cb=sq.querySelector('.self-mark input');
+      if(r.text)ta.value=r.text;
+      if(r.checked)btn.click();
+      if(r.selfMarked){cb.checked=true;cb.dispatchEvent(new Event('change'))}
+    });
+    cls.forEach(function(item,i){var bi=s['classify-'+i];if(bi===undefined)return;var b=item.querySelectorAll('.choices button')[bi];if(b)b.click()});
+    mcqs.forEach(function(m,i){var oi=s['mcq-'+i];if(oi===undefined)return;var o=m.querySelectorAll('.opt')[oi];if(o)o.click()});
+    sels.forEach(function(t,ti){
+      var arr=s['select-'+ti];if(!arr)return;
+      var inputs=t.querySelectorAll('.select-item input');
+      arr.forEach(function(ii){if(inputs[ii])inputs[ii].checked=true});
+      t.querySelector('.check-select-btn').click();
+    });
+  })();
+
+  var rb=document.createElement('button');
+  rb.textContent='Reset my answers';rb.type='button';
+  rb.style.cssText='position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;color:#a9a294;border-radius:3px;cursor:pointer;font-weight:400';
+  rb.addEventListener('mouseenter',function(){rb.style.color='#e9e4d6'});
+  rb.addEventListener('mouseleave',function(){rb.style.color='#a9a294'});
+  rb.addEventListener('click',function(){if(confirm('Clear all your saved answers on this page?')){localStorage.removeItem(KEY);location.reload()}});
+  document.body.appendChild(rb);
+})();
+</script>
+</body>
+</html>
