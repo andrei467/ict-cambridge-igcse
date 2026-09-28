@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Issues — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .diagram-box{
+    background:#0c110e; border:1px solid var(--trace); border-radius:var(--radius);
+    padding:14px 10px; margin:18px 0 6px; text-align:center;
+  }
+  .diagram-box svg{ width:100%; height:auto; max-width:400px; }
+  .diagram-caption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); margin-top:6px; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:14.5px; max-width:58%;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:11.5px; padding:6px 9px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="person" viewBox="0 0 40 40">
+      <circle cx="20" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <path d="M4 38 C4 24 36 24 36 38" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    </symbol>
+    <symbol id="screen" viewBox="0 0 90 66">
+      <rect x="1" y="1" width="88" height="58" rx="3" fill="#0c110e" stroke="currentColor" stroke-width="2"/>
+      <rect x="30" y="61" width="30" height="4" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">44</span></div>
+
+<nav class="theory-nav">
+  <a href="networks.html">← <span class="full">Previous theory:</span> Networks</a>
+  <span class="spacer"></span>
+  <a href="effects-of-using-it-igcse-ict.html"><span class="full">Next theory: Effects of using IT</span> →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Theory 5</p>
+  <h1 class="title">Network Issues</h1>
+  <p>Networks make sharing data easy — which is exactly why they need protecting. This page covers the risks in transferring data, how systems check you are who you say you are, how anti-malware software defends a device, and the different ways people meet remotely over a network.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="transfer">Data transfer &amp; passwords</button>
+  <button class="tab-btn" data-panel="auth">Authentication</button>
+  <button class="tab-btn" data-panel="malware">Anti-malware software</button>
+  <button class="tab-btn" data-panel="conf">Electronic conferencing</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ DATA TRANSFER & PASSWORDS ============ -->
+<div class="panel active" id="panel-transfer">
+  <h2 class="section-title">Data transfer</h2>
+  <p>Sharing data is a fundamental reason to use a network — electronic data is constantly moving between sender and receiver. The transfer of data on a network <strong>poses potential security risks</strong>, such as unauthorised access and data manipulation.</p>
+
+  <h3>Common causes of data transfer security risks</h3>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Cause</th><th>Risks</th></tr>
+      <tr><td>Hackers</td><td>Exploit network weaknesses and access/delete/steal confidential data</td></tr>
+      <tr><td>Insider threats</td><td>Intentionally or unintentionally compromising network security policies, leading to data interception/theft</td></tr>
+      <tr><td>Social engineering</td><td>Manipulating network users into giving away confidential information and/or clicking links which install malware, leading to the compromise of data</td></tr>
+      <tr><td>Unencrypted transfers</td><td>No encryption protocols used when transferring sensitive data</td></tr>
+      <tr><td>Weak encryption</td><td>Weak or outdated encryption protocols used when transferring sensitive data</td></tr>
+      <tr><td>Insecure protocols</td><td>Using HTTP instead of HTTPS when dealing with sensitive information</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Passwords</h2>
+  <p>Passwords are a <strong>digital lock</strong> to prevent unauthorised access to an account. They are often stored as an <strong>encrypted/ciphered</strong> text entry in a database, ensuring that even with unauthorised access to a database, a hacker would not be able to gain access to the individual passwords of users.</p>
+  <p>Passwords must be kept safe, which can be achieved by:</p>
+  <div class="block">
+    <ul>
+      <li>Using <strong>anti-spyware</strong> software to ensure "keyloggers" are not used</li>
+      <li>Periodically <strong>changing passwords</strong> to ensure they have not been compromised</li>
+      <li>Ensuring <strong>passwords are "strong"</strong>: a mixture of upper/lower case, containing at least one number, containing at least one symbol, and a minimum of eight characters</li>
+    </ul>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which cause of data transfer risk each description matches.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="hackers"><span class="term">Exploiting network weaknesses to steal confidential data</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+      <div class="classify-item" data-answer="insider"><span class="term">An employee unintentionally compromising network security policies</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+      <div class="classify-item" data-answer="social"><span class="term">Manipulating a user into clicking a link that installs malware</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+      <div class="classify-item" data-answer="unenc"><span class="term">Sensitive data sent with no encryption protocol used at all</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+      <div class="classify-item" data-answer="weak"><span class="term">An outdated encryption protocol used to send sensitive data</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+      <div class="classify-item" data-answer="insecure"><span class="term">Using HTTP rather than HTTPS to handle sensitive information</span><span class="choices"><button data-choice="hackers">Hackers</button><button data-choice="insider">Insider threats</button><button data-choice="social">Social engineering</button><button data-choice="unenc">Unencrypted transfers</button><button data-choice="weak">Weak encryption</button><button data-choice="insecure">Insecure protocols</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="2"><p class="q">1. Which of these is NOT one of the requirements for a "strong" password listed here?</p><div class="opts"><button class="opt" data-idx="0">A minimum of eight characters</button><button class="opt" data-idx="1">At least one number and one symbol</button><button class="opt" data-idx="2">Must be changed every single day</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">2. Why are passwords stored in encrypted/ciphered form in a database?</p><div class="opts"><button class="opt" data-idx="0">So users can recover a forgotten password instantly</button><button class="opt" data-idx="1">So a hacker who accesses the database still can't read individual passwords</button><button class="opt" data-idx="2">So the database takes up less storage space</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. What software helps ensure "keyloggers" aren't used to steal a password?</p><div class="opts"><button class="opt" data-idx="0">Anti-spyware</button><button class="opt" data-idx="1">A web browser</button><button class="opt" data-idx="2">A spreadsheet</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ AUTHENTICATION ============ -->
+<div class="panel" id="panel-auth">
+  <h2 class="section-title">Authentication</h2>
+  <p>Authentication is the process of <strong>ensuring that a system is secure</strong> by asking the user to complete tasks to prove they are an authorised user of the system. Authentication is done because <strong>bots can submit data in online forms</strong>. Authentication can be done in several ways, including zero login &amp; biometrics, magnetic stripe, smart cards, and physical &amp; electronic tokens.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Method</th><th>Description</th><th>Advantages &amp; disadvantages</th></tr>
+      <tr><td>Zero login &amp; biometrics</td><td>Allows a user to login without using a username &amp; password; uses biometric data (fingerprint, face, gestures) to create a profile of a user so they can log in without having to authenticate each time</td><td>Convenient for devices users need to log in to frequently, e.g. smartphones; if compromised, biometric data cannot be changed; biometric recognition can be less than perfect and lead to failed login attempts and user frustration</td></tr>
+      <tr><td>Magnetic stripe</td><td>Contains unique data used to authenticate a user, e.g. ID, name &amp; date of birth; when swiped through a magnetic card reader, details are used to identify a user</td><td>Easy and cheap to set up; cards can be used to access multiple systems; cards can be remotely deactivated; magnetic stripes can wear; card readers must be maintained; less secure than biometrics (easily copied)</td></tr>
+      <tr><td>Smart cards</td><td>Enhances a magnetic stripe card with the addition of a microchip to create a contactless card; the microchip stores additional information, such as a PIN, to add an extra layer of security; data is encrypted</td><td>More secure than magnetic stripe cards; multi-purpose; transactions can be much faster; more expensive to manufacture; lack of compatibility can cause inconvenience</td></tr>
+      <tr><td>Physical tokens</td><td>A physical device used to authenticate a user remotely; the device generates a random one-time password (OTP) that a user must type in; banks may ask customers to insert their bank card into the device and use the OTP to access internet banking; OTPs change after a few minutes</td><td>Very secure; inconvenient to the user, as they need a physical device, card and login credentials to access one site</td></tr>
+      <tr><td>Electronic tokens</td><td>A software token generated by an app; the app generates OTPs; users authenticate in the app, e.g. fingerprint, and an OTP is generated</td><td>Very secure; more convenient</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which authentication method each statement describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="zero"><span class="term">Lets a user log in using a fingerprint instead of a username and password</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+      <div class="classify-item" data-answer="mag"><span class="term">Identifies a user when swiped through a card reader; wears out over time</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+      <div class="classify-item" data-answer="smart"><span class="term">Adds a microchip to a card to create a contactless, encrypted card</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+      <div class="classify-item" data-answer="phys"><span class="term">A physical device that generates a one-time password, changing every few minutes</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+      <div class="classify-item" data-answer="elec"><span class="term">A software token generated by an app, more convenient than a physical device</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+      <div class="classify-item" data-answer="zero"><span class="term">If compromised, this type of authentication data cannot be changed</span><span class="choices"><button data-choice="zero">Zero login</button><button data-choice="mag">Magnetic stripe</button><button data-choice="smart">Smart card</button><button data-choice="phys">Physical token</button><button data-choice="elec">Electronic token</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. Why is authentication needed on online forms?</p><div class="opts"><button class="opt" data-idx="0">To make forms load faster</button><button class="opt" data-idx="1">Because bots can submit data in online forms</button><button class="opt" data-idx="2">To reduce the size of a database</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. Which authentication method is generally considered the least secure, since it can be easily copied?</p><div class="opts"><button class="opt" data-idx="0">Physical tokens</button><button class="opt" data-idx="1">Smart cards</button><button class="opt" data-idx="2">Magnetic stripe cards</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. What is a one-time password (OTP)?</p><div class="opts"><button class="opt" data-idx="0">A randomly generated code that changes after a few minutes</button><button class="opt" data-idx="1">A permanent password that never changes</button><button class="opt" data-idx="2">A biometric fingerprint scan</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ ANTI-MALWARE SOFTWARE ============ -->
+<div class="panel" id="panel-malware">
+  <h2 class="section-title">Anti-malware software</h2>
+  <p>Anti-malware software is a term used to describe a combination of different software to prevent computers from being susceptible to <strong>viruses</strong> and other <strong>malicious software</strong>. The different software anti-malware includes: <strong>anti-virus</strong>, <strong>anti-spam</strong>, and <strong>anti-spyware</strong>.</p>
+
+  <h3>How does anti-malware work?</h3>
+  <div class="block">
+    <ul>
+      <li>Anti-malware <strong>scans</strong> through <strong>email</strong> attachments, <strong>websites</strong> and downloaded <strong>files</strong> to search for threats</li>
+      <li>Anti-malware software has a list of known malware <strong>signatures to block</strong> immediately if they try to access your device in any way</li>
+      <li>Anti-malware will also perform <strong>checks for updates</strong> to ensure the database of known issues is up to date</li>
+      <li>Anti-malware will <strong>quarantine</strong> infected files — quarantining files allows threats to be automatically deleted, and allows the user to determine if the file is a legitimate threat and not a <strong>false positive</strong></li>
+      <li>Anti-malware can make use of <strong>heuristic checking</strong> — the identification of potential threats within a file from behavioural patterns and characteristics, rather than just relying on a database of known viruses</li>
+    </ul>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Worked example</span><span class="pts">4 points</span></p>
+    <h4>Give two examples of how anti-malware protects devices against malicious software.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your two examples here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (two examples, each developed, for 4 marks)</span>Regular updates by the anti-malware software will keep an up-to-date list of threats; if any of the threats are detected on the device, the anti-malware software will quarantine the files. Anti-malware software will scan external storage media when they are connected to the device, preventing viruses from being transferred from storage media onto the device.</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-malware" data-points="4">
+        <label for="sm-malware">My answer gave two developed examples — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Sort it</span><span class="pts">4 points</span></p>
+    <h4>Click which anti-malware concept each statement describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="sig"><span class="term">Immediately blocks anything matching a list of known malware signatures</span><span class="choices"><button data-choice="sig">Signature blocking</button><button data-choice="quar">Quarantine</button><button data-choice="heur">Heuristic checking</button><button data-choice="upd">Update checks</button></span></div>
+      <div class="classify-item" data-answer="quar"><span class="term">Isolates an infected file so it can be deleted or reviewed as a possible false positive</span><span class="choices"><button data-choice="sig">Signature blocking</button><button data-choice="quar">Quarantine</button><button data-choice="heur">Heuristic checking</button><button data-choice="upd">Update checks</button></span></div>
+      <div class="classify-item" data-answer="heur"><span class="term">Identifies a threat from its behaviour, even without a known signature</span><span class="choices"><button data-choice="sig">Signature blocking</button><button data-choice="quar">Quarantine</button><button data-choice="heur">Heuristic checking</button><button data-choice="upd">Update checks</button></span></div>
+      <div class="classify-item" data-answer="upd"><span class="term">Ensures the database of known threats stays current</span><span class="choices"><button data-choice="sig">Signature blocking</button><button data-choice="quar">Quarantine</button><button data-choice="heur">Heuristic checking</button><button data-choice="upd">Update checks</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1"><p class="q">1. Which of these is NOT listed as a type of anti-malware software?</p><div class="opts"><button class="opt" data-idx="0">Anti-spam</button><button class="opt" data-idx="1">Anti-firewall</button><button class="opt" data-idx="2">Anti-spyware</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="2"><p class="q">2. What does heuristic checking rely on, that a signature database does not?</p><div class="opts"><button class="opt" data-idx="0">A list of known virus names</button><button class="opt" data-idx="1">The user's password strength</button><button class="opt" data-idx="2">Behavioural patterns and characteristics</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. What is a "false positive" in the context of anti-malware?</p><div class="opts"><button class="opt" data-idx="0">A legitimate file wrongly flagged as a threat</button><button class="opt" data-idx="1">A virus that anti-malware fails to detect at all</button><button class="opt" data-idx="2">An update that fails to install</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+<!-- ============ ELECTRONIC CONFERENCING ============ -->
+<div class="panel" id="panel-conf">
+  <h2 class="section-title">Video-conferencing</h2>
+  <p>Video-conferencing is a way of enabling <strong>real-time audio and visual communication</strong> between geographically separated parties. It is ideal for <strong>small groups of users</strong> to create an engaging meeting experience, and is typically used for staff meetings and presentations.</p>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" style="color:var(--sage)">
+      <use href="#person" x="10" y="55" width="46" height="46"/>
+      <use href="#screen" x="120" y="20" width="150" height="110" style="color:var(--copper-bright)"/>
+      <circle cx="195" cy="55" r="14" fill="none" stroke="var(--paper-dim)" stroke-width="2"/>
+      <path d="M180 78 C180 66 210 66 210 78" fill="none" stroke="var(--paper-dim)" stroke-width="2"/>
+      <circle cx="264" cy="26" r="3" fill="var(--brick)"/>
+      <path d="M70 78 Q95 78 118 78" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <path d="M70 90 Q95 90 118 90" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="4,3"/>
+    </svg>
+    <p class="diagram-caption">Video-conferencing — real-time audio and visual communication over a network</p>
+  </div>
+
+  <p>To successfully host a video-conference, the following <strong>hardware is required</strong>: webcam, large output display (projector, screen, TV, etc.), microphone, speakers. Specialist <strong>software is also required</strong>, such as drivers to control the output of the webcam, and a codec to encode (compress) and decode (decompress) the data being transmitted.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Convenience; cost saving; better for the environment; attendees do not have to travel to the event; anyone within the company can attend regardless of location; events can be held at short notice, as travel is not required; allows other members outside the organisation to attend easily without visiting on premises; some software allows record and playback, so members can review the meeting</td><td>The initial purchase of equipment can be costly; possible issues amongst employees working across different time zones; users may need training to use it effectively, which can take time and be costly; requires a strong and stable network connection; poor picture/sound quality caused by the speed of connection or quality of the hardware; delays (audio &amp; visual) can disrupt the flow of the meeting</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Audio-conferencing</h2>
+  <p>Audio-conferencing is a way of enabling real-time <strong>audio only</strong> communication between geographically separated parties, using standard <strong>phone lines</strong>. To host an audio-conference, the host must be given a <strong>personal PIN</strong> and a <strong>participant PIN</strong> by the phone company. The host starts the conference using their personal PIN, and participants <strong>dial in</strong> and join using their participant PIN. Voice over Internet Protocol (<strong>VoIP</strong>) can also be used on computers to hold audio-conferences.</p>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" style="color:var(--copper-bright)">
+      <use href="#person" x="10" y="60" width="46" height="46"/>
+      <circle cx="180" cy="30" r="16" fill="none" stroke="var(--sage)" stroke-width="1.8"/>
+      <circle cx="230" cy="55" r="16" fill="none" stroke="var(--sage)" stroke-width="1.8"/>
+      <circle cx="245" cy="105" r="16" fill="none" stroke="var(--sage)" stroke-width="1.8"/>
+      <circle cx="205" cy="135" r="16" fill="none" stroke="var(--sage)" stroke-width="1.8"/>
+      <circle cx="155" cy="120" r="16" fill="none" stroke="var(--sage)" stroke-width="1.8"/>
+      <g fill="none" stroke="var(--sage)" stroke-width="1.4">
+        <path d="M177 26 l6 8 M182 30 l-4 6"/>
+      </g>
+      <line x1="60" y1="80" x2="164" y2="35" stroke="var(--trace)" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <line x1="60" y1="85" x2="214" y2="58" stroke="var(--trace)" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <line x1="60" y1="90" x2="229" y2="102" stroke="var(--trace)" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <line x1="60" y1="93" x2="190" y2="133" stroke="var(--trace)" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <line x1="60" y1="90" x2="140" y2="119" stroke="var(--trace)" stroke-width="1.3" stroke-dasharray="3,3"/>
+    </svg>
+    <p class="diagram-caption">Audio-conferencing — the host dials in participants over standard phone lines</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Cheaper than video-conferencing, as less hardware is required; more accessible, as less training is needed for participants; gives participants the ability to focus only on voice and not get distracted by video</td><td>Participants can lose focus due to lack of visual interaction; a lack of visual clues may lead to miscommunication; audio quality can be poor; does not suit collaboration</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:36px;">Web-conferencing</h2>
+  <p>Web-conferencing is a way of enabling real-time audio and visual communication between geographically separated parties <strong>on the internet</strong>. It is ideal for <strong>large groups of users</strong> to create an engaging meeting experience, and is typically used for webinars, lectures, and presentations. To host a web-conference, the emphasis is placed on a <strong>high-speed, stable internet connection</strong>.</p>
+
+  <div class="diagram-box">
+    <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg" style="color:var(--gold)">
+      <use href="#screen" x="65" y="10" width="150" height="110"/>
+      <g stroke="var(--gold)" stroke-width="1.3" fill="none">
+        <rect x="76" y="21" width="42" height="30"/>
+        <rect x="122" y="21" width="42" height="30"/>
+        <rect x="168" y="21" width="38" height="30"/>
+        <rect x="76" y="55" width="42" height="30"/>
+        <rect x="122" y="55" width="42" height="30" fill="rgba(215,184,114,0.12)"/>
+        <rect x="168" y="55" width="38" height="30"/>
+      </g>
+      <use href="#person" x="115" y="130" width="50" height="40" style="color:var(--paper-dim)"/>
+    </svg>
+    <p class="diagram-caption">Web-conferencing — many participants join in a browser-based grid, over the internet</p>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Pre-shared/downloadable presentation notes or slides; participants can use instant messaging within the conference to ask questions; collaboration via virtual "whiteboards"; screen sharing/annotations</td><td>Technical issues, usually relating to participant internet connections; security concerns and risk of data interception; distractions; some users may feel overloaded with information, which can lead to a lack of focus</td></tr>
+    </table>
+  </div>
+
+  <p class="note">Examiner tip: web-conferencing and video-conferencing are very similar, but the key difference is that video-conferencing focuses on face-to-face communication, while web-conferencing focuses on interaction and collaboration such as document sharing and whiteboards.</p>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Worked example</span><span class="pts">6 points</span></p>
+    <h4>A motor car company has designers based in London and some in Beijing. The cost of travel between the two cities is very high, so when they wish to meet to discuss new products they use video-conferencing. The designers all have PCs with a keyboard and a mouse in order to take part in video-conferencing.</h4>
+    <div class="sub-q">
+      <label>a) Name three other devices used to input or output data which would be needed to take part in the video-conference.</label>
+      <textarea placeholder="Type your three devices here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>Webcam / video camera · speakers / headset / headphones · large monitor / television / data projector · microphone</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-conf-a" data-points="3">
+        <label for="sm-conf-a">My answer named three valid devices — award myself three points</label>
+      </div>
+    </div>
+    <div class="sub-q">
+      <label>b) Describe three potential problems of the designers using video-conferencing systems rather than meeting in either London or Beijing.</label>
+      <textarea placeholder="Type your three problems here…"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>Time lag/lip sync caused by the image not being synchronised with the sound · poor picture quality caused by the speed of connection/quality of the hardware · poorer sound quality caused by the quality of the hardware/connection · confidential material about the new cars may have to be signed/viewed in person · the new car may have to be viewed in person · a hardware breakdown stops the conference taking place · a communication breakdown stops the conference taking place · different time zones will mean the conference has to take place at inconvenient times</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-conf-b" data-points="3">
+        <label for="sm-conf-b">My answer described three valid problems — award myself three points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Sort it</span><span class="pts">6 points</span></p>
+    <h4>Click which conferencing type each statement describes.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="video"><span class="term">Requires a webcam and is ideal for small groups holding staff meetings</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+      <div class="classify-item" data-answer="audio"><span class="term">Uses standard phone lines and a personal/participant PIN to dial in</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+      <div class="classify-item" data-answer="web"><span class="term">Ideal for large groups, e.g. webinars and lectures, over the internet</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+      <div class="classify-item" data-answer="audio"><span class="term">Cheaper than the alternatives, as less hardware is required</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+      <div class="classify-item" data-answer="web"><span class="term">Focuses on interaction and collaboration, e.g. virtual whiteboards</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+      <div class="classify-item" data-answer="video"><span class="term">Focuses on face-to-face communication between parties</span><span class="choices"><button data-choice="video">Video</button><button data-choice="audio">Audio</button><button data-choice="web">Web</button></span></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="2"><p class="q">1. Which type of conferencing relies on standard phone lines rather than the internet?</p><div class="opts"><button class="opt" data-idx="0">Video-conferencing</button><button class="opt" data-idx="1">Web-conferencing</button><button class="opt" data-idx="2">Audio-conferencing</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="1"><p class="q">2. What does a codec do in a video-conference?</p><div class="opts"><button class="opt" data-idx="0">Generates a one-time password</button><button class="opt" data-idx="1">Encodes and decodes the data being transmitted</button><button class="opt" data-idx="2">Blocks known malware signatures</button></div><p class="mcq-feedback"></p></div>
+    <div class="mcq" data-answer="0"><p class="q">3. Which conferencing type is best suited to a large, one-to-many webinar with screen sharing?</p><div class="opts"><button class="opt" data-idx="0">Web-conferencing</button><button class="opt" data-idx="1">Audio-conferencing</button><button class="opt" data-idx="2">Neither — this needs an in-person event</button></div><p class="mcq-feedback"></p></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Network Issues — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+})();
+</script>
+<!--
+  ANSWER PERSISTENCE SNIPPET — drop this in just before </body>,
+  AFTER the page's own existing <script>...</script> block.
+
+  Works with the existing markup conventions used across the lesson
+  pages (.task[data-task="open|classify|mcq|order|select"], .sub-q,
+  .classify-item, .mcq, .opt, .order-item, .select-item) with ZERO
+  other changes needed to the page. It doesn't touch or duplicate the
+  scoring logic — it just replays the learner's past clicks/checks as
+  real synthetic interactions on load, so the page's own script does
+  the scoring exactly as it did the first time.
+
+  Storage is scoped per page (by path + title), so multiple lesson
+  pages hosted together never collide or overwrite each other.
+-->
+<script>
+(function(){
+  var STORE_KEY = 'ict-lesson-progress::' + location.pathname + '::' + document.title;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(mutator){
+    try {
+      var s = load();
+      mutator(s);
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+    } catch(e){ /* storage unavailable or full — fail silently */ }
+  }
+
+  var subQs      = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="open"] .sub-q'));
+  var classifyIt = Array.prototype.slice.call(document.querySelectorAll('.classify-item'));
+  var mcqs       = Array.prototype.slice.call(document.querySelectorAll('.mcq'));
+  var orderTasks = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="order"]'));
+  var selectTasks= Array.prototype.slice.call(document.querySelectorAll('.task[data-task="select"]'));
+
+  // ---- SAVE: listen alongside the page's own handlers ----
+
+  subQs.forEach(function(sq, i){
+    var key = 'subq-' + i;
+    var ta = sq.querySelector('textarea');
+    var btn = sq.querySelector('.check-btn');
+    var cb = sq.querySelector('.self-mark input[type=checkbox]');
+
+    if(ta) ta.addEventListener('input', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].text = ta.value; });
+    });
+    if(btn) btn.addEventListener('click', function(){
+      save(function(s){
+        s[key] = s[key] || {};
+        s[key].text = ta ? ta.value : '';
+        s[key].checked = !!(ta && ta.value.trim());
+      });
+    });
+    if(cb) cb.addEventListener('change', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].selfMarked = cb.checked; });
+    });
+  });
+
+  classifyIt.forEach(function(item, i){
+    var buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b, bi){
+      b.addEventListener('click', function(){
+        save(function(s){ s['classify-' + i] = bi; });
+      });
+    });
+  });
+
+  mcqs.forEach(function(mcq, i){
+    var opts = mcq.querySelectorAll('.opt');
+    opts.forEach(function(o, oi){
+      o.addEventListener('click', function(){
+        save(function(s){ s['mcq-' + i] = oi; });
+      });
+    });
+  });
+
+  orderTasks.forEach(function(task, ti){
+    var items = task.querySelectorAll('.order-item');
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        save(function(s){
+          var key = 'order-' + ti;
+          s[key] = s[key] || [];
+          s[key].push(item.dataset.order);
+        });
+      });
+    });
+  });
+
+  selectTasks.forEach(function(task, ti){
+    var btn = task.querySelector('.check-select-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      var checkedIdx = [];
+      items.forEach(function(inp, ii){ if(inp.checked) checkedIdx.push(ii); });
+      save(function(s){ s['select-' + ti] = checkedIdx; });
+    });
+  });
+
+  // ---- RESTORE: replay stored answers as real clicks, so the page's
+  // own scoring logic runs exactly as it did originally ----
+
+  (function restore(){
+    var s = load();
+
+    subQs.forEach(function(sq, i){
+      var rec = s['subq-' + i];
+      if(!rec) return;
+      var ta = sq.querySelector('textarea');
+      var btn = sq.querySelector('.check-btn');
+      var cb = sq.querySelector('.self-mark input[type=checkbox]');
+      if(ta && rec.text) ta.value = rec.text;
+      if(rec.checked && btn) btn.click();
+      if(rec.selfMarked && cb){
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+
+    classifyIt.forEach(function(item, i){
+      var bi = s['classify-' + i];
+      if(bi === undefined) return;
+      var buttons = item.querySelectorAll('.choices button');
+      if(buttons[bi]) buttons[bi].click();
+    });
+
+    mcqs.forEach(function(mcq, i){
+      var oi = s['mcq-' + i];
+      if(oi === undefined) return;
+      var opts = mcq.querySelectorAll('.opt');
+      if(opts[oi]) opts[oi].click();
+    });
+
+    orderTasks.forEach(function(task, ti){
+      var seq = s['order-' + ti];
+      if(!seq) return;
+      seq.forEach(function(orderVal){
+        var items = task.querySelectorAll('.order-item');
+        for(var j = 0; j < items.length; j++){
+          if(items[j].dataset.order === orderVal && !items[j].disabled){
+            items[j].click();
+            break;
+          }
+        }
+      });
+    });
+
+    selectTasks.forEach(function(task, ti){
+      var idxArr = s['select-' + ti];
+      if(!idxArr) return;
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      idxArr.forEach(function(ii){ if(items[ii]) items[ii].checked = true; });
+      var btn = task.querySelector('.check-select-btn');
+      if(btn) btn.click();
+    });
+  })();
+
+  // ---- Small "reset my answers" control ----
+  var resetBtn = document.createElement('button');
+  resetBtn.textContent = 'Reset my answers';
+  resetBtn.setAttribute('type', 'button');
+  resetBtn.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;'
+    + 'font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;'
+    + 'color:#a9a294;border-radius:3px;cursor:pointer;';
+  resetBtn.addEventListener('mouseenter', function(){ resetBtn.style.color = '#e9e4d6'; });
+  resetBtn.addEventListener('mouseleave', function(){ resetBtn.style.color = '#a9a294'; });
+  resetBtn.addEventListener('click', function(){
+    if(confirm('Clear all your saved answers on this page?')){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.body.appendChild(resetBtn);
+})();
+</script>
+
+</body>
+</html>
