@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Mock Exam Self-Assessment Portal</title>
+    <title>ICT Mock Exam Quiz 1 Self-Assessment Portal</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,8 +26,8 @@
                     ICT
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">ICT Mock Examination</h1>
-                    <p class="text-xs text-slate-500">IGCSE / O-Level Standard Assessment</p>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">ICT Quiz 1 Mock Examination</h1>
+                    <p class="text-xs text-slate-500">Cambridge IGCSE Assessment</p>
                 </div>
             </div>
 
@@ -54,12 +54,12 @@
         <!-- Student Information Card -->
         <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-8">
             <div class="max-w-2xl">
-                <h2 class="text-xl font-bold text-slate-900 mb-2">Candidate Details</h2>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Student Details</h2>
                 <p class="text-sm text-slate-600 mb-6">Enter your name to begin. Your progress and written answers are automatically saved locally on this device.</p>
                 
                 <div>
                     <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-2">Student Name <span class="text-red-500">*</span></label>
-                    <input type="text" id="student-name" placeholder="e.g. Jane Doe" 
+                    <input type="text" id="student-name" placeholder="e.g. John Doe" 
                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-slate-800 placeholder-slate-400 text-base shadow-sm"
                            oninput="onNameChange()">
                     <p id="name-warning" class="hidden text-xs text-red-500 mt-1.5">Please enter your name to enable submission/export.</p>
@@ -72,7 +72,7 @@
             <div class="flex items-start gap-3">
                 <svg class="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <div>
-                    <span class="font-semibold">Instructions:</span> Answer all questions below. When self-grading, award only whole integer marks (0 up to the question maximum). Click <strong>Export Answers</strong> when finished to download your <code>.txt</code> assessment file.
+                    <span class="font-semibold">Instructions:</span> Answer all questions below. When self-grading, award 0 up to the question maximum. Click <strong>Export Answers</strong> when finished to download your <code>.txt</code> assessment file.
                 </div>
             </div>
             <button onclick="clearLocalStorage()" class="text-xs font-semibold text-red-600 hover:text-red-800 hover:underline flex-shrink-0 self-center">
@@ -113,7 +113,7 @@
 
     <!-- Footer -->
     <footer class="mt-12 py-6 bg-white border-t border-slate-200 text-center text-xs text-slate-500">
-        <p>© 2026 ICT Examination Self-Assessment System. All Rights Reserved.</p>
+        <p>© 2026 ICT IGCSE Cambridge. Created by Andrei Sava for revision purposes.</p>
     </footer>
 
     <script>
