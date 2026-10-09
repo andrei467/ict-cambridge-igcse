@@ -28,8 +28,7 @@ Use the **Previous / Next theory** buttons at the top of each page to move throu
 
 ## 
 
-- This is a classroom revision aid. It is not an official Cambridge or Save My Exams product.
-- The topics and facts come from published human-written revision notes, chosen by me as your teacher to match the course.
+- This is a classroom revision aid. The topics and facts come from published human-written revision notes, chosen by me as your teacher to match the course.
   
 ## Found a mistake?
 
