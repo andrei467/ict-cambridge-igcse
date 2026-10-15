@@ -1,6 +1,6 @@
 # IGCSE ICT Interactive Revision
 
-Interactive revision pages for **Cambridge IGCSE ICT** (Grade 9-10), made for my students at International Maarif School of Bucharest.
+Interactive revision pages for **Cambridge IGCSE ICT** (Grade 9-10), made for my students.
 
 Each page has the theory, then tasks to check you've understood it: sorting activities, multiple-choice questions and written answers you mark yourself. Your score is shown on every page.
 
