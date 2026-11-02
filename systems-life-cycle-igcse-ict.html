@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Systems Life Cycle — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">50</span></div>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Systems Life Cycle</p>
+  <h1 class="title">The Systems Life Cycle</h1>
+  <p>Every new computer system is built in stages. This page walks through the six stages — analysis, design, testing, implementation, documentation and evaluation — with a quick activity at the end of each one.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="analysis">1 · Analysis</button>
+  <button class="tab-btn" data-panel="design">2 · Design</button>
+  <button class="tab-btn" data-panel="testing">3 · Testing</button>
+  <button class="tab-btn" data-panel="implementation">4 · Implementation</button>
+  <button class="tab-btn" data-panel="documentation">5 · Documentation</button>
+  <button class="tab-btn" data-panel="evaluation">6 · Evaluation</button>
+</nav>
+
+<div class="wrap">
+
+<div class="panel active" id="panel-analysis">
+  <h2 class="section-title"><span class="tag">Stage 1</span> Analysis</h2>
+  <p>The <strong>system life cycle</strong> is a <strong>structured process</strong> that guides the <strong>planning, creation, testing and deployment</strong> of an information system. It makes sure systems are <strong>systematically developed</strong>, meet the needs of stakeholders, <strong>minimise risks</strong> and <strong>maximise efficiency</strong>.</p>
+  <p>The first stage is <strong>analysis</strong>. Its purpose is to <strong>gather detailed requirements</strong> from stakeholders and analyse them to understand <strong>what the system should accomplish</strong>.</p>
+
+  <h3>Research methods</h3>
+  <p>Research methods are different ways a systems analyst could <strong>analyse the current IT system</strong> to understand its state and <strong>identify areas for improvement</strong>. There are four main methods:</p>
+<div class="block">
+    <ul>
+      <li><strong>Observation</strong> — watching users interact with the current system to see how it works</li>
+      <li><strong>Questionnaires</strong> — a structured set of pre-determined questions to get the views of the workforce, clients and other system users</li>
+      <li><strong>Interviews</strong> — one-to-one question and answer sessions that let the analyst dig deeper into the views of existing users</li>
+      <li><strong>Looking at the existing system (including paperwork)</strong> — a full look at its state: training manuals, how paperwork is filed, operational instructions, accounts etc. Helps identify the scale of the problem, memory requirements and any input/output devices</li>
+    </ul>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Research method</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Observation</td><td>Reliable data · Inexpensive · Good for an overall picture of the existing system</td><td>People don’t always behave the same way when observed</td></tr>
+      <tr><td>Questionnaires</td><td>Quick · Inexpensive · Can be anonymous</td><td>Can’t ask follow-up questions · Low response rate · Answers might be vague</td></tr>
+      <tr><td>Interviews</td><td>Can monitor body language and facial cues · Employees can express opinions in a safe environment · Questions can change based on responses</td><td>Time consuming · Cannot remain anonymous · Employees may be uncomfortable and not give honest answers for fear of repercussions</td></tr>
+      <tr><td>Looking at existing system</td><td>Obtains information that can’t be obtained from other methods</td><td>Time consuming, which can be costly</td></tr>
+      </table>
+  </div>
+
+  <h3>Analysing the current system</h3>
+  <p>To fully analyse the current system, a number of <strong>key aspects</strong> must be identified:</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Aspect</th><th>What it means</th></tr>
+      <tr><td><strong>Inputs</strong></td><td>Data or information entered into the system</td></tr>
+      <tr><td><strong>Outputs</strong></td><td>Data or information generated by the system</td></tr>
+      <tr><td><strong>Processing</strong></td><td>Tasks performed by the system on the inputs to produce the outputs</td></tr>
+      <tr><td><strong>Problems</strong></td><td>Issues that users face with the current system</td></tr>
+      <tr><td><strong>User requirements</strong></td><td>What users need from the new system</td></tr>
+      <tr><td><strong>Information requirements</strong></td><td>Data or information the new system must process</td></tr>
+      </table>
+  </div>
+<div class="block">
+    <ul>
+      <li><strong>Data flow diagrams (DFDs)</strong> help analysts understand the inputs, outputs and processing in the existing system</li>
+      <li>A <strong>requirements specification</strong> is drawn up from the results of the analysis — how the new system will work, how it will be deployed, and a time scale</li>
+    </ul>
+  </div>
+  <h3>Hardware and software selection</h3>
+<div class="block">
+    <ul>
+      <li><strong>Identify suitable hardware</strong> — consider system requirements, compatibility and cost; justify choices based on user needs and system performance</li>
+      <li><strong>Identify suitable software</strong> — consider functionality, compatibility and ease of use; justify choices based on user requirements and system efficiency</li>
+    </ul>
+  </div>
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 1 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>A small company makes toys and delivers them to shops. Throughout the day orders are received from customers. The office workers in the finance department create and store an invoice for each order — they are too busy to be disturbed by their work. Delivery drivers receive copies of the invoices to pass on to customers; they make a large number of deliveries per day and do not return to the office. A systems analyst will research the current system. For each type of employee, describe the most suitable method of collecting information from them, giving a reason for your choice.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer</span><strong>Office workers</strong> — method (one of): observation of the processes taking place · looking at existing paperwork.<br>Reason (one of): enables the analyst to see the whole system · too many workers to interview them all · questionnaires/interviews would stop them working on their tasks · can see how files are stored/processes undertaken · allows information to be obtained that cannot be obtained in other ways · enables necessary storage and computer equipment to be identified · they are too busy to be interviewed.<br><br><strong>Delivery drivers</strong> — method: questionnaires could be handed out.<br>Reason (one of): they can complete them in their own time/at their leisure · questionnaires tend to be more accurate · data can be collated more quickly as everyone completes at the same time rather than one interview after another · individuals remain anonymous so they will be more truthful/reliable · easier to analyse.</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-analysis" data-points="4">
+        <label for="sm-analysis">My answer covered a valid method and reason for both types of employee — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Task 2 · Sort it</span><span class="pts">4 points</span></p>
+    <h4>Which research method is each statement describing?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="obs">
+        <span class="term">Watching users interact with the current system</span>
+        <span class="choices"><button data-choice="obs">Observation</button><button data-choice="q">Questionnaire</button><button data-choice="i">Interview</button><button data-choice="e">Existing system</button></span>
+      </div>
+      <div class="classify-item" data-answer="q">
+        <span class="term">A structured set of pre-determined questions that can be anonymous</span>
+        <span class="choices"><button data-choice="obs">Observation</button><button data-choice="q">Questionnaire</button><button data-choice="i">Interview</button><button data-choice="e">Existing system</button></span>
+      </div>
+      <div class="classify-item" data-answer="i">
+        <span class="term">A one-to-one session where the analyst can change questions based on responses</span>
+        <span class="choices"><button data-choice="obs">Observation</button><button data-choice="q">Questionnaire</button><button data-choice="i">Interview</button><button data-choice="e">Existing system</button></span>
+      </div>
+      <div class="classify-item" data-answer="e">
+        <span class="term">Checking training manuals and how paperwork is filed</span>
+        <span class="choices"><button data-choice="obs">Observation</button><button data-choice="q">Questionnaire</button><button data-choice="i">Interview</button><button data-choice="e">Existing system</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Task 3 · Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. What is the main purpose of the analysis stage?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">To fix bugs in the finished system</button>
+        <button class="opt" data-idx="1">To gather and analyse requirements to understand what the system should accomplish</button>
+        <button class="opt" data-idx="2">To deploy the system to the live setting</button>
+        <button class="opt" data-idx="3">To write the user guide</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">2. A delivery driver is never in the office and makes many deliveries a day. Which method is most suitable for collecting their views?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Questionnaire</button>
+        <button class="opt" data-idx="1">Interview</button>
+        <button class="opt" data-idx="2">Observation</button>
+        <button class="opt" data-idx="3">Looking at the paperwork</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-design">
+  <h2 class="section-title"><span class="tag">Stage 2</span> Design</h2>
+  <p>The second stage is <strong>design</strong>. Its purpose is to develop architectural <strong>blueprints for the system</strong>, including <strong>database design, user interfaces and system interfaces</strong>.</p>
+
+  <h3>File / data structures</h3>
+  <p>File structures are considered during the design stage and consist of defining <strong>field names, field lengths, data types</strong> and <strong>primary keys</strong>. A file consists of <strong>records</strong>, and records are made up of <strong>fields</strong>. Each record is identified by its unique <strong>primary key</strong> field.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Data type</th><th>Description</th><th>Examples</th></tr>
+      <tr><td>Alphanumeric</td><td>Stores a combination of characters (letters or text) and numeric data</td><td>Usernames, postcodes, product codes, phone numbers</td></tr>
+      <tr><td>Character</td><td>A single letter/symbol</td><td>A, B, C etc.</td></tr>
+      <tr><td>Text</td><td>Stores a combination of characters (letters, text, symbols, special characters etc.) and numeric data</td><td>This_is_an_example</td></tr>
+      <tr><td>Boolean</td><td>Stores data in a Yes/No or True/False format</td><td>Y or N</td></tr>
+      <tr><td>Numeric</td><td>Stores numerical data: integers, decimals, currency, date/time</td><td>100 · 1.50 · £2.99 · 18/05/2024 or 14:58</td></tr>
+      </table>
+  </div>
+
+  <h3>Case study — a file structure for records about cars</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Field name</th><th>Field length</th><th>Data type</th><th>Primary key?</th></tr>
+      <tr><td>Car_ID</td><td>6</td><td>Alphanumeric</td><td>Yes</td></tr>
+      <tr><td>Year</td><td>4</td><td>Numeric: integer</td><td>No</td></tr>
+      <tr><td>Make</td><td>20</td><td>Text</td><td>No</td></tr>
+      <tr><td>Model</td><td>20</td><td>Text</td><td>No</td></tr>
+      <tr><td>Cost</td><td>6</td><td>Numeric: currency</td><td>No</td></tr>
+      <tr><td>Sold</td><td>1</td><td>Character</td><td>No</td></tr>
+      </table>
+  </div>
+
+  <h3>Validation routines</h3>
+  <p>Validation routines are <strong>checks placed on data being entered</strong> to make sure it matches the design of the system. They <strong>prevent errors</strong> and <strong>maintain data integrity</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Validation routine</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Range check</td><td>Ensures the data entered as a number falls within a particular range</td><td>For children aged between 5 and 10, checks that numbers &lt;5 and &gt;10 are not accepted</td></tr>
+      <tr><td>Length check</td><td>Checks the length of a string</td><td>Password must be a minimum of 8 characters, so checks the length is &gt;=8</td></tr>
+      <tr><td>Type check</td><td>Checks the data type of a field</td><td>Enter distance in whole miles, checks that decimals are not accepted</td></tr>
+      <tr><td>Format check</td><td>Ensures the data has been entered in the correct format</td><td>Enter date of birth (DD/MM/YY), checks the format is correct</td></tr>
+      <tr><td>Presence check</td><td>Looks to see if any data has been entered in a field</td><td>Enter your username, checks the field has not been left blank</td></tr>
+      <tr><td>Check digit</td><td>Numerical values that are the final digit of a larger code</td><td>Barcodes</td></tr>
+      </table>
+  </div>
+
+  <h3>Input &amp; output formats</h3>
+  <p>These are <strong>design considerations</strong> for how data is captured from users (<strong>input</strong>) and displayed to them (<strong>output</strong>).</p>
+  <p><strong>Input formats</strong> — a <strong>data capture form</strong> collects data from a user in a structured format. It should aid collection by:</p>
+<div class="block">
+    <ul>
+      <li>Having a <strong>user-friendly layout</strong> — short, visually appealing, logical flow</li>
+      <li>Providing <strong>clear instructions</strong> — concise, at the beginning</li>
+      <li>Using <strong>appropriate question types</strong> — multiple choice, drop downs, checkboxes etc.</li>
+      <li>Using <strong>validation routines</strong></li>
+    </ul>
+  </div>
+  <p><strong>Output formats</strong> — showing the results of processing, on paper or on screen, should consider:</p>
+<div class="block">
+    <ul>
+      <li><strong>Screen layouts</strong> — how information is presented to users on a screen</li>
+      <li><strong>Report layouts</strong> — how information is organised in a printed or digital report</li>
+      <li><strong>Readability, visual appeal</strong> and <strong>efficient use of space</strong></li>
+    </ul>
+  </div>
+  <div class="task" data-task="select" data-points="4">
+    <p class="task-label"><span>Task 4 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>Carlos is designing a new computer system to replace an existing system. Select the four items which will need to be designed.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox"> Inputs to the current system</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Data capture forms</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Report layouts</label>
+      <label class="select-item"><input type="checkbox"> Limitations of the system</label>
+      <label class="select-item"><input type="checkbox"> Observation methods</label>
+      <label class="select-item"><input type="checkbox"> Improvements to the system</label>
+      <label class="select-item"><input type="checkbox"> User and information requirements</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Validation routines</label>
+      <label class="select-item"><input type="checkbox"> Problems with the current system</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> File structure</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 5 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which validation routine does each example use?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="len">
+        <span class="term">A password must be at least 8 characters long</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+      <div class="classify-item" data-answer="range">
+        <span class="term">Children’s ages must be between 5 and 10</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+      <div class="classify-item" data-answer="fmt">
+        <span class="term">A date of birth must be entered as DD/MM/YY</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+      <div class="classify-item" data-answer="type">
+        <span class="term">A distance in whole miles — decimals are rejected</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+      <div class="classify-item" data-answer="pres">
+        <span class="term">The username field must not be left blank</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+      <div class="classify-item" data-answer="cd">
+        <span class="term">The final digit of a barcode is used to check the rest of the code</span>
+        <span class="choices"><button data-choice="range">Range</button><button data-choice="len">Length</button><button data-choice="type">Type</button><button data-choice="fmt">Format</button><button data-choice="pres">Presence</button><button data-choice="cd">Check digit</button></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-testing">
+  <h2 class="section-title"><span class="tag">Stage 3</span> Testing</h2>
+  <p>The third stage is <strong>testing</strong>. Its purpose is to <strong>verify</strong> that the system <strong>meets all requirements</strong>, <strong>functions correctly</strong> and is <strong>free of bugs</strong>, using various testing methods.</p>
+
+  <h3>Test strategies</h3>
+  <p>A test strategy is a method of testing a completed system to make sure <strong>all parts work as intended</strong>.</p>
+<div class="block">
+    <ul>
+      <li>Systems are designed in a <strong>modular</strong> format</li>
+      <li>Each module needs to be <strong>tested independently</strong></li>
+      <li>Testing is <strong>done again once all modules are joined together</strong></li>
+      <li>The results may indicate changes need to be made — <strong>testing is repeated</strong> once all changes have been made</li>
+    </ul>
+  </div>
+  <h3>Test designs</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Test design</th><th>Why?</th></tr>
+      <tr><td>Data structures</td><td>Test all data is stored correctly</td></tr>
+      <tr><td>File structures</td><td>Test all data is stored in the correct format</td></tr>
+      <tr><td>Input formats</td><td>Test that data can be entered correctly</td></tr>
+      <tr><td>Output formats</td><td>Tests that screen output and reports are in the correct format</td></tr>
+      <tr><td>Validation routines</td><td>Tests that the system rejects unreasonable data being inputted</td></tr>
+      </table>
+  </div>
+
+  <h3>Test plans</h3>
+  <p>A test plan is designed and implemented to <strong>ensure thorough testing of a system</strong>. It includes:</p>
+<div class="block">
+    <ul>
+      <li><strong>Test data</strong> — specific data used for testing purposes</li>
+      <li><strong>Expected outcomes</strong> — predicted results based on the test data</li>
+      <li><strong>Actual outcomes</strong> — results obtained from testing</li>
+      <li><strong>Remedial action</strong> — steps taken to fix identified issues</li>
+    </ul>
+  </div>
+  <h3>Test data</h3>
+  <p>There are <strong>four</strong> main categories of test data used when performing final testing on a system:</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Type</th><th>Description</th></tr>
+      <tr><td><strong>Normal</strong></td><td>Data that <strong>should be accepted</strong> by the system; it has a known outcome</td></tr>
+      <tr><td><strong>Extreme</strong></td><td>Data that is <strong>on the limits</strong> of what is acceptable</td></tr>
+      <tr><td><strong>Abnormal</strong></td><td>Data <strong>outside the limits</strong> of what is acceptable; it should be <strong>rejected</strong> by the system</td></tr>
+      <tr><td><strong>Live</strong></td><td><strong>Data from the old system</strong> used on the new system; it has known outcomes, so results can be compared to make sure the new system works</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 6 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>The European Space Agency (ESA) is building a new space telescope to orbit the Earth and search for distant galaxies. The ESA is using computer controlled robots to build the lens of the telescope. A new computer system will operate the space telescope; the new computer system is made up of several modules. Describe how the new computer system is to be tested before it is fully operational.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Each module has to be tested independently to ensure it functions correctly · modules need to be tested together · data needs to be transferred from module to module to check for data clashes · errors need to be noted and corrections made · then tested again · the system as a whole needs to be fully tested under controlled conditions</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-testing" data-points="4">
+        <label for="sm-testing">My answer covered four valid points — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 7 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>A form accepts ages from 5 to 10 only. What type of test data is each of these?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="normal">
+        <span class="term">Entering 7</span>
+        <span class="choices"><button data-choice="normal">Normal</button><button data-choice="extreme">Extreme</button><button data-choice="abnormal">Abnormal</button><button data-choice="live">Live</button></span>
+      </div>
+      <div class="classify-item" data-answer="extreme">
+        <span class="term">Entering 5, or entering 10</span>
+        <span class="choices"><button data-choice="normal">Normal</button><button data-choice="extreme">Extreme</button><button data-choice="abnormal">Abnormal</button><button data-choice="live">Live</button></span>
+      </div>
+      <div class="classify-item" data-answer="abnormal">
+        <span class="term">Entering 15</span>
+        <span class="choices"><button data-choice="normal">Normal</button><button data-choice="extreme">Extreme</button><button data-choice="abnormal">Abnormal</button><button data-choice="live">Live</button></span>
+      </div>
+      <div class="classify-item" data-answer="abnormal">
+        <span class="term">Entering the word “seven”</span>
+        <span class="choices"><button data-choice="normal">Normal</button><button data-choice="extreme">Extreme</button><button data-choice="abnormal">Abnormal</button><button data-choice="live">Live</button></span>
+      </div>
+      <div class="classify-item" data-answer="live">
+        <span class="term">Running real customer records from the old system through the new system</span>
+        <span class="choices"><button data-choice="normal">Normal</button><button data-choice="extreme">Extreme</button><button data-choice="abnormal">Abnormal</button><button data-choice="live">Live</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Task 8 · Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="2">
+      <p class="q">1. Which part of a test plan records the results obtained from testing?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Test data</button>
+        <button class="opt" data-idx="1">Expected outcomes</button>
+        <button class="opt" data-idx="2">Actual outcomes</button>
+        <button class="opt" data-idx="3">Remedial action</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. Why is testing repeated once changes have been made?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Because modules have been removed</button>
+        <button class="opt" data-idx="1">To check the corrections have fixed the problems</button>
+        <button class="opt" data-idx="2">To write the technical documentation</button>
+        <button class="opt" data-idx="3">To train the users</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-implementation">
+  <h2 class="section-title"><span class="tag">Stage 4</span> System implementation</h2>
+  <p>The fourth stage is <strong>implementation</strong>. Its purpose is to <strong>deploy</strong> the system to the <strong>production environment</strong> and make sure all components work together in the <strong>live setting</strong>. It happens <strong>after a system has been fully tested</strong> and is working correctly.</p>
+  <p>Implementation happens in <strong>two stages</strong>: <strong>data is transferred from the old to the new system</strong>, then the <strong>system changeover</strong> takes place — moving from the old system to the new one. There are <strong>four</strong> ways to do a changeover:</p>
+<div class="block">
+    <ul>
+      <li><strong>Direct changeover</strong> — the old system is replaced by the new system immediately. Used when quick implementation is necessary</li>
+      <li><strong>Parallel running</strong> — both old and new systems run simultaneously for a period before the old system is phased out. Used when a smooth transition with minimal risk is required</li>
+      <li><strong>Pilot running</strong> — the new system is implemented in a small, controlled environment before full-scale implementation. Used when testing the new system in a real-world setting</li>
+      <li><strong>Phased implementation</strong> — the new system is implemented in stages, with each stage replacing a part of the old system. Used when a gradual transition is preferred to minimise disruption</li>
+    </ul>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <tr><th>Implementation</th><th>Advantages</th><th>Disadvantages</th></tr>
+      <tr><td>Direct changeover</td><td>Fast implementation · Cost-effective as only one system is in operation</td><td>High risk of failure · No fallback · Users can’t be trained on the new system · No backup of the system</td></tr>
+      <tr><td>Parallel running</td><td>Lower risk · Easy comparison of systems</td><td>Time-consuming · Resource-intensive</td></tr>
+      <tr><td>Pilot running</td><td>Low risk as only trialled in one department/centre/branch · Allows for fine-tuning · Staff have time to train with the new system · Few errors as it’s fully tested</td><td>Slower implementation · Potential inconsistencies · Confusion as there are 2 systems in use · No backup for the department/centre/branch using the new system</td></tr>
+      <tr><td>Phased implementation</td><td>Reduced risk · Easier to manage</td><td>Takes longer · Potential compatibility issues</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Task 9 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>Select the most appropriate method of implementation to match each statement.</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="d">
+        <span class="term">All of the benefits are immediate.</span>
+        <span class="choices"><button data-choice="d">Direct</button><button data-choice="p">Parallel</button><button data-choice="pi">Pilot</button></span>
+      </div>
+      <div class="classify-item" data-answer="p">
+        <span class="term">If the new system fails, the whole of the old system is still operational.</span>
+        <span class="choices"><button data-choice="d">Direct</button><button data-choice="p">Parallel</button><button data-choice="pi">Pilot</button></span>
+      </div>
+      <div class="classify-item" data-answer="d">
+        <span class="term">This is the cheapest implementation method.</span>
+        <span class="choices"><button data-choice="d">Direct</button><button data-choice="p">Parallel</button><button data-choice="pi">Pilot</button></span>
+      </div>
+      <div class="classify-item" data-answer="pi">
+        <span class="term">The system is implemented in one branch of the company.</span>
+        <span class="choices"><button data-choice="d">Direct</button><button data-choice="p">Parallel</button><button data-choice="pi">Pilot</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 10 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. Which changeover method has no fallback if the new system fails?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Direct changeover</button>
+        <button class="opt" data-idx="1">Parallel running</button>
+        <button class="opt" data-idx="2">Pilot running</button>
+        <button class="opt" data-idx="3">Phased implementation</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. What are the two stages of implementation?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Testing, then documentation</button>
+        <button class="opt" data-idx="1">Transferring data from the old to the new system, then the system changeover</button>
+        <button class="opt" data-idx="2">Analysis, then design</button>
+        <button class="opt" data-idx="3">Pilot running, then phased implementation</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="3">
+      <p class="q">3. Which method introduces the new system in stages, each replacing a part of the old system?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Direct changeover</button>
+        <button class="opt" data-idx="1">Parallel running</button>
+        <button class="opt" data-idx="2">Pilot running</button>
+        <button class="opt" data-idx="3">Phased implementation</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-documentation">
+  <h2 class="section-title"><span class="tag">Stage 5</span> Documentation</h2>
+
+  <h3>Technical documentation</h3>
+  <p>Technical documentation is <strong>detailed information on the system’s inner workings and programming</strong>, written for developers and IT staff. It enables the system to be <strong>maintained, repaired</strong> and <strong>updated</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Technical documentation includes</th><th>Description</th></tr>
+      <tr><td>Purpose of the system/program</td><td>Explanation of the system’s intended function and goals</td></tr>
+      <tr><td>Limitations</td><td>Known constraints or issues with the system</td></tr>
+      <tr><td>Program listing</td><td>The code or scripts used in the system</td></tr>
+      <tr><td>Program language</td><td>The programming language used to develop the system</td></tr>
+      <tr><td>Program flowcharts/algorithms</td><td>Visual representations or descriptions of the system’s logic and processes</td></tr>
+      <tr><td>System flowcharts</td><td>Visual representations of the interactions between system components</td></tr>
+      <tr><td>Hardware &amp; software requirements</td><td>Necessary equipment and software to run the system</td></tr>
+      <tr><td>File structures</td><td>Organisation and layout of the system’s files and data</td></tr>
+      <tr><td>List of variables</td><td>Collection of variables used within the system, including their names and purposes</td></tr>
+      <tr><td>Input format</td><td>Structure and format for entering data into the system</td></tr>
+      <tr><td>Output format</td><td>Structure and format for presenting data generated by the system</td></tr>
+      <tr><td>Sample runs/test runs</td><td>Examples of system operation, including input and expected output</td></tr>
+      <tr><td>Validation routines</td><td>Techniques used to check and confirm the accuracy of data entered into the system</td></tr>
+      </table>
+  </div>
+
+  <h3>User documentation</h3>
+  <p>User documentation is <strong>instructions and guidance for end-users on how to operate the system</strong>. It enables end-users to <strong>effectively use the system</strong> and <strong>overcome problems</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>User documentation includes</th><th>Description</th></tr>
+      <tr><td>Purpose of the system</td><td>Explanation of the system’s intended function and goals</td></tr>
+      <tr><td>Limitations</td><td>Known constraints or issues with the system</td></tr>
+      <tr><td>Hardware &amp; software requirements</td><td>Necessary equipment and software to run the system</td></tr>
+      <tr><td>Loading/running/installing software</td><td>Instructions for setting up the system on user devices</td></tr>
+      <tr><td>Saving files</td><td>Procedures for storing data within the system</td></tr>
+      <tr><td>Printing data</td><td>Steps to produce hard copies of system data</td></tr>
+      <tr><td>Adding records</td><td>Instructions for creating new entries in the system</td></tr>
+      <tr><td>Deleting/editing records</td><td>Guidelines for modifying or removing existing entries in the system</td></tr>
+      <tr><td>Input format</td><td>Structure and format for entering data into the system</td></tr>
+      <tr><td>Output format</td><td>Structure and format for presenting data generated by the system</td></tr>
+      <tr><td>Sample runs</td><td>Examples of system operation, including input and expected output</td></tr>
+      <tr><td>Error messages</td><td>Explanations of system warnings and error notifications</td></tr>
+      <tr><td>Error handling</td><td>Steps to resolve issues and errors within the system</td></tr>
+      <tr><td>Troubleshooting guide/helpline</td><td>Assistance for diagnosing and addressing common problems</td></tr>
+      <tr><td>Frequently asked questions</td><td>Answers to common user inquiries</td></tr>
+      <tr><td>Glossary of terms</td><td>Definitions of key terms and concepts related to the system</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 11 · Worked example</span><span class="pts">3 points</span></p>
+    <h4>Following the implementation of the system, technical documentation needs to be written. Select three components of technical documentation which are <strong>not</strong> found in the user documentation.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox"> Frequently asked questions</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Program listing</label>
+      <label class="select-item"><input type="checkbox"> Glossary of terms</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> List of variables</label>
+      <label class="select-item"><input type="checkbox"> Troubleshooting guide/helpline</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Program flowcharts/algorithms</label>
+      <label class="select-item"><input type="checkbox"> Printing data</label>
+      <label class="select-item"><input type="checkbox"> Loading/running/installing software</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <p class="note">In the exam, any three of: program listing, program language, program flowcharts/algorithms, system flowcharts, file structures, list of variables, test runs, validation routines.</p>
+
+  <div class="task" data-task="mcq" data-points="2">
+    <p class="task-label"><span>Task 12 · Quick check</span><span class="pts">2 points</span></p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. Technical documentation is mainly written for:</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">End-users</button>
+        <button class="opt" data-idx="1">Developers and IT staff</button>
+        <button class="opt" data-idx="2">Customers of the company</button>
+        <button class="opt" data-idx="3">Delivery drivers</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">2. An end-user sees an unfamiliar warning on screen. Where should they look?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The program listing</button>
+        <button class="opt" data-idx="1">The system flowchart</button>
+        <button class="opt" data-idx="2">The error messages section of the user documentation</button>
+        <button class="opt" data-idx="3">The list of variables</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-evaluation">
+  <h2 class="section-title"><span class="tag">Stage 6</span> Evaluation</h2>
+  <p>To evaluate a system you must assess <strong>the efficiency</strong>, <strong>the ease of use</strong> and <strong>the appropriateness</strong> of the solution. After a successful evaluation you will be able to <strong>identify limitations and propose improvements</strong>.</p>
+
+  <h3>Efficiency of the solution</h3>
+  <p>Evaluate the system’s performance in terms of <strong>resource usage, time</strong> and <strong>cost</strong>. Is it operating optimally, or could improvements be made? Identify areas consuming excessive resources or time, and suggest ways to optimise them.</p>
+  <p class="note">Questions to ask: Does it operate quicker than the previous system? Does it reduce staff time in using the system? Does it reduce staff costs?</p>
+
+  <h3>Ease of use</h3>
+  <p>Examine <strong>how user-friendly and accessible</strong> the solution is for its intended audience. Is it easy to learn and use, and can users accomplish their tasks without difficulty? Describe the user interface and how it helps interaction, and mention any user feedback and the issues they encountered.</p>
+  <p class="note">Questions to ask: Are all users able to use the system and make bookings easily? Can they change and cancel bookings easily? Can all staff understand how to use the system with minimal training?</p>
+
+  <h3>Appropriateness of the solution</h3>
+<div class="block">
+    <ul>
+      <li>Compare the implemented solution with the original task requirements and <strong>evaluate how well it meets the intended purpose</strong></li>
+      <li>Outline the initial objectives and discuss how the solution addresses each one; highlight any requirements not fully met and possible reasons why</li>
+      <li>Collect users’ responses to the results of testing — feedback can show potential issues and improvements, and help determine overall user satisfaction</li>
+      <li>Summarise the testing process, including test data, expected outcomes and actual outcomes</li>
+    </ul>
+  </div>
+  <p class="note">Questions to ask: Is the system suitable for each of the departments? Does it meet the needs of the customers? Does it meet the needs of the staff? Does the solution match the original requirements?</p>
+
+  <h3>Identify limitations and propose improvements</h3>
+  <p>Based on the analysis of efficiency, ease of use, appropriateness and user feedback you should now be able to <strong>list the limitations and explain each one</strong>, then <strong>recommend specific changes or enhancements</strong> that could address them and improve the system.</p>
+
+  <div class="task" data-task="open" data-points="2">
+    <p class="task-label"><span>Task 13 · Worked example</span><span class="pts">2 points</span></p>
+    <h4>Evaluation is a part of the systems life cycle. Describe two evaluation strategies.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any two of)</span>Compare the final solution with the user requirements · identify any limitations of the new system · identify any further improvements to the new system · analyse feedback from users of the new system · compare test results from the new system with the old system</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-eval" data-points="2">
+        <label for="sm-eval">My answer covered two valid strategies — award myself both points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 14 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Is each question about efficiency, ease of use or appropriateness?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="eff">
+        <span class="term">Does it operate quicker than the previous system?</span>
+        <span class="choices"><button data-choice="eff">Efficiency</button><button data-choice="ease">Ease of use</button><button data-choice="app">Appropriateness</button></span>
+      </div>
+      <div class="classify-item" data-answer="ease">
+        <span class="term">Can all staff understand how to use the system with minimal training?</span>
+        <span class="choices"><button data-choice="eff">Efficiency</button><button data-choice="ease">Ease of use</button><button data-choice="app">Appropriateness</button></span>
+      </div>
+      <div class="classify-item" data-answer="app">
+        <span class="term">Does the solution match the original requirements?</span>
+        <span class="choices"><button data-choice="eff">Efficiency</button><button data-choice="ease">Ease of use</button><button data-choice="app">Appropriateness</button></span>
+      </div>
+      <div class="classify-item" data-answer="eff">
+        <span class="term">Does it operate by reducing staff costs?</span>
+        <span class="choices"><button data-choice="eff">Efficiency</button><button data-choice="ease">Ease of use</button><button data-choice="app">Appropriateness</button></span>
+      </div>
+      <div class="classify-item" data-answer="app">
+        <span class="term">Is the system suitable for each of the departments?</span>
+        <span class="choices"><button data-choice="eff">Efficiency</button><button data-choice="ease">Ease of use</button><button data-choice="app">Appropriateness</button></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · The Systems Life Cycle — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Shuffle sort-task items so the answer order is never predictable ----
+  document.querySelectorAll('.classify-list').forEach(function(list){
+    const items = Array.prototype.slice.call(list.children);
+    for(let i = items.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+    }
+    items.forEach(function(it){ list.appendChild(it); });
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      const wrong = task.querySelectorAll('.select-item.incorrect').length;
+      const allGood = (correctChecked === totalCorrect && wrong === 0);
+      feedback.textContent = allGood
+        ? 'All correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = allGood ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+</body>
+</html>
