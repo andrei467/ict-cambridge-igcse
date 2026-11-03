@@ -42,14 +42,13 @@
     align-self:flex-start; font-family:var(--mono); font-size:11px; color:var(--sage);
     border:1px solid var(--trace); padding:1px 7px; border-radius:var(--radius);
   }
-  .card .name{ font-family:var(--mono); font-size:15px; font-weight:500; line-height:1.35; }
+  .card .name{ font-family:var(--mono); font-size:14px; font-weight:500; line-height:1.35; min-height:2.7em; }
   .card .blurb{ font-size:14.5px; color:var(--paper-dim); line-height:1.45; }
   .card .go{ margin-top:auto; font-family:var(--mono); font-size:12.5px; color:var(--copper-bright); }
   .card.disabled{ opacity:.4; border-style:dashed; cursor:not-allowed; }
   .card.disabled .num{ color:var(--paper-dim); }
   footer{ text-align:center; padding:0 24px 50px; font-family:var(--mono); font-size:12px; color:var(--paper-dim); }
-  @media (max-width:600px){ header.hero{padding:40px 20px 26px;} .wrap{padding:28px 16px 80px;} .grid{grid-template-columns:1fr 1fr; gap:10px;} .card{min-height:170px; padding:14px;} }
-  @media (max-width:420px){ .grid{grid-template-columns:1fr;} }
+  @media (max-width:600px){ header.hero{padding:40px 20px 26px;} .wrap{padding:28px 16px 80px;} .grid{grid-template-columns:1fr; gap:10px;} .card{min-height:0;} }
 </style>
 </head>
 <body>
@@ -86,8 +85,8 @@
     <a class="card" href="flashcards-hardware-components-emerging-tech.html">
       <span class="num">04</span>
       <span class="tag">Flashcards</span>
-      <span class="name">Flashcards: Hardware, Components &amp; Emerging Tech</span>
-      <span class="blurb">Flip-card revision for the pages before it.</span>
+      <span class="name">Flashcards</span>
+      <span class="blurb">Flip-card revision: hardware, components &amp; emerging tech.</span>
       <span class="go">Open →</span>
     </a>
     <div class="card disabled" aria-disabled="true">
