@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE ICT — Revision Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613; --bg-raised:#161e1a; --trace:#496354; --trace-dim:#2b3730;
+    --paper:#e9e4d6; --paper-dim:#a9a294; --copper:#c98a4b; --copper-bright:#e0a566;
+    --gold:#d7b872; --sage:#7fa68a;
+    --mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif:'Source Serif 4', Georgia, serif; --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg);
+    background-image:linear-gradient(var(--trace-dim) 1px, transparent 1px),linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size:42px 42px; background-position:-1px -1px;
+    color:var(--paper); font-family:var(--serif); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--copper); color:#101613;}
+  header.hero{ padding:56px 24px 34px; max-width:1000px; margin:0 auto; border-bottom:1px solid var(--trace); }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{ font-family:var(--mono); font-weight:700; font-size:clamp(26px,5vw,42px); line-height:1.15; margin:0 0 14px; }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:36px 24px 100px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:14px; }
+  .card{
+    position:relative; display:flex; flex-direction:column; gap:6px; min-height:190px;
+    padding:18px 18px 16px; background:var(--bg-raised); border:1px solid var(--trace);
+    border-radius:var(--radius); text-decoration:none; color:var(--paper);
+    transition:border-color .15s, transform .15s;
+  }
+  a.card:hover{ border-color:var(--copper); transform:translateY(-2px); }
+  a.card:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:2px; }
+  .card .num{ font-family:var(--mono); font-size:30px; font-weight:700; color:var(--copper-bright); line-height:1; }
+  .card .tag{
+    align-self:flex-start; font-family:var(--mono); font-size:11px; color:var(--sage);
+    border:1px solid var(--trace); padding:1px 7px; border-radius:var(--radius);
+  }
+  .card .name{ font-family:var(--mono); font-size:15px; font-weight:500; line-height:1.35; }
+  .card .blurb{ font-size:14.5px; color:var(--paper-dim); line-height:1.45; }
+  .card .go{ margin-top:auto; font-family:var(--mono); font-size:12.5px; color:var(--copper-bright); }
+  .card.disabled{ opacity:.4; border-style:dashed; cursor:not-allowed; }
+  .card.disabled .num{ color:var(--paper-dim); }
+  footer{ text-align:center; padding:0 24px 50px; font-family:var(--mono); font-size:12px; color:var(--paper-dim); }
+  @media (max-width:600px){ header.hero{padding:40px 20px 26px;} .wrap{padding:28px 16px 80px;} .grid{grid-template-columns:1fr 1fr; gap:10px;} .card{min-height:170px; padding:14px;} }
+  @media (max-width:420px){ .grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Revision</p>
+  <h1 class="title">Revision Menu</h1>
+  <p>Choose a page to start revising. Pages marked “Coming soon” will unlock as they are added.</p>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <a class="card" href="hardware-software-igcse-ict.html">
+      <span class="num">01</span>
+      <span class="tag">Theory</span>
+      <span class="name">Hardware &amp; Software</span>
+      <span class="blurb">Mainframes, supercomputers, system and utility software.</span>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="components-of-computer-systems-igcse-ict.html">
+      <span class="num">02</span>
+      <span class="tag">Theory</span>
+      <span class="name">Components of Computer Systems</span>
+      <span class="blurb">The parts of a computer system and what each one does.</span>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="types-of-computer-emerging-technologies-igcse-ict.html">
+      <span class="num">03</span>
+      <span class="tag">Theory</span>
+      <span class="name">Types of Computer &amp; Emerging Technologies</span>
+      <span class="blurb">Computer types and the technologies shaping the future.</span>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="flashcards-hardware-components-emerging-tech.html">
+      <span class="num">04</span>
+      <span class="tag">Flashcards</span>
+      <span class="name">Flashcards: Hardware, Components &amp; Emerging Tech</span>
+      <span class="blurb">Flip-card revision for the pages before it.</span>
+      <span class="go">Open →</span>
+    </a>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">05</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 5</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">06</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 6</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">07</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 7</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <a class="card" href="systems-life-cycle-igcse-ict.html">
+      <span class="num">08</span>
+      <span class="tag">Theory</span>
+      <span class="name">The Systems Life Cycle</span>
+      <span class="blurb">Analysis, design, testing, implementation, documentation and evaluation.</span>
+      <span class="go">Open →</span>
+    </a>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">09</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 9</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">10</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 10</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">11</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 11</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">12</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 12</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">13</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 13</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">14</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 14</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">15</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 15</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+    <div class="card disabled" aria-disabled="true">
+      <span class="num">16</span>
+      <span class="tag">Coming soon</span>
+      <span class="name">Page 16</span>
+      <span class="blurb">Reserved for a future page.</span>
+    </div>
+  </div>
+</main>
+
+<footer>Cambridge IGCSE ICT · Revision pages</footer>
+
+</body>
+</html>
