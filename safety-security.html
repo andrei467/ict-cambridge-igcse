@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  figure{ margin:22px 0; }
+  figure img{ display:block; width:100%; max-width:480px; height:auto; margin:0 auto; border:1px solid var(--trace); border-radius:var(--radius); background:#fff; }
+  figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .tip{ border-left:2px solid var(--gold); background:rgba(215,184,114,0.07); padding:12px 16px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0; }
+  .tip .lbl{ display:block; font-family:var(--mono); font-size:11.5px; color:var(--gold); margin-bottom:4px; }
+  ol{ padding-left:24px; margin:10px 0; }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">51</span></div>
+
+<nav class="theory-nav">
+  <a href="#" class="disabled" aria-disabled="true">← <span class="full">Previous theory:</span> Coming soon</a>
+  <span class="spacer"></span>
+  <a href="#" class="disabled" aria-disabled="true"><span class="full">Next theory:</span> Coming soon →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Safety</p>
+  <h1 class="title">Safety</h1>
+  <p>Staying safe when using technology: physical safety, protecting personal and sensitive data, and being safe online — with a few activities at the end of each part.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="physical">1 · Physical safety</button>
+  <button class="tab-btn" data-panel="data">2 · E-safety: data</button>
+  <button class="tab-btn" data-panel="using">3 · E-safety: using IT</button>
+</nav>
+
+<div class="wrap">
+
+<div class="panel active" id="panel-physical">
+  <h2 class="section-title"><span class="tag">Part 1</span> Physical safety</h2>
+  <p>Physical safety is <strong>creating a safe environment when using technology</strong>. It includes <strong>considering dangers</strong> that could lead to <strong>serious injury or loss of life</strong>, and identifying <strong>strategies to mitigate</strong> those dangers. Safety risks include:</p>
+<div class="block">
+    <ul>
+      <li>Electrocution from spilling drinks near electrical equipment</li>
+      <li>Fire hazard from overloading plug sockets</li>
+      <li>Equipment overheating</li>
+      <li>Trailing cables (trip hazard)</li>
+      <li>Heavy equipment falling and causing injury</li>
+    </ul>
+  </div><div class="table-scroll">
+    <table>
+      <tr><th>Risk</th><th>Cause</th><th>Prevention</th></tr>
+      <tr><td rowspan="2"><strong>Electrocution</strong></td><td>Spilling drinks near electrical equipment</td><td>• Keep liquids away from electrical equipment</td></tr>
+      <tr><td>Touching live cables</td><td>• Ensure that cables are properly insulated and protected<br>• Use <strong>non-conductive</strong> materials where possible<br>• Ensure that electrical equipment is <strong>turned off</strong> and <strong>unplugged</strong> before cleaning or maintenance<br>• Use <strong>circuit breakers</strong> or <strong>fuses</strong> to prevent electrical overload</td></tr>
+      <tr><td rowspan="2"><strong>Fire hazards</strong></td><td>Sockets being overloaded</td><td>• Use surge protectors to prevent electrical overload<br>• Ensure enough plug sockets in the room<br>• Don’t plug too many devices into the same plug socket<br>• Don’t leave devices plugged in and unattended</td></tr>
+      <tr><td>Equipment overheating</td><td>• Ensure that equipment is properly ventilated and not obstructed<br>• Keep flammable materials away from heat sources<br>• Regularly check equipment for signs of wear or damage<br>• Use fire extinguishers in case of emergencies<br>• Turn off or unplug devices when away from the location<br>• Do not cover any air vents on devices</td></tr>
+      <tr><td rowspan="1"><strong>Trip hazard</strong></td><td>Cables not properly secured or organised</td><td>• Use cable ties or clips to secure cables<br>• Keep cables away from areas where people are walking<br>• Secure cables where you can, like under desks, to stop protruding into open areas<br>• Use cable covers to protect cables and prevent tripping hazards<br>• Regularly inspect cables for signs of wear or damage<br>• Where possible use wireless devices to reduce cables</td></tr>
+      <tr><td rowspan="2"><strong>Personal safety</strong></td><td>Improperly secured equipment</td><td>• Ensure that equipment is properly secured and stable<br>• Regularly check the stability of locations containing devices</td></tr>
+      <tr><td>Equipment not placed on stable surfaces</td><td>• Keep equipment away from edges and other potential hazards<br>• Regularly inspect equipment and locations containing devices for signs of wear or damage</td></tr>
+    </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 1 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>Using computers can lead to several physical safety issues. Describe four of these types of issues.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer</span>Electrocution, caused by touching bare wires / allowing food and drink to spill liquids onto computers<br>Falling objects can cause injury<br>Tripping over loose cables can cause injury<br>The fire is caused by overloading power sockets / overheating computers</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-physical" data-points="4">
+        <label for="sm-physical">My answer described four valid issues — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 2 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which physical safety risk does each situation create?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="elec">
+        <span class="term">A drink is spilled on a keyboard next to a plug socket</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+      <div class="classify-item" data-answer="fire">
+        <span class="term">Too many devices are plugged into one socket</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+      <div class="classify-item" data-answer="trip">
+        <span class="term">A cable runs across the area where people walk</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+      <div class="classify-item" data-answer="pers">
+        <span class="term">A monitor is balanced near the edge of an unstable desk</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+      <div class="classify-item" data-answer="fire">
+        <span class="term">Air vents on a computer are covered up</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+      <div class="classify-item" data-answer="elec">
+        <span class="term">Someone touches a live cable</span>
+        <span class="choices"><button data-choice="elec">Electrocution</button><button data-choice="fire">Fire hazard</button><button data-choice="trip">Trip hazard</button><button data-choice="pers">Personal safety</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 3 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three ways to prevent a trip hazard.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Use cable ties or clips to secure cables</label>
+      <label class="select-item"><input type="checkbox"> Use surge protectors</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Use cable covers to protect cables</label>
+      <label class="select-item"><input type="checkbox"> Keep liquids away from electrical equipment</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Keep cables away from areas where people are walking</label>
+      <label class="select-item"><input type="checkbox"> Do not cover any air vents on devices</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 4 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="1">
+      <p class="q">1. Which of these helps to prevent electrical overload?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Cable ties</button>
+        <button class="opt" data-idx="1">Circuit breakers or fuses</button>
+        <button class="opt" data-idx="2">Cable covers</button>
+        <button class="opt" data-idx="3">Screen filters</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">2. Why should equipment be turned off and unplugged before cleaning or maintenance?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">To reduce the risk of electrocution</button>
+        <button class="opt" data-idx="1">To stop cables becoming tangled</button>
+        <button class="opt" data-idx="2">To make the equipment cooler to touch for a week</button>
+        <button class="opt" data-idx="3">To save paper</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">3. Which of these helps to stop equipment overheating?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Placing it near the edge of the desk</button>
+        <button class="opt" data-idx="1">Leaving it plugged in and unattended</button>
+        <button class="opt" data-idx="2">Not covering any air vents on the device</button>
+        <button class="opt" data-idx="3">Plugging in more devices</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-data">
+  <h2 class="section-title"><span class="tag">Part 2</span> E-safety: data</h2>
+
+  <h3>Data protection</h3>
+  <p>The <strong>Data Protection Act (DPA)</strong> is a law that <strong>protects personal data</strong> from being misused. Examples of personal data include name, address, date of birth, race and religion. Most people that store personal data have to follow the Data Protection Principles, although there are a few <strong>exemptions</strong>:</p>
+<div class="block">
+    <ul>
+      <li><strong>Domestic purposes</strong> – if you only use personal data for such things as writing to friends and family or taking pictures for your own enjoyment, you are not subject to the DPA</li>
+      <li><strong>Law enforcement</strong> – the Police investigating a crime is not subject to the DPA. E.g. if someone has been suspected of a crime they can’t request to see the evidence about them</li>
+      <li><strong>Intelligence services processing</strong> – personal data processed by the intelligence services (e.g. MI5) is not covered by the DPA</li>
+    </ul>
+  </div>
+  <h3>The data protection principles</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Principle</th><th>How does it affect a company?</th><th>Example</th></tr>
+      <tr><td><strong>1.</strong> Personal data must be fairly and lawfully processed</td><td>A company has to be clear about what personal data they wish to collect and what they want to use it for</td><td>A school can request personal data to be able to call guardians in an emergency</td></tr>
+      <tr><td><strong>2.</strong> Personal data must be collected for specified and lawful purposes</td><td>A company cannot use personal data for any purpose other than what they stated originally. They also cannot pass this data on without permission</td><td>A company asks for a phone number to call regarding delivery but then uses it to market new products</td></tr>
+      <tr><td><strong>3.</strong> Personal data must be adequate, relevant and not excessive</td><td>A company cannot request personal data that they do not need right away</td><td>A bank cannot ask for their customer’s previous trips when opening an account</td></tr>
+      <tr><td><strong>4.</strong> Personal data must be kept accurate and up to date</td><td>If a company holds personal data that is wrong or out of date then you have a right to have it corrected or deleted</td><td>If a bank has a customer’s old address then they will not be able to send up to date statements</td></tr>
+      <tr><td><strong>5.</strong> Personal data will not be kept for longer than is necessary</td><td>A company must delete personal data once they no longer have a need for it</td><td>If a customer closes their account the company must delete their data</td></tr>
+      <tr><td><strong>6.</strong> Personal data must be processed in line with people’s rights</td><td>If requested a company must provide a customer with all the personal data they hold on them</td><td>A hospital has to give a patient’s full records if requested by the patient</td></tr>
+      </table>
+  </div>
+
+  <h3>Personal &amp; sensitive data</h3>
+  <p>Personal data is any <strong>data that can be used to identify an individual</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Personal data</th><th>Description</th></tr>
+      <tr><td>Personal name</td><td>Refers to the <strong>full name</strong> of an individual, including their <strong>first name</strong> and <strong>last name</strong></td></tr>
+      <tr><td>Address</td><td>The <strong>physical location</strong> where an individual lives, including their house <strong>number, street name, city, and postal code</strong></td></tr>
+      <tr><td>Date of birth</td><td>The specific <strong>day, month, and year</strong> when an <strong>individual was born</strong></td></tr>
+      <tr><td>Gender</td><td>The individual’s identity relating to male, female, don’t know, prefer not to say</td></tr>
+      <tr><td>Personal images (e.g. a photograph in school uniform)</td><td>An image of an individual <strong>wearing their school uniform</strong>, which can be used to identify and locate them</td></tr>
+      <tr><td>Payment details</td><td><strong>Bank card details</strong> used for purchasing items or <strong>bank details</strong> to access online banking</td></tr>
+      <tr><td>Passwords</td><td>The <strong>combination of letters, numbers and symbols</strong> used to access accounts that are held by the individual</td></tr>
+      </table>
+  </div>
+
+  <h3>Why should personal data be protected?</h3>
+<div class="block">
+    <ul>
+      <li><strong>Inappropriate disclosure</strong> of personal data can lead to <strong>privacy breaches, identity theft,</strong> or <strong>misuse of the information</strong></li>
+      <li>Personal data could be <strong>sold to third party companies</strong></li>
+      <li>Individuals could be <strong>held to ransom</strong> over <strong>personal data gathered</strong></li>
+      <li><strong>Information gathered</strong> could be used to commit a <strong>physical crime</strong></li>
+    </ul>
+  </div>
+  <h3>How to avoid data being inappropriately disclosed</h3>
+<div class="block">
+    <ul>
+      <li>Personal data must be kept <strong>confidential</strong> and <strong>protected</strong> through <strong>privacy settings</strong> on websites such as <strong>social media</strong> or <strong>strong passwords</strong> on websites where personal data is held or used</li>
+      <li>Access to personal data should be <strong>limited to authorised individuals</strong></li>
+      <li><strong>Think before you post</strong> – consider what information could be gathered from your image or content</li>
+      <li>Check website details about the <strong>collection</strong>, <strong>storage</strong>, and <strong>use</strong> of <strong>personal data</strong></li>
+      <li>Only access websites where personal data is used or viewed when on a <strong>secure, encrypted</strong> connection</li>
+    </ul>
+  </div>
+  <h3>What is sensitive data?</h3>
+  <p>Sensitive data is a <strong>subset of personal data</strong> that <strong>if disclosed could lead to personal harm</strong>. It <strong>requires stricter protection</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Sensitive data</th><th>Description</th></tr>
+      <tr><td>Medical record/history</td><td>Information related to an <strong>individual’s health</strong>, including any <strong>past illnesses, medical conditions, or treatments they have received.</strong> This can include any genetic or DNA information about <strong>genetic characteristics</strong></td></tr>
+      <tr><td>Political views</td><td>The individual’s <strong>opinions on political matters/issues</strong> and how they are being handled by the current <strong>government.</strong> This can include <strong>memberships in political parties</strong></td></tr>
+      <tr><td>Ethnic/racial origin</td><td>The <strong>ethnic or cultural origins</strong> of the individual’s ancestors</td></tr>
+      <tr><td>Criminal activities</td><td>Any <strong>past or current criminal offences</strong></td></tr>
+      <tr><td>Membership of trade union</td><td>Made up of workers to <strong>protect and advance the interests of all workers in the workplace</strong></td></tr>
+      <tr><td>Sexual orientation</td><td>Defining who you are <strong>attracted to</strong>, the opposite gender, the same gender, or to both or more than one gender</td></tr>
+      <tr><td>Biometric data</td><td><strong>Body measurements</strong> used to identify us uniquely like <strong>fingerprints</strong> or <strong>facial features</strong></td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 5 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Is each item listed as personal data or sensitive data?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="pers">
+        <span class="term">Home address</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+      <div class="classify-item" data-answer="sens">
+        <span class="term">Fingerprints</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+      <div class="classify-item" data-answer="pers">
+        <span class="term">Passwords</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+      <div class="classify-item" data-answer="sens">
+        <span class="term">Membership of a trade union</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+      <div class="classify-item" data-answer="pers">
+        <span class="term">Bank card details</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+      <div class="classify-item" data-answer="sens">
+        <span class="term">Medical history</span>
+        <span class="choices"><button data-choice="pers">Personal data</button><button data-choice="sens">Sensitive data</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 6 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which data protection principle does each example relate to?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="p1">
+        <span class="term">A school requests personal data so it can call guardians in an emergency</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+      <div class="classify-item" data-answer="p2">
+        <span class="term">A company uses a phone number given for delivery to market new products</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+      <div class="classify-item" data-answer="p3">
+        <span class="term">A bank asks a customer for their previous trips when opening an account</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+      <div class="classify-item" data-answer="p4">
+        <span class="term">A bank holds an old address, so it cannot send up to date statements</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+      <div class="classify-item" data-answer="p5">
+        <span class="term">A customer closes their account, so the company must delete their data</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+      <div class="classify-item" data-answer="p6">
+        <span class="term">A hospital gives a patient their full records because the patient asked</span>
+        <span class="choices"><button data-choice="p1">1 · Fair &amp; lawful</button><button data-choice="p2">2 · Specified purposes</button><button data-choice="p3">3 · Not excessive</button><button data-choice="p4">4 · Accurate</button><button data-choice="p5">5 · Not kept too long</button><button data-choice="p6">6 · People’s rights</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 7 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three exemptions from the Data Protection Act.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Domestic purposes</label>
+      <label class="select-item"><input type="checkbox"> Banks holding customer accounts</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Law enforcement</label>
+      <label class="select-item"><input type="checkbox"> Schools storing guardians’ phone numbers</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Intelligence services processing</label>
+      <label class="select-item"><input type="checkbox"> Hospitals keeping patient records</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 8 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is personal data?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Any data that can be used to identify an individual</button>
+        <button class="opt" data-idx="1">Only data about someone’s health</button>
+        <button class="opt" data-idx="2">Data stored on a personal computer</button>
+        <button class="opt" data-idx="3">Any data a company has deleted</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. Which of these helps avoid personal data being inappropriately disclosed?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Using the same password everywhere</button>
+        <button class="opt" data-idx="1">Using privacy settings and strong passwords</button>
+        <button class="opt" data-idx="2">Posting images without thinking</button>
+        <button class="opt" data-idx="3">Using any website, whether secure or not</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. Sensitive data is best described as:</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A subset of personal data that could lead to personal harm if disclosed</button>
+        <button class="opt" data-idx="1">Data that is no longer accurate</button>
+        <button class="opt" data-idx="2">Data protected only by the police</button>
+        <button class="opt" data-idx="3">Any data stored for longer than necessary</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-using">
+  <h2 class="section-title"><span class="tag">Part 3</span> E-safety: using IT</h2>
+
+  <h3>The need for e-safety</h3>
+  <p>E-safety is about <strong>knowing about</strong> and <strong>using</strong> the <strong>internet safely</strong> and <strong>responsibly</strong>. It refers to when an individual is using the <strong>internet, email, social media</strong> and <strong>online gaming</strong>, and <strong>knowing</strong> how to <strong>protect</strong> themselves from <strong>potential dangers and threats</strong>.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Need</th><th>Description</th></tr>
+      <tr><td><strong>Protects personal information</strong></td><td>Awareness that personal information should not be shared freely</td></tr>
+      <tr><td><strong>Prevents cyberbullying</strong></td><td>Awareness of how to act online and how to avoid falling victim, creating a safe and respectful online environment</td></tr>
+      <tr><td><strong>Guards against online scams</strong></td><td>Identify and avoid online scams, phishing attempts, and fraudulent websites that may try to trick them into sharing personal or financial information</td></tr>
+      <tr><td><strong>Ensures digital reputation</strong></td><td>Mindful of online behaviour and interactions, protecting your digital reputation, which can have long-term consequences in personal and professional lives</td></tr>
+      <tr><td><strong>Promotes privacy and control</strong></td><td>Have control over privacy settings on social media platforms, allowing a limit to who can access/view personal information and posts</td></tr>
+      <tr><td><strong>Prevents exposure to inappropriate content</strong></td><td>Avoid encountering explicit or harmful content online, reducing the risk of exposure to inappropriate material or online predators</td></tr>
+      <tr><td><strong>Secures online gaming experiences</strong></td><td>Engage in online gaming responsibly, avoiding sharing personal details and maintaining respectful behaviour towards other players</td></tr>
+      <tr><td><strong>Guards against malware and viruses</strong></td><td>Protecting devices from malware, viruses, and other online threats, preventing data loss, privacy breaches, or device damage</td></tr>
+      <tr><td><strong>Promotes responsible digital citizenship</strong></td><td>Develop responsible online behaviours, promoting respectful conduct while interacting with others on the internet</td></tr>
+      <tr><td><strong>Supports overall well-being</strong></td><td>Maintain a healthy balance between online and offline lives, reducing the risk of addiction, mental health issues, or negative impacts on relationships and self-esteem</td></tr>
+      </table>
+  </div>
+
+  <h3>How can you be safe using IT?</h3>
+  <p>By <strong>following the advice and guidance</strong>, users can stay safe whilst using the internet, sending/receiving email, using social media and playing games online.</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Task</th><th>Advice &amp; guidance</th></tr>
+      <tr><td>Using the internet</td><td>• Use <strong>trusted websites</strong> recommended by teachers or reputable sources<br>• Utilise <strong>search engines</strong> that only allow access to <strong>age-appropriate websites</strong> and use <strong>filters</strong> to ensure <strong>inappropriate content</strong> is not seen<br>• <strong>Never</strong> reveal <strong>personal information</strong></td></tr>
+      <tr><td>Sending/receiving email</td><td>• Be aware of the <strong>potential dangers</strong> of <strong>opening</strong> or <strong>replying</strong> to <strong>emails</strong> from <strong>unknown</strong> people, including <strong>attachments,</strong> potential dangers include <strong>phishing, spam</strong><br>• Ensure you know <strong>who the email is for</strong> when considering <strong>sending personal data</strong> or <strong>images</strong> via email, only with <strong>people you know</strong> and <strong>not with identifiable content</strong> like school photos</td></tr>
+      <tr><td>Using social media</td><td>• Know how to <strong>block</strong> and <strong>report</strong> people who send content or messages that are <strong>unwanted</strong><br>• Know where the <strong>privacy settings</strong> are to reduce the number of people who can see your posts or images<br>• Be aware of the potential dangers associated with meeting online contacts face to face, <strong>do not meet anyone you do not know</strong>, if you do, take an adult and meet publicly<br>• <strong>Do not distribute</strong> of <strong>inappropriate images</strong> and <strong>inappropriate language</strong><br>• <strong>Respect the confidentiality</strong> of <strong>personal data belonging to other people</strong><br>• <strong>Only accept friend requests</strong> from <strong>people you know</strong><br>• <strong>Parents should be aware of what you are doing online</strong>, discuss what you are doing online<br>• <strong>Do not post images</strong> or <strong>details</strong> that can be <strong>used to locate you</strong></td></tr>
+      <tr><td>Playing games online</td><td>• <strong>Do not use real names</strong> as usernames<br>• <strong>Never share personal</strong> or <strong>financial details</strong> with other players<br>• Know how to <strong>block</strong> and <strong>report players</strong> for <strong>inappropriate messages or comments</strong></td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 9 · Worked example</span><span class="pts">4 points</span></p>
+    <h4>A student uses social media to keep in contact with other people. Describe four strategies that the student could use to stay safe when using social media to communicate with others.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any four of)</span>Don’t give out other people’s personal information such as address or phone number<br>Don’t send inappropriate images to anyone<br>Don’t open/click on suspicious links/adverts on social media<br>Don’t become online ‘friends’ with people you do not know / don’t contact/chat with people you do not know<br>Never arrange to meet someone in person who you only met online<br>If anything you see or read online worries you, you should tell someone about it/block them<br>Use appropriate language<br>Set security so only friends can contact you</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-using" data-points="4">
+        <label for="sm-using">My answer covered four valid strategies — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 10 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which activity does each piece of advice belong to?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="net">
+        <span class="term">Use search engines that only allow access to age-appropriate websites</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+      <div class="classify-item" data-answer="game">
+        <span class="term">Do not use your real name as a username</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+      <div class="classify-item" data-answer="mail">
+        <span class="term">Be careful when opening attachments from unknown people</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+      <div class="classify-item" data-answer="social">
+        <span class="term">Only accept friend requests from people you know</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+      <div class="classify-item" data-answer="game">
+        <span class="term">Never share personal or financial details with other players</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+      <div class="classify-item" data-answer="mail">
+        <span class="term">Only send personal data or images to people you know</span>
+        <span class="choices"><button data-choice="net">Using the internet</button><button data-choice="mail">Email</button><button data-choice="social">Social media</button><button data-choice="game">Online games</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="4">
+    <p class="task-label"><span>Task 11 · Tick the right ones</span><span class="pts">4 points</span></p>
+    <h4>Select the four ways to stay safe on social media.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Only accept friend requests from people you know</label>
+      <label class="select-item"><input type="checkbox"> Meet online contacts alone and in private</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Know how to block and report unwanted messages</label>
+      <label class="select-item"><input type="checkbox"> Post details that show where you are right now</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Use privacy settings to reduce who can see your posts</label>
+      <label class="select-item"><input type="checkbox"> Share other people’s phone numbers with friends</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Do not post images or details that can be used to locate you</label>
+      <label class="select-item"><input type="checkbox"> Accept requests from anyone who sends one</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 12 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is e-safety about?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Knowing about and using the internet safely and responsibly</button>
+        <button class="opt" data-idx="1">Keeping computers away from water</button>
+        <button class="opt" data-idx="2">Making sure cables are tidy</button>
+        <button class="opt" data-idx="3">Deleting all personal data</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. What should you do if you decide to meet someone you only know online?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Go alone so it stays private</button>
+        <button class="opt" data-idx="1">Take an adult and meet publicly</button>
+        <button class="opt" data-idx="2">Meet somewhere quiet</button>
+        <button class="opt" data-idx="3">Tell nobody beforehand</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. Which dangers can come from opening emails from unknown people?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Phishing and spam</button>
+        <button class="opt" data-idx="1">Trailing cables</button>
+        <button class="opt" data-idx="2">Equipment overheating</button>
+        <button class="opt" data-idx="3">Heavy equipment falling</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Safety — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Shuffle everything so answer order is never predictable ----
+  function shuffleChildren(parent, selector){
+    const items = Array.prototype.slice.call(selector ? parent.querySelectorAll(selector) : parent.children);
+    for(let i = items.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+    }
+    items.forEach(function(it){ it.parentNode.appendChild(it); });
+  }
+  // sort-it items
+  document.querySelectorAll('.classify-list').forEach(function(list){ shuffleChildren(list); });
+  // tick-box items
+  document.querySelectorAll('.select-list').forEach(function(list){ shuffleChildren(list); });
+  // quick-check: shuffle the questions, then each question's options, then renumber
+  document.querySelectorAll('.task[data-task="mcq"]').forEach(function(task){
+    const qs = Array.prototype.slice.call(task.querySelectorAll('.mcq'));
+    for(let i = qs.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = qs[i]; qs[i] = qs[j]; qs[j] = tmp;
+    }
+    qs.forEach(function(q, n){
+      task.appendChild(q);
+      shuffleChildren(q.querySelector('.opts'));
+      const p = q.querySelector('p.q');
+      p.textContent = (n + 1) + '. ' + p.textContent.replace(/^\d+\.\s*/, '');
+    });
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      const wrong = task.querySelectorAll('.select-item.incorrect').length;
+      const allGood = (correctChecked === totalCorrect && wrong === 0);
+      feedback.textContent = allGood
+        ? 'All correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = allGood ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+</body>
+</html>
