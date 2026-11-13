@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audience &amp; Purpose — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  figure{ margin:22px 0; }
+  figure img{ display:block; width:100%; max-width:480px; height:auto; margin:0 auto; border:1px solid var(--trace); border-radius:var(--radius); background:#fff; }
+  figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .tip{ border-left:2px solid var(--gold); background:rgba(215,184,114,0.07); padding:12px 16px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0; }
+  .tip .lbl{ display:block; font-family:var(--mono); font-size:11.5px; color:var(--gold); margin-bottom:4px; }
+  ol{ padding-left:24px; margin:10px 0; }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">33</span></div>
+
+<nav class="theory-nav">
+  <a href="#" class="disabled" aria-disabled="true">← <span class="full">Previous theory:</span> Coming soon</a>
+  <span class="spacer"></span>
+  <a href="#" class="disabled" aria-disabled="true"><span class="full">Next theory:</span> Coming soon →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Audience &amp; Purpose</p>
+  <h1 class="title">Audience &amp; Purpose</h1>
+  <p>Before designing an ICT solution you need to know who will use it and why it is being made. This page covers the characteristics of an audience and how they shape a design — with activities at the end of each part. Your answers and score are saved on this device.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="audience">1 · Audience &amp; purpose</button>
+  <button class="tab-btn" data-panel="casestudy">2 · Case study</button>
+</nav>
+
+<div class="wrap">
+
+<div class="panel active" id="panel-audience">
+  <h2 class="section-title"><span class="tag">Part 1</span> Audience &amp; purpose</h2>
+  <p>An <strong>audience</strong> is the <strong>specific group of users</strong> that <strong>will be using</strong> the ICT solution. The <strong>purpose</strong> is <strong>why</strong> the ICT solution was created.</p>
+  <p>Before designing an ICT solution it is important to understand the <strong>audience characteristics</strong> and the <strong>needs of the audience</strong>.</p>
+
+  <h3>Characteristics of an audience</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Characteristic</th><th>Description</th></tr>
+      <tr><td><strong>Age</strong></td><td>• Younger audiences are generally open to new interfaces<br>• Older audiences may prefer a more intuitive design and require training</td></tr>
+      <tr><td><strong>Location</strong></td><td>• Cultural references<br>• Access to high speed internet<br>• Language</td></tr>
+      <tr><td><strong>Education &amp; technical skill</strong></td><td>• Determines the level of complexity they can handle</td></tr>
+      <tr><td><strong>Interests</strong></td><td>• How can the solution cater to users’ interests?<br>• Influence design elements and user experience</td></tr>
+      <tr><td><strong>Accessibility needs</strong></td><td>• Does the solution cater to users with visual impairments or hearing impairments?<br>• Is the interface accessible to users with limited mobility?</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 1 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which characteristic of an audience is each question about?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="acc">
+        <span class="term">Does the interface work for users with limited mobility?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="loc">
+        <span class="term">Do the users have access to high speed internet?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="age">
+        <span class="term">Are younger users generally open to new interfaces?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="int">
+        <span class="term">How can the solution cater to what users enjoy?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="edu">
+        <span class="term">What level of complexity can the users handle?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="loc">
+        <span class="term">Which language do the users speak?</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 2 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three things listed under the audience characteristic <strong>Location</strong>.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Cultural references</label>
+      <label class="select-item"><input type="checkbox"> Visual impairments</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Access to high speed internet</label>
+      <label class="select-item"><input type="checkbox"> The level of complexity users can handle</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Language</label>
+      <label class="select-item"><input type="checkbox"> Training for older users</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 3 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is an audience?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The specific group of users that will be using the ICT solution</button>
+        <button class="opt" data-idx="1">The reason the ICT solution was created</button>
+        <button class="opt" data-idx="2">The company that builds the solution</button>
+        <button class="opt" data-idx="3">The hardware the solution runs on</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. What is the purpose of an ICT solution?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Who will use it</button>
+        <button class="opt" data-idx="1">Why it was created</button>
+        <button class="opt" data-idx="2">Where it will be used</button>
+        <button class="opt" data-idx="3">How much it costs</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. What is important to understand before designing an ICT solution?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The price of the hardware</button>
+        <button class="opt" data-idx="1">The audience characteristics and the needs of the audience</button>
+        <button class="opt" data-idx="2">The colour of the interface</button>
+        <button class="opt" data-idx="3">How many files it will use</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 4 · Written answer</span><span class="pts">4 points</span></p>
+    <h4>A company is designing a new app for older adults to book medical appointments. Describe four characteristics of this audience that the designers should consider.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer (any four of)</span><strong>Age</strong> – older users may prefer a more intuitive design and require training<br><strong>Location</strong> – the language, cultural references and whether users have access to high speed internet<br><strong>Education &amp; technical skill</strong> – this determines the level of complexity the users can handle<br><strong>Interests</strong> – these influence design elements and the user experience<br><strong>Accessibility needs</strong> – whether it works for users with visual or hearing impairments, or limited mobility</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-audience" data-points="4">
+        <label for="sm-audience">My answer described four valid characteristics — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-casestudy">
+  <h2 class="section-title"><span class="tag">Part 2</span> Case study: an educational game</h2>
+  <p>Designing a new educational game. <strong>What are the needs of the audience?</strong></p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Factor</th><th>Impact</th></tr>
+      <tr><td><strong>Age</strong></td><td>• Younger audiences would require simple mechanics &amp; more visual cues<br>• Older audiences would require more complex mechanics, longer gameplay and ability to make more choices</td></tr>
+      <tr><td><strong>Location</strong></td><td>• Characters and storyline designed to connect with cultural background of users<br>• Multiple language options</td></tr>
+      <tr><td><strong>Education &amp; technical skill</strong></td><td>• Low education levels focus on clear and precise instructions and tutorials<br>• High education levels focus on more abstract concepts and design an intuitive interface which can be used on multiple devices</td></tr>
+      <tr><td><strong>Interests</strong></td><td>• Consider themes and genres that will appeal to an audience’s interests<br>• If possible, give users a choice of theme/genre</td></tr>
+      <tr><td><strong>Accessibility needs</strong></td><td>• Screen readers<br>• High contrast mode<br>• Closed captions<br>• Transcripts<br>• Alternative control methods (e.g. voice commands)</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 5 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which factor does each design decision respond to?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="loc">
+        <span class="term">Offer multiple language options</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="acc">
+        <span class="term">Include a high contrast mode</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="age">
+        <span class="term">Use simple mechanics and more visual cues for young players</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="int">
+        <span class="term">Give users a choice of theme or genre</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="edu">
+        <span class="term">Provide clear and precise instructions and tutorials</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+      <div class="classify-item" data-answer="loc">
+        <span class="term">Design characters and a storyline that connect with users’ cultural background</span>
+        <span class="choices"><button data-choice="age">Age</button><button data-choice="loc">Location</button><button data-choice="edu">Education &amp; technical skill</button><button data-choice="int">Interests</button><button data-choice="acc">Accessibility needs</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="4">
+    <p class="task-label"><span>Task 6 · Tick the right ones</span><span class="pts">4 points</span></p>
+    <h4>Select the four accessibility features suggested for the game.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Screen readers</label>
+      <label class="select-item"><input type="checkbox"> Multiple language options</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> High contrast mode</label>
+      <label class="select-item"><input type="checkbox"> Longer gameplay</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Closed captions</label>
+      <label class="select-item"><input type="checkbox"> A choice of theme or genre</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Alternative control methods, such as voice commands</label>
+      <label class="select-item"><input type="checkbox"> Tutorials for low education levels</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 7 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What would younger audiences require from the game?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Simple mechanics and more visual cues</button>
+        <button class="opt" data-idx="1">More complex mechanics and longer gameplay</button>
+        <button class="opt" data-idx="2">Abstract concepts</button>
+        <button class="opt" data-idx="3">Fewer visual cues</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">2. What would older audiences require from the game?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Simple mechanics only</button>
+        <button class="opt" data-idx="1">Only closed captions</button>
+        <button class="opt" data-idx="2">More complex mechanics, longer gameplay and the ability to make more choices</button>
+        <button class="opt" data-idx="3">No choices at all</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. For low education levels, what should the design focus on?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">More abstract concepts</button>
+        <button class="opt" data-idx="1">Clear and precise instructions and tutorials</button>
+        <button class="opt" data-idx="2">Complex mechanics</button>
+        <button class="opt" data-idx="3">Hiding the instructions</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 8 · Written answer</span><span class="pts">4 points</span></p>
+    <h4>A company is designing an educational game for children aged 6 to 8 in several countries. Describe four ways the design could meet the needs of this audience.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer (any four of)</span>Use simple mechanics and more visual cues because the players are young<br>Design characters and a storyline that connect with the users’ cultural background<br>Provide multiple language options<br>Give clear and precise instructions and tutorials for low education levels<br>Consider themes and genres that appeal to the audience’s interests / give a choice of theme or genre<br>Include accessibility features such as screen readers, high contrast mode, closed captions, transcripts or voice commands</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-casestudy" data-points="4">
+        <label for="sm-casestudy">My answer described four valid ways — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Audience &amp; Purpose — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Shuffle (visual only, via CSS "order", so the DOM order stays fixed and saved answers always map to the right item) ----
+  function shuffleOrder(nodes){
+    const idx = nodes.map(function(_, i){ return i; });
+    for(let i = idx.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp;
+    }
+    nodes.forEach(function(n, i){ n.style.order = idx[i]; });
+    return idx;
+  }
+  // sort-it items and tick-box items
+  document.querySelectorAll('.classify-list').forEach(function(list){
+    list.style.display = 'flex'; list.style.flexDirection = 'column';
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  document.querySelectorAll('.select-list').forEach(function(list){
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  // quick-check: shuffle the questions (and renumber them), then each question's options
+  document.querySelectorAll('.task[data-task="mcq"]').forEach(function(task){
+    task.style.display = 'flex'; task.style.flexDirection = 'column';
+    const qs = Array.prototype.slice.call(task.querySelectorAll('.mcq'));
+    const idx = shuffleOrder(qs);
+    qs.forEach(function(q, i){
+      const p = q.querySelector('p.q');
+      p.textContent = (idx[i] + 1) + '. ' + p.textContent.replace(/^\d+\.\s*/, '');
+      shuffleOrder(Array.prototype.slice.call(q.querySelectorAll('.opt')));
+    });
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      const wrong = task.querySelectorAll('.select-item.incorrect').length;
+      const allGood = (correctChecked === totalCorrect && wrong === 0);
+      feedback.textContent = allGood
+        ? 'All correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = allGood ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+<script>
+  (function(){
+    var STORE_KEY = 'ict-lesson-progress::' + location.pathname + '::' + document.title;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(mutator){
+    try {
+      var s = load();
+      mutator(s);
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+    } catch(e){ /* storage unavailable or full — fail silently */ }
+  }
+
+  var subQs      = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="open"] .sub-q'));
+  var classifyIt = Array.prototype.slice.call(document.querySelectorAll('.classify-item'));
+  var mcqs       = Array.prototype.slice.call(document.querySelectorAll('.mcq'));
+  var orderTasks = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="order"]'));
+  var selectTasks= Array.prototype.slice.call(document.querySelectorAll('.task[data-task="select"]'));
+
+  // ---- SAVE: listen alongside the page's own handlers ----
+
+  subQs.forEach(function(sq, i){
+    var key = 'subq-' + i;
+    var ta = sq.querySelector('textarea');
+    var btn = sq.querySelector('.check-btn');
+    var cb = sq.querySelector('.self-mark input[type=checkbox]');
+
+    if(ta) ta.addEventListener('input', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].text = ta.value; });
+    });
+    if(btn) btn.addEventListener('click', function(){
+      save(function(s){
+        s[key] = s[key] || {};
+        s[key].text = ta ? ta.value : '';
+        s[key].checked = !!(ta && ta.value.trim());
+      });
+    });
+    if(cb) cb.addEventListener('change', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].selfMarked = cb.checked; });
+    });
+  });
+
+  classifyIt.forEach(function(item, i){
+    var buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b, bi){
+      b.addEventListener('click', function(){
+        save(function(s){ s['classify-' + i] = bi; });
+      });
+    });
+  });
+
+  mcqs.forEach(function(mcq, i){
+    var opts = mcq.querySelectorAll('.opt');
+    opts.forEach(function(o, oi){
+      o.addEventListener('click', function(){
+        save(function(s){ s['mcq-' + i] = oi; });
+      });
+    });
+  });
+
+  orderTasks.forEach(function(task, ti){
+    var items = task.querySelectorAll('.order-item');
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        save(function(s){
+          var key = 'order-' + ti;
+          s[key] = s[key] || [];
+          s[key].push(item.dataset.order);
+        });
+      });
+    });
+  });
+
+  selectTasks.forEach(function(task, ti){
+    var btn = task.querySelector('.check-select-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      var checkedIdx = [];
+      items.forEach(function(inp, ii){ if(inp.checked) checkedIdx.push(ii); });
+      save(function(s){ s['select-' + ti] = checkedIdx; });
+    });
+  });
+
+  // ---- RESTORE: replay stored answers as real clicks, so the page's
+  // own scoring logic runs exactly as it did originally ----
+
+  (function restore(){
+    var s = load();
+
+    subQs.forEach(function(sq, i){
+      var rec = s['subq-' + i];
+      if(!rec) return;
+      var ta = sq.querySelector('textarea');
+      var btn = sq.querySelector('.check-btn');
+      var cb = sq.querySelector('.self-mark input[type=checkbox]');
+      if(ta && rec.text) ta.value = rec.text;
+      if(rec.checked && btn) btn.click();
+      if(rec.selfMarked && cb){
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+
+    classifyIt.forEach(function(item, i){
+      var bi = s['classify-' + i];
+      if(bi === undefined) return;
+      var buttons = item.querySelectorAll('.choices button');
+      if(buttons[bi]) buttons[bi].click();
+    });
+
+    mcqs.forEach(function(mcq, i){
+      var oi = s['mcq-' + i];
+      if(oi === undefined) return;
+      var opts = mcq.querySelectorAll('.opt');
+      if(opts[oi]) opts[oi].click();
+    });
+
+    orderTasks.forEach(function(task, ti){
+      var seq = s['order-' + ti];
+      if(!seq) return;
+      seq.forEach(function(orderVal){
+        var items = task.querySelectorAll('.order-item');
+        for(var j = 0; j < items.length; j++){
+          if(items[j].dataset.order === orderVal && !items[j].disabled){
+            items[j].click();
+            break;
+          }
+        }
+      });
+    });
+
+    selectTasks.forEach(function(task, ti){
+      var idxArr = s['select-' + ti];
+      if(!idxArr) return;
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      idxArr.forEach(function(ii){ if(items[ii]) items[ii].checked = true; });
+      var btn = task.querySelector('.check-select-btn');
+      if(btn) btn.click();
+    });
+  })();
+
+  // ---- Small "reset my answers" control ----
+  var resetBtn = document.createElement('button');
+  resetBtn.textContent = 'Reset my answers';
+  resetBtn.setAttribute('type', 'button');
+  resetBtn.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;'
+    + 'font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;'
+    + 'color:#a9a294;border-radius:3px;cursor:pointer;';
+  resetBtn.addEventListener('mouseenter', function(){ resetBtn.style.color = '#e9e4d6'; });
+  resetBtn.addEventListener('mouseleave', function(){ resetBtn.style.color = '#a9a294'; });
+  resetBtn.addEventListener('click', function(){
+    if(confirm('Clear all your saved answers on this page?')){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.body.appendChild(resetBtn);
+})();
+</script>
+</body>
+</html>

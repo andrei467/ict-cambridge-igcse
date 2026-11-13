@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communication — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  figure{ margin:22px 0; }
+  figure img{ display:block; width:100%; max-width:480px; height:auto; margin:0 auto; border:1px solid var(--trace); border-radius:var(--radius); background:#fff; }
+  figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .tip{ border-left:2px solid var(--gold); background:rgba(215,184,114,0.07); padding:12px 16px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0; }
+  .tip .lbl{ display:block; font-family:var(--mono); font-size:11.5px; color:var(--gold); margin-bottom:4px; }
+  ol{ padding-left:24px; margin:10px 0; }
+
+  .diagram{ margin:22px 0; }
+  .diagram svg{ display:block; width:100%; max-width:560px; height:auto; margin:0 auto; }
+  .diagram figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .dg-box{ fill:var(--bg-raised); stroke:var(--trace); stroke-width:1.5; }
+  .dg-bar{ fill:#1f2b25; stroke:var(--trace); stroke-width:1.5; }
+  .dg-ok{ fill:rgba(127,166,138,0.18); stroke:var(--sage); stroke-width:1.5; }
+  .dg-warn{ fill:rgba(201,138,75,0.15); stroke:var(--copper); stroke-width:1.5; }
+  .dg-btn{ fill:var(--copper); }
+  .dg-line{ stroke:var(--copper-bright); stroke-width:2; fill:none; }
+  .dg-t{ fill:var(--paper); font-family:var(--mono); font-size:14px; }
+  .dg-s{ fill:var(--paper-dim); font-family:var(--mono); font-size:12px; }
+  .dg-d{ fill:#101613; font-family:var(--mono); font-size:13px; font-weight:700; }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">76</span></div>
+
+<nav class="theory-nav">
+  <a href="#" class="disabled" aria-disabled="true">← <span class="full">Previous theory:</span> Coming soon</a>
+  <span class="spacer"></span>
+  <a href="#" class="disabled" aria-disabled="true"><span class="full">Next theory:</span> Coming soon →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Communication</p>
+  <h1 class="title">Communication</h1>
+  <p>How we communicate over networks: email and spam, the internet and how to use it wisely, and the protocols that make it all work — with activities at the end of each part. Your answers and score are saved on this device.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="email">1 · Email</button>
+  <button class="tab-btn" data-panel="internet">2 · The Internet</button>
+  <button class="tab-btn" data-panel="protocols">3 · Internet protocols</button>
+</nav>
+
+<div class="wrap">
+
+<div class="panel active" id="panel-email">
+  <h2 class="section-title"><span class="tag">Part 1</span> Email</h2>
+  <p>Email is a <strong>method of exchanging messages</strong> and files over the internet. The main uses of email are <strong>personal communication, professional correspondence</strong> and <strong>marketing</strong>. Companies provide <strong>guidelines</strong> about <strong>acceptable use</strong> of emails, including the <strong>purpose</strong> of the email, using <strong>acceptable language</strong> and email <strong>security</strong> (including anti-virus software).</p>
+
+  <h3>Acceptable language guidelines</h3>
+<div class="block">
+    <ul>
+      <li>Acceptable and <strong>appropriate language</strong> must be used depending on the <strong>recipient</strong> and <strong>purpose</strong> of the email — e.g. a <strong>professional tone</strong> for a work-related email</li>
+      <li><strong>No offensive or obscene language</strong> or images should be used</li>
+      <li><strong>No racism or violent content</strong> should be in email messages</li>
+      <li><strong>No illegal material</strong> should be sent</li>
+      <li>The <strong>laws within a country</strong> can see that <strong>emails are monitored</strong> and people can be <strong>punished</strong> for what they write</li>
+      <li>Additional rules: include a <strong>clear subject line</strong>, use a <strong>professional email address</strong>, use <strong>professional salutations</strong>, and <strong>do not use all capitals</strong> as it implies shouting</li>
+    </ul>
+  </div>
+  <h3>Need for security</h3>
+<div class="block">
+    <ul>
+      <li>Email security is crucial to <strong>protect sensitive information from being accessed</strong> or altered</li>
+      <li>Email inboxes should be protected by <strong>strong passwords</strong> which are frequently changed</li>
+      <li><strong>Spam filters and antivirus software</strong> should be in place at all times to protect users’ inboxes from both <strong>passive attacks</strong> and <strong>active attacks</strong></li>
+    </ul>
+  </div>
+  <h3>Netiquette</h3>
+  <p>Netiquette (Inter<strong>net</strong> et<strong>iquette</strong>) is the need to <strong>respect others online</strong>. It is an agreement to respect the opinion of others in online forums, internet messages and emails. Common examples:</p>
+<div class="block">
+    <ul>
+      <li>Most posts are public and can potentially be read by anyone</li>
+      <li>A clear, inoffensive and succinct language will be used</li>
+      <li>Give a good impression of yourself, considering the tone of writing, spelling, punctuation and grammar</li>
+    </ul>
+  </div>
+  <h3>Email groups</h3>
+<div class="block">
+    <ul>
+      <li>Email groups allow for <strong>mass communication</strong> with a <strong>defined set of recipients</strong></li>
+      <li>It is <strong>easier to send out multiple emails</strong> if the addresses are grouped together</li>
+      <li>Benefit: it ensures <strong>no one misses out on an email</strong> containing key information</li>
+      <li>Drawback: <strong>spammers can utilise them</strong> to target a large group of people with ease</li>
+    </ul>
+  </div>
+  <h3>Email operations</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Operation</th><th>What it does</th></tr>
+      <tr><td><strong>Carbon Copy (CC)</strong></td><td>Used when you want to include additional recipients to view the email</td></tr>
+      <tr><td><strong>Blind Carbon Copy (BCC)</strong></td><td>Used when you want additional recipients to view the email without other recipients knowing</td></tr>
+      <tr><td><strong>Forward</strong></td><td>Allows you to send an existing email to a new recipient</td></tr>
+      <tr><td><strong>Attachments</strong></td><td>Allow files to be sent along with the email message</td></tr>
+      </table>
+  </div>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 600 270" role="img" aria-label="An email window showing the To, CC and BCC fields, the subject line, the body and a Send button">
+      <defs><marker id="dg-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--copper-bright)"/></marker></defs>
+      <rect class="dg-box" x="10" y="10" width="580" height="250" rx="4"/>
+      <rect class="dg-bar" x="10" y="10" width="580" height="30" rx="4"/>
+      <text class="dg-t" x="24" y="30">New message</text>
+      <text class="dg-t" x="24" y="66">TO</text><text class="dg-t" x="24" y="90">CC</text><text class="dg-t" x="24" y="114">BCC</text>
+      <rect class="dg-ok" x="300" y="52" width="270" height="30" rx="3"/>
+      <text class="dg-s" x="314" y="72">recipients’ email addresses</text>
+      <path class="dg-line" marker-end="url(#dg-arrow)" d="M296 67 C240 67 190 58 118 63"/>
+      <line x1="10" y1="128" x2="590" y2="128" style="stroke:var(--trace)"/>
+      <text class="dg-t" x="24" y="152">SUBJECT OF THE EMAIL</text>
+      <line x1="10" y1="164" x2="590" y2="164" style="stroke:var(--trace)"/>
+      <rect class="dg-warn" x="300" y="176" width="270" height="34" rx="3"/>
+      <text class="dg-s" x="314" y="198">body of the email</text>
+      <path class="dg-line" marker-end="url(#dg-arrow)" d="M296 193 C250 203 190 205 118 188"/>
+      <rect class="dg-btn" x="24" y="224" width="86" height="26" rx="13"/>
+      <text class="dg-d" x="45" y="242">SEND</text>
+      <text class="dg-s" x="130" y="242">📎  🔗  😊  (attachments and other tools)</text>
+    </svg>
+    <figcaption>The parts of an email window</figcaption>
+  </figure>
+
+  <h3>Spam</h3>
+  <p>Spam is <strong>unwanted/unsolicited junk mail</strong> which is sent in <strong>large numbers</strong> to inboxes. It fills users’ inboxes, often with <strong>advertising</strong> content or for <strong>phishing/spreading malware</strong>. Phishing emails <strong>act as a reputable company or organisation</strong> in the aim of <strong>getting your personal details</strong> such as usernames and passwords.</p>
+  <p><strong>How can spam emails be detected?</strong></p>
+<div class="block">
+    <ul>
+      <li>Often has <strong>multiple spelling or grammatical errors</strong></li>
+      <li>They often use <strong>broken English</strong>, though this is now improving with the use of AI</li>
+      <li>Spam emails will <strong>not address you by name</strong></li>
+      <li>Often ask you to <strong>enter your details by clicking a link</strong> — reputable companies have now stopped doing this to make identifying spam a lot easier</li>
+    </ul>
+  </div>
+  <p><strong>How can spam emails be prevented?</strong></p>
+<div class="block">
+    <ul>
+      <li>Email providers’ <strong>anti-spam filters</strong> become stronger and more efficient</li>
+      <li>Users can ensure they <strong>do not agree to marketing emails</strong> from companies they register with</li>
+      <li>Users can also ensure they <strong>do not reply to emails with sensitive data</strong> or complete online forms by <strong>clicking links in an email</strong> — instead, they should visit the website of their own accord and then log in as usual</li>
+    </ul>
+  </div>
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 1 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Which email operation does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="bcc">
+        <span class="term">Let additional recipients view the email without other recipients knowing</span>
+        <span class="choices"><button data-choice="cc">CC</button><button data-choice="bcc">BCC</button><button data-choice="fwd">Forward</button><button data-choice="att">Attachment</button></span>
+      </div>
+      <div class="classify-item" data-answer="fwd">
+        <span class="term">Send an existing email to a new recipient</span>
+        <span class="choices"><button data-choice="cc">CC</button><button data-choice="bcc">BCC</button><button data-choice="fwd">Forward</button><button data-choice="att">Attachment</button></span>
+      </div>
+      <div class="classify-item" data-answer="cc">
+        <span class="term">Include additional recipients to view the email</span>
+        <span class="choices"><button data-choice="cc">CC</button><button data-choice="bcc">BCC</button><button data-choice="fwd">Forward</button><button data-choice="att">Attachment</button></span>
+      </div>
+      <div class="classify-item" data-answer="att">
+        <span class="term">Send a file along with the email message</span>
+        <span class="choices"><button data-choice="cc">CC</button><button data-choice="bcc">BCC</button><button data-choice="fwd">Forward</button><button data-choice="att">Attachment</button></span>
+      </div>
+      <div class="classify-item" data-answer="cc">
+        <span class="term">Openly copy your manager so everyone can see she was included</span>
+        <span class="choices"><button data-choice="cc">CC</button><button data-choice="bcc">BCC</button><button data-choice="fwd">Forward</button><button data-choice="att">Attachment</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 2 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Is each one acceptable in a work email or not?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="ok">
+        <span class="term">A professional tone</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+      <div class="classify-item" data-answer="no">
+        <span class="term">Writing the whole message in capital letters</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+      <div class="classify-item" data-answer="ok">
+        <span class="term">A clear subject line</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+      <div class="classify-item" data-answer="no">
+        <span class="term">Offensive images</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+      <div class="classify-item" data-answer="ok">
+        <span class="term">A professional salutation</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+      <div class="classify-item" data-answer="no">
+        <span class="term">Sending illegal material</span>
+        <span class="choices"><button data-choice="ok">Acceptable</button><button data-choice="no">Not acceptable</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="4">
+    <p class="task-label"><span>Task 3 · Tick the right ones</span><span class="pts">4 points</span></p>
+    <h4>Select the four signs that an email may be spam.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Multiple spelling or grammatical errors</label>
+      <label class="select-item"><input type="checkbox"> It addresses you by name</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> It does not address you by name</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> It asks you to enter your details by clicking a link</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> It asks for personal information</label>
+      <label class="select-item"><input type="checkbox"> It was sent by your teacher to the class email group</label>
+      <label class="select-item"><input type="checkbox"> It tells you to visit the website yourself and log in as usual</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 4 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is netiquette?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The need to respect others online</button>
+        <button class="opt" data-idx="1">A type of email virus</button>
+        <button class="opt" data-idx="2">A way to send files by email</button>
+        <button class="opt" data-idx="3">A rule for storing passwords</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">2. What is a drawback of email groups?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Spammers can use them to target a large group of people with ease</button>
+        <button class="opt" data-idx="1">Some people miss key information</button>
+        <button class="opt" data-idx="2">They cannot contain more than one person</button>
+        <button class="opt" data-idx="3">They stop attachments being sent</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. What should be in place at all times to protect inboxes from passive and active attacks?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A clear subject line</button>
+        <button class="opt" data-idx="1">Spam filters and antivirus software</button>
+        <button class="opt" data-idx="2">A professional salutation</button>
+        <button class="opt" data-idx="3">Email groups</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Task 5 · Worked example</span><span class="pts">6 points</span></p>
+    <h4>Describe the ways that a user can recognise spam and methods to help prevent it.<br><em>How to answer: give a maximum of 4 bullet points on how users can recognise spam content and then a maximum of 4 points on how they can prevent spam content.</em></h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answers</span><strong>Recognising spam (max 4):</strong> multiple spelling/grammatical errors · asked to carry out tasks immediately such as click on a link · does not ask for you by name · stored in a SPAM folder · email asks for personal information · large amount of repeated emails from the same user · lots of other similar email addresses in the send-to-box<br><br><strong>Prevention methods (max 4):</strong> use a spam filter · not filling in your details on the online form · not replying to spam emails · not having an auto-reply set · not consenting to marketing when providing details to a company</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-email" data-points="6">
+        <label for="sm-email">My answer earned marks from both lists — award myself up to 6 points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="3">
+    <p class="task-label"><span>Task 6 · Written answer</span><span class="pts">3 points</span></p>
+    <h4>A company wants its staff to use email professionally. State three rules that its email guidelines should include.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer (any three of)</span>Use acceptable/appropriate language, such as a professional tone · no offensive or obscene language or images · no racism or violent content · no illegal material · include a clear subject line · use a professional email address · use professional salutations · do not use all capitals</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-email2" data-points="3">
+        <label for="sm-email2">My answer stated three valid rules — award myself all three points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-internet">
+  <h2 class="section-title"><span class="tag">Part 2</span> The Internet</h2>
+  <p>The Internet is a <strong>network of networks</strong> which allows users to share and distribute information outside of an organisation and to send and receive emails. It has many features users can use to communicate and share information with others.</p>
+
+  <h3>Blogs, forums &amp; wikis</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th></th><th>Blog</th><th>Forum</th><th>Wiki</th></tr>
+      <tr><td><strong>What it is</strong></td><td>Web logs: journals shared on the internet by a writer (blogger)</td><td>An online discussion site where people hold conversations in the form of posted messages</td><td>A website or web application that allows users to add or edit content</td></tr>
+      <tr><td><strong>Style / purpose</strong></td><td>Regularly updated, often informal or conversational; people share views and opinions (movies, food and restaurants, game releases)</td><td>Primarily focused on peer-to-peer interaction; organised around topics or interests</td><td>Designed to facilitate collaboration and knowledge sharing from many people</td></tr>
+      <tr><td><strong>Order / structure</strong></td><td>Reverse chronological order</td><td>Divided into categories known as threads; may need an account before posting</td><td>Posts are not in chronological order; the structure is determined by the content or its users</td></tr>
+      <tr><td><strong>Who can change it</strong></td><td>Other users can’t change the content, they can only read it (reader comments allow some discussion)</td><td>Can be moderated (an administrator decides what can be posted) or unmoderated (no one is in charge, so it relies on voluntary action by users)</td><td>Changes can be tracked and reverted if necessary</td></tr>
+      </table>
+  </div>
+
+  <h3>Social networks</h3>
+  <p>A social network website is a platform where users can <strong>connect with others and share content</strong>, e.g. Facebook, TikTok, X (Twitter), Instagram and LinkedIn. Users usually <strong>create a profile</strong> and can share text, images, videos and links. They facilitate <strong>interaction, collaboration and information sharing</strong> on a large scale, and <strong>privacy settings</strong> allow users to control who can see their content.</p>
+
+  <h3>ISPs, web browsers &amp; URLs</h3>
+<div class="block">
+    <ul>
+      <li>An <strong>Internet Service Provider (ISP)</strong> is a company that provides access to the Internet to users and businesses, by <strong>leasing equipment and telecommunication lines</strong> to users</li>
+      <li>A <strong>web browser</strong> is a software application used to <strong>locate, retrieve and display</strong> content on the WWW (web pages with images, videos and other files)</li>
+      <li>A <strong>hyperlink</strong> is a word/phrase/image which references data the reader can follow by clicking or tapping, usually taking you to another web page</li>
+      <li>Most browsers have a <strong>home page</strong>, the ability to <strong>bookmark favourites</strong>, a <strong>history of visited websites</strong> and <strong>hyperlinks</strong> to navigate between pages</li>
+      <li>A <strong>Uniform Resource Locator (URL)</strong> is the web address a user types into a web browser. Websites are stored as an IP address, which is not user friendly, so an <strong>alphanumeric format</strong> is used for humans, e.g. www.savemyexams.com</li>
+    </ul>
+  </div>
+  <h3>Search engines</h3>
+  <p>Search engines are <strong>tools that locate and display web pages</strong> related to the <strong>search terms entered by the user</strong>. They <strong>index</strong> millions of web pages and use <strong>algorithms</strong> to rank the <strong>relevance</strong> of each page. They work in three stages:</p>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Stage</th><th>What happens</th></tr>
+      <tr><td><strong>Crawling</strong></td><td>Web crawlers <strong>scour the internet daily</strong> to retrieve new websites</td></tr>
+      <tr><td><strong>Indexing</strong></td><td>Websites are <strong>categorised</strong> based on the content of their web pages, keywords and metadata</td></tr>
+      <tr><td><strong>Ranking</strong></td><td>Websites are ranked and <strong>listed on search engine pages</strong>; this depends on many factors to display the most relevant results</td></tr>
+      </table>
+  </div>
+<div class="block">
+    <ul>
+      <li>Search engines can give an overwhelming amount of information, so use <strong>specific and relevant search terms</strong>. <strong>Quotation marks</strong> are for exact phrases, <strong>plus signs</strong> for mandatory terms and <strong>minus signs</strong> for excluding terms</li>
+      <li>Relevance is decided by the search engine’s algorithm (keyword frequency, page quality and EEAT). Reliable information typically comes from <strong>educational establishments, governments</strong> or well-established <strong>industry</strong> websites</li>
+    </ul>
+  </div>
+  <h3>Evaluating information found on the internet</h3>
+<div class="block">
+    <ul>
+      <li>Not all information is accurate or reliable</li>
+      <li>Assess <strong>reliability</strong> by considering the <strong>reputation and credibility</strong> of the source</li>
+      <li>Determine <strong>validity</strong> by checking it against other reputable sources</li>
+      <li>Consider whether the information is <strong>biased</strong>, promoting a particular viewpoint</li>
+      <li>Check how <strong>up-to-date</strong> the information is — outdated information can be misleading</li>
+    </ul>
+  </div>
+  <h3>Risks of the internet — policing</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Arguments for policing the internet</th><th>Arguments against policing the internet</th></tr>
+      <tr><td>The internet contains a large amount of inappropriate and criminal material</td><td>Data restriction: parental, educational and ISP controls could limit access to certain information or websites</td></tr>
+      <tr><td>The internet can expose users to harmful or illegal content</td><td>It can be argued that it would go against freedom of speech</td></tr>
+      <tr><td>More control would prevent younger users and vulnerable groups from being exposed to undesirable content</td><td>It is not up to one person to define what people find offensive</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="7">
+    <p class="task-label"><span>Task 7 · Sort it</span><span class="pts">7 points</span></p>
+    <h4>Which one does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="blog">
+        <span class="term">A journal shown in reverse chronological order, where other users can only read and comment</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="forum">
+        <span class="term">An online discussion site organised into threads, which may be moderated</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="wiki">
+        <span class="term">A website where users can add or edit content, with changes that can be tracked and reverted</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="social">
+        <span class="term">A platform where users create a profile and share text, images, videos and links</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="wiki">
+        <span class="term">Posts are not in chronological order and the structure is set by its content or users</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="forum">
+        <span class="term">Peer-to-peer conversations about a specific topic or interest</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+      <div class="classify-item" data-answer="blog">
+        <span class="term">Written in an informal, conversational style by an individual or small group</span>
+        <span class="choices"><button data-choice="blog">Blog</button><button data-choice="forum">Forum</button><button data-choice="wiki">Wiki</button><button data-choice="social">Social network</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="4">
+    <p class="task-label"><span>Task 8 · Sort it</span><span class="pts">4 points</span></p>
+    <h4>Which search engine stage does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="crawl">
+        <span class="term">Web crawlers scour the internet daily to retrieve new websites</span>
+        <span class="choices"><button data-choice="crawl">Crawling</button><button data-choice="index">Indexing</button><button data-choice="rank">Ranking</button></span>
+      </div>
+      <div class="classify-item" data-answer="index">
+        <span class="term">Websites are categorised using their content, keywords and metadata</span>
+        <span class="choices"><button data-choice="crawl">Crawling</button><button data-choice="index">Indexing</button><button data-choice="rank">Ranking</button></span>
+      </div>
+      <div class="classify-item" data-answer="rank">
+        <span class="term">Websites are listed on search engine pages, with the most relevant results shown first</span>
+        <span class="choices"><button data-choice="crawl">Crawling</button><button data-choice="index">Indexing</button><button data-choice="rank">Ranking</button></span>
+      </div>
+      <div class="classify-item" data-answer="rank">
+        <span class="term">Algorithms decide the order in which pages are listed</span>
+        <span class="choices"><button data-choice="crawl">Crawling</button><button data-choice="index">Indexing</button><button data-choice="rank">Ranking</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 9 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three ways of refining a search.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Quotation marks for exact phrases</label>
+      <label class="select-item"><input type="checkbox"> Typing in all capital letters</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Plus signs for mandatory terms</label>
+      <label class="select-item"><input type="checkbox"> Using the browser history</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Minus signs for excluding terms</label>
+      <label class="select-item"><input type="checkbox"> Clicking a hyperlink</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="select" data-points="4">
+    <p class="task-label"><span>Task 10 · Tick the right ones</span><span class="pts">4 points</span></p>
+    <h4>Select the four checks for evaluating information found on the internet.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> The reputation and credibility of the source</label>
+      <label class="select-item"><input type="checkbox"> How many images the page has</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Checking it against other reputable sources</label>
+      <label class="select-item"><input type="checkbox"> Whether the page has a modern design</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Whether it is biased towards a particular viewpoint</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> How up-to-date the information is</label>
+      <label class="select-item"><input type="checkbox"> How long the page takes to scroll</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 11 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is the Internet?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A network of networks</button>
+        <button class="opt" data-idx="1">A single large computer</button>
+        <button class="opt" data-idx="2">A type of web browser</button>
+        <button class="opt" data-idx="3">A search engine</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. What does an ISP do?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Ranks web pages</button>
+        <button class="opt" data-idx="1">Provides access to the Internet by leasing equipment and telecommunication lines</button>
+        <button class="opt" data-idx="2">Stores bookmarks for users</button>
+        <button class="opt" data-idx="3">Moderates forums</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. What is a URL?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The web address a user types into a web browser</button>
+        <button class="opt" data-idx="1">A type of hyperlink image</button>
+        <button class="opt" data-idx="2">A program that crawls the internet</button>
+        <button class="opt" data-idx="3">A way of ranking pages</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 12 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Is each point an argument for or against policing the internet?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="for">
+        <span class="term">The internet contains a large amount of inappropriate and criminal material</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+      <div class="classify-item" data-answer="against">
+        <span class="term">Parental, educational and ISP controls could limit access to information</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+      <div class="classify-item" data-answer="against">
+        <span class="term">It would go against freedom of speech</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+      <div class="classify-item" data-answer="for">
+        <span class="term">It would prevent younger users and vulnerable groups from seeing undesirable content</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+      <div class="classify-item" data-answer="against">
+        <span class="term">It is not up to one person to define what people find offensive</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+      <div class="classify-item" data-answer="for">
+        <span class="term">The internet can expose users to harmful or illegal content</span>
+        <span class="choices"><button data-choice="for">For policing</button><button data-choice="against">Against policing</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 13 · Written answer</span><span class="pts">4 points</span></p>
+    <h4>Some people think the internet should be policed. Give two arguments for policing the internet and two arguments against.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer</span><strong>For (any two):</strong> the internet contains a large amount of inappropriate and criminal material · it can expose users to harmful or illegal content · more control would prevent younger users and vulnerable groups from being exposed to undesirable content<br><br><strong>Against (any two):</strong> data restriction — parental, educational and ISP controls could limit access to certain information or websites · it could go against freedom of speech · it is not up to one person to define what people find offensive</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-internet" data-points="4">
+        <label for="sm-internet">My answer gave two valid arguments for and two against — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-protocols">
+  <h2 class="section-title"><span class="tag">Part 3</span> Internet protocols</h2>
+  <p>A protocol is a <strong>set of rules</strong> that govern <strong>communication</strong> on a network. There are protocols for different purposes, including HTTP &amp; HTTPS, FTP, SSL &amp; TLS, VoIP and SMTP.</p>
+
+  <h3>HTTP &amp; HTTPS</h3>
+<div class="block">
+    <ul>
+      <li><strong>Hypertext Transfer Protocol (HTTP)</strong> allows communication between clients and servers for <strong>website viewing</strong></li>
+      <li>HTTP allows clients to <strong>receive data</strong> from the server (fetching a webpage) and <strong>send data</strong> to the server (submitting a form, uploading a file)</li>
+      <li><strong>HTTPS</strong> works in the same way as HTTP but with an <strong>added layer of security</strong>. All data sent and received using HTTPS is <strong>encrypted</strong></li>
+      <li>HTTPS is used to <strong>protect sensitive information</strong> such as passwords, financial information and personal data</li>
+    </ul>
+  </div>
+  <figure class="diagram">
+    <svg viewBox="0 0 600 220" role="img" aria-label="An http address bar compared with a secure https address bar with a padlock">
+      <rect class="dg-warn" x="30" y="20" width="540" height="56" rx="4"/>
+      <text class="dg-t" x="52" y="55">http://www.</text>
+      <text class="dg-s" x="440" y="55">not encrypted</text>
+      <text class="dg-t" x="285" y="107" style="font-size:18px">vs.</text>
+      <rect class="dg-ok" x="30" y="130" width="540" height="56" rx="4"/>
+      <path d="M52 156 h14 v-6 a7 7 0 0 0 -14 0 z" style="fill:none;stroke:var(--sage);stroke-width:2"/>
+      <rect x="49" y="156" width="20" height="14" rx="2" style="fill:var(--sage)"/>
+      <text class="dg-t" x="84" y="165">https://www.</text>
+      <rect x="400" y="140" width="156" height="36" rx="3" style="fill:#101613;stroke:var(--sage)"/>
+      <text class="dg-t" x="414" y="162" style="font-size:12px">SECURE · SSL</text>
+    </svg>
+    <figcaption>HTTP compared with HTTPS</figcaption>
+  </figure>
+
+  <h3>FTP</h3>
+<div class="block">
+    <ul>
+      <li><strong>File Transfer Protocol (FTP)</strong> allows <strong>sending and receiving files</strong> between computers</li>
+      <li>Uploading and downloading files to/from a web server is often completed using FTP</li>
+      <li>FTP offers greater efficiency and support for <strong>bulk transfers</strong> and <strong>large files</strong>, such as <strong>resuming interrupted transfers</strong></li>
+      <li><strong>FTP clients</strong> are software applications that use the FTP protocol to make the process easier for users</li>
+    </ul>
+  </div>
+  <figure class="diagram">
+    <svg viewBox="0 0 600 300" role="img" aria-label="Two FTP clients exchanging files with an FTP server: one uploads a file to the server, the other downloads a file from it">
+      <defs><marker id="ftp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--copper-bright)"/></marker></defs>
+      <!-- server -->
+      <rect class="dg-box" x="250" y="14" width="100" height="90" rx="4"/>
+      <line x1="262" y1="38" x2="338" y2="38" style="stroke:var(--trace)"/>
+      <line x1="262" y1="58" x2="338" y2="58" style="stroke:var(--trace)"/>
+      <circle cx="274" cy="82" r="4" style="fill:var(--sage)"/>
+      <text class="dg-t" x="300" y="128" text-anchor="middle">FTP SERVER</text>
+      <!-- clients -->
+      <rect class="dg-box" x="30" y="190" width="130" height="70" rx="4"/>
+      <text class="dg-t" x="95" y="230" text-anchor="middle">FTP CLIENT</text>
+      <rect class="dg-box" x="440" y="190" width="130" height="70" rx="4"/>
+      <text class="dg-t" x="505" y="230" text-anchor="middle">FTP CLIENT</text>
+      <!-- arrows -->
+      <path class="dg-line" marker-end="url(#ftp-arrow)" d="M120 184 L246 98"/>
+      <path class="dg-line" marker-end="url(#ftp-arrow)" d="M354 98 L480 184"/>
+      <!-- files (placed above the arrows so nothing covers them) -->
+      <rect class="dg-ok" x="100" y="86" width="56" height="30" rx="3"/>
+      <text class="dg-s" x="128" y="106" text-anchor="middle">FILE</text>
+      <rect class="dg-ok" x="444" y="86" width="56" height="30" rx="3"/>
+      <text class="dg-s" x="472" y="106" text-anchor="middle">FILE</text>
+      <!-- captions -->
+      <text class="dg-s" x="30" y="286">upload a file to the server</text>
+      <text class="dg-s" x="570" y="286" text-anchor="end">download a file from the server</text>
+    </svg>
+    <figcaption>FTP clients sending files to and receiving files from an FTP server</figcaption>
+  </figure>
+
+  <h3>SSL &amp; TLS</h3>
+<div class="block">
+    <ul>
+      <li><strong>Secure Socket Layer (SSL)</strong> is a <strong>security protocol</strong> developed to provide secure communication over the internet</li>
+      <li><strong>TLS</strong> is a <strong>successor to SSL</strong> and is also a security protocol used to provide secure communication over the internet</li>
+      <li>They both use a combination of <strong>symmetric and asymmetric encryption</strong> to secure data and ensure data integrity</li>
+      <li>SSL operates by encrypting a user’s data using a <strong>public key</strong>. This is done by sending a <strong>digital certificate</strong> to the user’s browser, which contains the public key that can be used for authentication</li>
+    </ul>
+  </div>
+  <p><strong>Where is SSL used?</strong> Wherever a secure connection is required, for example:</p>
+<div class="block">
+    <ul>
+      <li>Online banking</li>
+      <li>Online shopping</li>
+      <li>Using cloud storage</li>
+      <li>Messaging</li>
+      <li>Social networking websites</li>
+      <li>Intranets/extranets</li>
+    </ul>
+  </div>
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 14 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which protocol does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="http">
+        <span class="term">Fetches a webpage from a server for website viewing</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+      <div class="classify-item" data-answer="https">
+        <span class="term">Works like HTTP but with an added layer of security, encrypting all data</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+      <div class="classify-item" data-answer="ftp">
+        <span class="term">Sends and receives files between computers, and can resume interrupted transfers</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+      <div class="classify-item" data-answer="ssl">
+        <span class="term">Uses a digital certificate containing a public key to secure the connection</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+      <div class="classify-item" data-answer="ftp">
+        <span class="term">Used for uploading and downloading files to and from a web server</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+      <div class="classify-item" data-answer="https">
+        <span class="term">Used to protect passwords and financial information on a website</span>
+        <span class="choices"><button data-choice="http">HTTP</button><button data-choice="https">HTTPS</button><button data-choice="ftp">FTP</button><button data-choice="ssl">SSL / TLS</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 15 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three situations where SSL is used.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> Online banking</label>
+      <label class="select-item"><input type="checkbox"> Resuming an interrupted file transfer</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Online shopping</label>
+      <label class="select-item"><input type="checkbox"> Ranking pages in a search engine</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> Using cloud storage</label>
+      <label class="select-item"><input type="checkbox"> Sorting spam into a folder</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 16 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What is a protocol?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A set of rules that govern communication on a network</button>
+        <button class="opt" data-idx="1">A type of web browser</button>
+        <button class="opt" data-idx="2">A file stored on a server</button>
+        <button class="opt" data-idx="3">A way of ranking web pages</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">2. What does HTTPS add to HTTP?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A home page</button>
+        <button class="opt" data-idx="1">An added layer of security — the data is encrypted</button>
+        <button class="opt" data-idx="2">Bigger file transfers</button>
+        <button class="opt" data-idx="3">A list of bookmarks</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. What does FTP stand for?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">Fast Transfer Page</button>
+        <button class="opt" data-idx="1">File Transfer Protocol</button>
+        <button class="opt" data-idx="2">Format Text Protocol</button>
+        <button class="opt" data-idx="3">Fixed Transmission Path</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="6">
+    <p class="task-label"><span>Task 17 · Worked example</span><span class="pts">6 points</span></p>
+    <h4>Protocols are associated with the internet and an intranet. Identify <strong>three protocols</strong> and for each one, <strong>identify a use</strong>.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answers (matched pairs)</span><strong>HTTP / HyperText Transfer Protocol</strong> — transfer data between a webserver and the browser / display or load pages / connect to a webpage<br><br><strong>HTTPS / HyperText Transfer Protocol Secure variant</strong> — one of: transfer data between a webserver and the browser securely · display/load secure pages · connect to a secure webpage · secure variant of HTTP<br><br><strong>FTP / File Transfer Protocol</strong> — transfers files between computers/website<br><br><strong>SSL/TLS</strong> — determines variables of the encryption for both the link and the data being transmitted</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-protocols" data-points="6">
+        <label for="sm-protocols">My answer gave three matched protocol-and-use pairs — award myself up to 6 points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · Communication — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Shuffle (visual only, via CSS "order", so the DOM order stays fixed and saved answers always map to the right item) ----
+  function shuffleOrder(nodes){
+    const idx = nodes.map(function(_, i){ return i; });
+    for(let i = idx.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp;
+    }
+    nodes.forEach(function(n, i){ n.style.order = idx[i]; });
+    return idx;
+  }
+  // sort-it items and tick-box items
+  document.querySelectorAll('.classify-list').forEach(function(list){
+    list.style.display = 'flex'; list.style.flexDirection = 'column';
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  document.querySelectorAll('.select-list').forEach(function(list){
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  // quick-check: shuffle the questions (and renumber them), then each question's options
+  document.querySelectorAll('.task[data-task="mcq"]').forEach(function(task){
+    task.style.display = 'flex'; task.style.flexDirection = 'column';
+    const qs = Array.prototype.slice.call(task.querySelectorAll('.mcq'));
+    const idx = shuffleOrder(qs);
+    qs.forEach(function(q, i){
+      const p = q.querySelector('p.q');
+      p.textContent = (idx[i] + 1) + '. ' + p.textContent.replace(/^\d+\.\s*/, '');
+      shuffleOrder(Array.prototype.slice.call(q.querySelectorAll('.opt')));
+    });
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      const wrong = task.querySelectorAll('.select-item.incorrect').length;
+      const allGood = (correctChecked === totalCorrect && wrong === 0);
+      feedback.textContent = allGood
+        ? 'All correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = allGood ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+<script>
+  (function(){
+    var STORE_KEY = 'ict-lesson-progress::' + location.pathname + '::' + document.title;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(mutator){
+    try {
+      var s = load();
+      mutator(s);
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+    } catch(e){ /* storage unavailable or full — fail silently */ }
+  }
+
+  var subQs      = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="open"] .sub-q'));
+  var classifyIt = Array.prototype.slice.call(document.querySelectorAll('.classify-item'));
+  var mcqs       = Array.prototype.slice.call(document.querySelectorAll('.mcq'));
+  var orderTasks = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="order"]'));
+  var selectTasks= Array.prototype.slice.call(document.querySelectorAll('.task[data-task="select"]'));
+
+  // ---- SAVE: listen alongside the page's own handlers ----
+
+  subQs.forEach(function(sq, i){
+    var key = 'subq-' + i;
+    var ta = sq.querySelector('textarea');
+    var btn = sq.querySelector('.check-btn');
+    var cb = sq.querySelector('.self-mark input[type=checkbox]');
+
+    if(ta) ta.addEventListener('input', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].text = ta.value; });
+    });
+    if(btn) btn.addEventListener('click', function(){
+      save(function(s){
+        s[key] = s[key] || {};
+        s[key].text = ta ? ta.value : '';
+        s[key].checked = !!(ta && ta.value.trim());
+      });
+    });
+    if(cb) cb.addEventListener('change', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].selfMarked = cb.checked; });
+    });
+  });
+
+  classifyIt.forEach(function(item, i){
+    var buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b, bi){
+      b.addEventListener('click', function(){
+        save(function(s){ s['classify-' + i] = bi; });
+      });
+    });
+  });
+
+  mcqs.forEach(function(mcq, i){
+    var opts = mcq.querySelectorAll('.opt');
+    opts.forEach(function(o, oi){
+      o.addEventListener('click', function(){
+        save(function(s){ s['mcq-' + i] = oi; });
+      });
+    });
+  });
+
+  orderTasks.forEach(function(task, ti){
+    var items = task.querySelectorAll('.order-item');
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        save(function(s){
+          var key = 'order-' + ti;
+          s[key] = s[key] || [];
+          s[key].push(item.dataset.order);
+        });
+      });
+    });
+  });
+
+  selectTasks.forEach(function(task, ti){
+    var btn = task.querySelector('.check-select-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      var checkedIdx = [];
+      items.forEach(function(inp, ii){ if(inp.checked) checkedIdx.push(ii); });
+      save(function(s){ s['select-' + ti] = checkedIdx; });
+    });
+  });
+
+  // ---- RESTORE: replay stored answers as real clicks, so the page's
+  // own scoring logic runs exactly as it did originally ----
+
+  (function restore(){
+    var s = load();
+
+    subQs.forEach(function(sq, i){
+      var rec = s['subq-' + i];
+      if(!rec) return;
+      var ta = sq.querySelector('textarea');
+      var btn = sq.querySelector('.check-btn');
+      var cb = sq.querySelector('.self-mark input[type=checkbox]');
+      if(ta && rec.text) ta.value = rec.text;
+      if(rec.checked && btn) btn.click();
+      if(rec.selfMarked && cb){
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+
+    classifyIt.forEach(function(item, i){
+      var bi = s['classify-' + i];
+      if(bi === undefined) return;
+      var buttons = item.querySelectorAll('.choices button');
+      if(buttons[bi]) buttons[bi].click();
+    });
+
+    mcqs.forEach(function(mcq, i){
+      var oi = s['mcq-' + i];
+      if(oi === undefined) return;
+      var opts = mcq.querySelectorAll('.opt');
+      if(opts[oi]) opts[oi].click();
+    });
+
+    orderTasks.forEach(function(task, ti){
+      var seq = s['order-' + ti];
+      if(!seq) return;
+      seq.forEach(function(orderVal){
+        var items = task.querySelectorAll('.order-item');
+        for(var j = 0; j < items.length; j++){
+          if(items[j].dataset.order === orderVal && !items[j].disabled){
+            items[j].click();
+            break;
+          }
+        }
+      });
+    });
+
+    selectTasks.forEach(function(task, ti){
+      var idxArr = s['select-' + ti];
+      if(!idxArr) return;
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      idxArr.forEach(function(ii){ if(items[ii]) items[ii].checked = true; });
+      var btn = task.querySelector('.check-select-btn');
+      if(btn) btn.click();
+    });
+  })();
+
+  // ---- Small "reset my answers" control ----
+  var resetBtn = document.createElement('button');
+  resetBtn.textContent = 'Reset my answers';
+  resetBtn.setAttribute('type', 'button');
+  resetBtn.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;'
+    + 'font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;'
+    + 'color:#a9a294;border-radius:3px;cursor:pointer;';
+  resetBtn.addEventListener('mouseenter', function(){ resetBtn.style.color = '#e9e4d6'; });
+  resetBtn.addEventListener('mouseleave', function(){ resetBtn.style.color = '#a9a294'; });
+  resetBtn.addEventListener('click', function(){
+    if(confirm('Clear all your saved answers on this page?')){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.body.appendChild(resetBtn);
+})();
+</script>
+</body>
+</html>
