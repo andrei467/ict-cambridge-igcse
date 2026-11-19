@@ -68,7 +68,10 @@ button:hover{background:var(--copper-bright)}button:disabled{opacity:.5;cursor:d
 .opt:disabled{cursor:default;opacity:1}
 .mcq-feedback,.select-feedback{font-family:var(--mono);font-size:13px;margin-top:8px;min-height:1.2em}
 .ok{color:var(--sage)}.bad{color:var(--brick)}
-.classify-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--trace-dim);flex-wrap:wrap}
+.classify-item{
+  display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start; gap:8px;
+  padding:10px 0; border-bottom:1px solid var(--trace-dim);
+}
 .classify-item:last-child{border-bottom:none}
 .classify-item .term{font-size:15.5px;flex:1;min-width:200px}
 .classify-item .choices{display:flex;gap:8px;flex-wrap:wrap}
