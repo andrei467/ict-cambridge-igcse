@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Formats — IGCSE ICT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101613;
+    --bg-raised:#161e1a;
+    --trace:#496354;
+    --trace-dim:#2b3730;
+    --paper:#e9e4d6;
+    --paper-dim:#a9a294;
+    --copper:#c98a4b;
+    --copper-bright:#e0a566;
+    --gold:#d7b872;
+    --brick:#c15c4f;
+    --sage:#7fa68a;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(var(--trace-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--trace-dim) 1px, transparent 1px);
+    background-size: 42px 42px;
+    background-position: -1px -1px;
+    color:var(--paper);
+    font-family: var(--serif);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--copper-bright);}
+  ::selection{background:var(--copper); color:#101613;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding: 0 24px 120px; }
+
+  /* Theory nav */
+  nav.theory-nav{
+    max-width:760px; margin:0 auto; padding:14px 24px 0;
+    display:flex; justify-content:space-between; gap:12px;
+  }
+  nav.theory-nav a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none; color:var(--paper-dim);
+    border:1px solid var(--trace); padding:8px 13px; border-radius:var(--radius);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  nav.theory-nav a:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.theory-nav a.disabled{ opacity:.4; pointer-events:none; }
+  nav.theory-nav .spacer{flex:1;}
+  @media (max-width:600px){ nav.theory-nav a span.full{display:none;} }
+
+  header.hero{
+    padding:44px 24px 34px; max-width:760px; margin:0 auto; border-bottom:1px solid var(--trace);
+  }
+  .kicker{ font-family:var(--mono); font-size:13px; color:var(--sage); margin:0 0 10px; }
+  h1.title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(24px,5vw,38px);
+    line-height:1.15; margin:0 0 14px; color:var(--paper);
+  }
+  .hero p{ color:var(--paper-dim); max-width:60ch; margin:0; font-size:17.5px; }
+
+  nav.tabs{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; gap:6px;
+    overflow-x:auto; border-bottom:1px solid var(--trace); position:sticky; top:0;
+    background:rgba(16,22,19,.95); backdrop-filter: blur(4px); z-index:30;
+  }
+  nav.tabs button{
+    font-family:var(--mono); font-size:12.5px; white-space:nowrap; background:transparent;
+    border:1px solid var(--trace); color:var(--paper-dim); padding:8px 13px;
+    border-radius:var(--radius); cursor:pointer; flex-shrink:0;
+  }
+  nav.tabs button:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  nav.tabs button.active{ background:var(--copper); color:#181008; border-color:var(--copper); font-weight:500; }
+
+  .panel{ display:none; padding:40px 0 8px; }
+  .panel.active{ display:block; }
+
+  h2.section-title{
+    font-family:var(--mono); font-size:22px; color:var(--copper-bright);
+    margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .tag{
+    font-size:12px; color:var(--sage); border:1px solid var(--trace);
+    padding:2px 7px; border-radius:var(--radius);
+  }
+  h3{ font-family:var(--mono); font-size:16px; color:var(--gold); margin:26px 0 8px; font-weight:500; }
+  p{margin:10px 0;}
+  ul{padding-left:22px; margin:10px 0;}
+  li{margin:4px 0;}
+  strong{color:var(--paper); font-weight:600;}
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:15px; }
+  th,td{ border:1px solid var(--trace); padding:8px 10px; text-align:left; vertical-align:top; }
+  th{ font-family:var(--mono); font-size:12px; color:var(--sage); font-weight:500; background:rgba(127,166,138,0.06); }
+  .table-scroll{ overflow-x:auto; }
+  .note{ color:var(--paper-dim); font-size:14.5px; }
+
+  .block{ border-left:2px solid var(--trace); padding-left:18px; margin:18px 0; }
+
+  .task{ margin:32px 0; border:1px solid var(--trace); border-radius:var(--radius); background: var(--bg-raised); padding:20px 20px 22px; }
+  .task-label{ font-family:var(--mono); font-size:12px; color:var(--copper-bright); margin:0 0 10px; display:flex; justify-content:space-between; align-items:center; }
+  .task-label .pts{color:var(--sage);}
+  .task h4{ margin:0 0 12px; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--paper); }
+  .task .sub-q{margin:18px 0;}
+  .task .sub-q:first-child{margin-top:0;}
+  .sub-q label{ display:block; font-family:var(--serif); font-size:15.5px; margin-bottom:8px; color:var(--paper); }
+
+  textarea{
+    width:100%; min-height:52px; background:#0c110e; border:1px solid var(--trace);
+    border-radius:var(--radius); color:var(--paper); font-family:var(--serif);
+    font-size:15.5px; padding:10px 12px; resize:vertical;
+  }
+  textarea:focus, button:focus-visible, .opt:focus-visible{ outline:2px solid var(--copper-bright); outline-offset:1px; }
+  .row{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+  button{
+    font-family:var(--mono); font-size:13px; background:var(--copper); color:#181008;
+    border:none; padding:9px 15px; border-radius:var(--radius); cursor:pointer; font-weight:500;
+  }
+  button:hover{background:var(--copper-bright);}
+  button.ghost{ background:transparent; border:1px solid var(--trace); color:var(--paper-dim); }
+  button.ghost:hover{ color:var(--paper); border-color:var(--paper-dim); }
+  button:disabled{opacity:.5; cursor:default;}
+
+  .error-msg{ color:var(--brick); font-family:var(--mono); font-size:13px; margin-top:8px; display:none; }
+  .error-msg.show{display:block;}
+
+  .answer-reveal{
+    display:none; margin-top:12px; padding:12px 14px; background:rgba(127,166,138,0.08);
+    border-left:2px solid var(--sage); border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .answer-reveal.show{display:block;}
+  .answer-reveal .lbl{ font-family:var(--mono); font-size:11.5px; color:var(--sage); display:block; margin-bottom:5px; }
+
+  .self-mark{ display:none; align-items:center; gap:8px; margin-top:12px; font-family:var(--mono); font-size:13px; color:var(--paper-dim); }
+  .self-mark.show{display:flex;}
+  .self-mark input[type=checkbox]{ width:17px; height:17px; accent-color: var(--gold); cursor:pointer; }
+  .self-mark label{cursor:pointer;}
+
+  .mcq{margin:20px 0;}
+  .mcq:first-of-type{margin-top:0;}
+  .mcq p.q{ font-family:var(--serif); font-size:15.5px; color:var(--paper); margin:0 0 10px; }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left; background:#0c110e; border:1px solid var(--trace); color:var(--paper);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--copper);}
+  .opt.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .opt.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .opt:disabled{cursor:default;}
+  .mcq-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .mcq-feedback.ok{color:var(--sage);}
+  .mcq-feedback.bad{color:var(--brick);}
+
+  .classify-item{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+  }
+  .classify-item:last-child{border-bottom:none;}
+  .classify-item .term{font-size:15.5px;}
+  .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
+  .classify-item .choices button{
+    background:transparent; border:1px solid var(--trace); color:var(--paper-dim);
+    font-size:12px; padding:6px 10px;
+  }
+  .classify-item .choices button.correct{background:rgba(127,166,138,0.16); border-color:var(--sage); color:var(--paper);}
+  .classify-item .choices button.incorrect{background:rgba(193,92,79,0.16); border-color:var(--brick); color:var(--paper);}
+
+  /* select-many task */
+  .select-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .select-item{
+    display:flex; align-items:center; gap:10px; background:#0c110e; border:1px solid var(--trace);
+    padding:10px 13px; border-radius:var(--radius); font-family:var(--serif); font-size:15px; cursor:pointer;
+  }
+  .select-item input{ width:16px; height:16px; accent-color: var(--gold); cursor:pointer; flex-shrink:0; }
+  .select-item.correct{border-color:var(--sage); background:rgba(127,166,138,0.14);}
+  .select-item.incorrect{border-color:var(--brick); background:rgba(193,92,79,0.14);}
+  .select-item.missed{border-color:var(--gold); background:rgba(215,184,114,0.1);}
+  .select-feedback{ font-family:var(--mono); font-size:13px; margin-top:8px; min-height:1.2em; }
+  .select-feedback.ok{color:var(--sage);}
+  .select-feedback.bad{color:var(--brick);}
+
+  #score-badge{
+    position:fixed; top:14px; right:14px; z-index:50; font-family:var(--mono); font-size:13px;
+    background:var(--bg-raised); border:1px solid var(--copper); color:var(--copper-bright);
+    padding:8px 13px; border-radius:var(--radius); box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #score-badge .n{color:var(--gold); font-weight:700;}
+
+  footer{ max-width:760px; margin:0 auto; padding:40px 24px 0; font-family:var(--mono); font-size:12.5px; color:var(--paper-dim); }
+
+  @media (max-width:600px){
+    body{font-size:16px;}
+    header.hero{padding:36px 20px 26px;}
+    #score-badge{top:auto; bottom:14px; right:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  figure{ margin:22px 0; }
+  figure img{ display:block; width:100%; max-width:480px; height:auto; margin:0 auto; border:1px solid var(--trace); border-radius:var(--radius); background:#fff; }
+  figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .tip{ border-left:2px solid var(--gold); background:rgba(215,184,114,0.07); padding:12px 16px; margin:18px 0; border-radius:0 var(--radius) var(--radius) 0; }
+  .tip .lbl{ display:block; font-family:var(--mono); font-size:11.5px; color:var(--gold); margin-bottom:4px; }
+  ol{ padding-left:24px; margin:10px 0; }
+
+  .diagram{ margin:22px 0; }
+  .diagram svg{ display:block; width:100%; max-width:560px; height:auto; margin:0 auto; }
+  .diagram figcaption{ font-family:var(--mono); font-size:12px; color:var(--paper-dim); text-align:center; margin-top:8px; }
+  .dg-box{ fill:var(--bg-raised); stroke:var(--trace); stroke-width:1.5; }
+  .dg-bar{ fill:#1f2b25; stroke:var(--trace); stroke-width:1.5; }
+  .dg-ok{ fill:rgba(127,166,138,0.18); stroke:var(--sage); stroke-width:1.5; }
+  .dg-warn{ fill:rgba(201,138,75,0.15); stroke:var(--copper); stroke-width:1.5; }
+  .dg-btn{ fill:var(--copper); }
+  .dg-line{ stroke:var(--copper-bright); stroke-width:2; fill:none; }
+  .dg-t{ fill:var(--paper); font-family:var(--mono); font-size:14px; }
+  .dg-s{ fill:var(--paper-dim); font-family:var(--mono); font-size:12px; }
+  .dg-d{ fill:#101613; font-family:var(--mono); font-size:13px; font-weight:700; }
+</style>
+</head>
+<body>
+
+<div id="score-badge">Score: <span class="n" id="score-val">0</span> / <span id="score-max">57</span></div>
+
+<nav class="theory-nav">
+  <a href="#" class="disabled" aria-disabled="true">← <span class="full">Previous theory:</span> Coming soon</a>
+  <span class="spacer"></span>
+  <a href="#" class="disabled" aria-disabled="true"><span class="full">Next theory:</span> Coming soon →</a>
+</nav>
+
+<header class="hero">
+  <p class="kicker">Cambridge IGCSE ICT · Manage Files Effectively</p>
+  <h1 class="title">File Formats</h1>
+  <p>Every file is stored in a format, and the format decides what it can hold and which software can open it. This page covers generic file formats, then image, video and audio files, then text, compressed and web files — with activities at the end of each part. Your answers and score are saved on this device.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-panel="generic">1 · Generic formats</button>
+  <button class="tab-btn" data-panel="media">2 · Image, video &amp; audio</button>
+  <button class="tab-btn" data-panel="text">3 · Text, compressed &amp; web</button>
+</nav>
+
+<div class="wrap">
+
+<div class="panel active" id="panel-generic">
+  <h2 class="section-title"><span class="tag">Part 1</span> Generic file formats</h2>
+  <p>File formats are the <strong>file types</strong> used to store the data in a file. They <strong>define the structure and organisation</strong> of the data in a file and <strong>determine which software can be used</strong> to read the contents of the file. A variety of file formats are used, depending on the type of file.</p>
+
+  <h3>Generic and non-generic formats</h3>
+<div class="block">
+    <ul>
+      <li><strong>Generic</strong> file formats are file types that are compatible and <strong>allow sharing between different devices</strong> and software programs</li>
+      <li><strong>Non-generic</strong> files are types that require <strong>special software or hardware</strong> to be accessed</li>
+    </ul>
+  </div>
+  <p>Generic file types are needed for these reasons:</p>
+<div class="block">
+    <ul>
+      <li>Allowing the exchange of data across <strong>different types of applications</strong></li>
+      <li>They are <strong>widely adopted</strong> and therefore can be accessed by many users or devices</li>
+      <li>Generic files can be <strong>created, edited and accessed across many different devices</strong></li>
+    </ul>
+  </div>
+  <h3>Quick reference: characteristics &amp; uses</h3>
+
+  <div class="table-scroll">
+    <table>
+      <tr><th>Format</th><th>Type</th><th>Compression</th><th>Typical use</th></tr>
+      <tr><td><strong>.jpg</strong> (JPEG)</td><td>Image</td><td>Lossy</td><td>Storing and transmitting digital photographs</td></tr>
+      <tr><td><strong>.png</strong> (Portable Network Graphic)</td><td>Image</td><td>Lossless</td><td>Web design, digital illustrations, logos, icons; supports transparency</td></tr>
+      <tr><td><strong>.gif</strong> (Graphics Interchange Format)</td><td>Image</td><td>Lossless</td><td>Short, animated images and simple graphics; social media, messaging apps and websites</td></tr>
+      <tr><td><strong>.mp4</strong></td><td>Video</td><td>Advanced compression keeps file sizes relatively small</td><td>Streaming and transferring videos online</td></tr>
+      <tr><td><strong>.mov</strong> (QuickTime Movie)</td><td>Video</td><td>Excellent image quality with smaller file sizes</td><td>Professional video editing, film production, multimedia projects</td></tr>
+      <tr><td><strong>.mp3</strong></td><td>Audio</td><td>Significant reduction in file size, minimal difference in sound quality</td><td>Digital music distribution and audio streaming platforms</td></tr>
+      <tr><td><strong>.wav</strong> (Waveform File Audio)</td><td>Audio</td><td>Uncompressed</td><td>Music industry, broadcast, multimedia production</td></tr>
+      <tr><td><strong>.txt</strong> (Text)</td><td>Text</td><td>–</td><td>Storing plain text data</td></tr>
+      <tr><td><strong>.rtf</strong> (Rich Text Format)</td><td>Text</td><td>–</td><td>Formatted documents such as letters, reports and academic papers</td></tr>
+      <tr><td><strong>.csv</strong> (Comma separated values)</td><td>Text</td><td>–</td><td>Data analysis and database management; moving data between applications</td></tr>
+      <tr><td><strong>.pdf</strong> (Portable Document Format)</td><td>Document</td><td>–</td><td>Keeping layout and formatting across platforms; can be password-protected and digitally signed</td></tr>
+      <tr><td><strong>.zip</strong></td><td>Compressed</td><td>Lossless</td><td>Compressing multiple files and folders into a single, smaller archive</td></tr>
+      <tr><td><strong>.rar</strong> (Roshal archive)</td><td>Compressed</td><td>Proprietary algorithm, generally higher compression ratios</td><td>Sharing files over the internet when space-saving is essential</td></tr>
+      <tr><td><strong>.html</strong> (Hypertext Markup Language)</td><td>Web</td><td>–</td><td>Creating and structuring web pages</td></tr>
+      <tr><td><strong>.css</strong> (Cascading Style Sheets)</td><td>Web</td><td>–</td><td>Styling an HTML document: colours, fonts, layout and positioning</td></tr>
+      </table>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 1 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Does each statement describe a generic or a non-generic file format?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="gen">
+        <span class="term">Is compatible and allows sharing between different devices and software programs</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+      <div class="classify-item" data-answer="non">
+        <span class="term">Requires special software or hardware to be accessed</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+      <div class="classify-item" data-answer="gen">
+        <span class="term">Is widely adopted, so many users or devices can access it</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+      <div class="classify-item" data-answer="gen">
+        <span class="term">Can be created, edited and accessed across many different devices</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+      <div class="classify-item" data-answer="non">
+        <span class="term">Can only be opened using special software or hardware</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+      <div class="classify-item" data-answer="gen">
+        <span class="term">Allows the exchange of data across different types of applications</span>
+        <span class="choices"><button data-choice="gen">Generic</button><button data-choice="non">Non-generic</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="5">
+    <p class="task-label"><span>Task 2 · Sort it</span><span class="pts">5 points</span></p>
+    <h4>Which type of compression does each format use?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="lossy">
+        <span class="term">.jpg</span>
+        <span class="choices"><button data-choice="lossy">Lossy</button><button data-choice="lossless">Lossless</button><button data-choice="none">Uncompressed</button></span>
+      </div>
+      <div class="classify-item" data-answer="lossless">
+        <span class="term">.png</span>
+        <span class="choices"><button data-choice="lossy">Lossy</button><button data-choice="lossless">Lossless</button><button data-choice="none">Uncompressed</button></span>
+      </div>
+      <div class="classify-item" data-answer="lossless">
+        <span class="term">.gif</span>
+        <span class="choices"><button data-choice="lossy">Lossy</button><button data-choice="lossless">Lossless</button><button data-choice="none">Uncompressed</button></span>
+      </div>
+      <div class="classify-item" data-answer="none">
+        <span class="term">.wav</span>
+        <span class="choices"><button data-choice="lossy">Lossy</button><button data-choice="lossless">Lossless</button><button data-choice="none">Uncompressed</button></span>
+      </div>
+      <div class="classify-item" data-answer="lossless">
+        <span class="term">.zip</span>
+        <span class="choices"><button data-choice="lossy">Lossy</button><button data-choice="lossless">Lossless</button><button data-choice="none">Uncompressed</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 3 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. What do file formats define?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">The structure and organisation of the data in a file, and which software can read it</button>
+        <button class="opt" data-idx="1">The password used to open a file</button>
+        <button class="opt" data-idx="2">The device a file must be stored on</button>
+        <button class="opt" data-idx="3">The name of the file</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">2. Which is a reason generic file types are needed?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">They allow the exchange of data across different types of applications</button>
+        <button class="opt" data-idx="1">They can only be used by one program</button>
+        <button class="opt" data-idx="2">They need special hardware</button>
+        <button class="opt" data-idx="3">They cannot be edited</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="0">
+      <p class="q">3. What is a non-generic file type?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">A type that requires special software or hardware to be accessed</button>
+        <button class="opt" data-idx="1">A type that is widely adopted</button>
+        <button class="opt" data-idx="2">A type that can be shared between all devices</button>
+        <button class="opt" data-idx="3">A type that is always compressed</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-media">
+  <h2 class="section-title"><span class="tag">Part 2</span> Image, video &amp; audio files</h2>
+
+  <h3>Generic image files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Joint Photographic Expert Group (.jpg)</strong> — a widely used image format using <strong>lossy compression</strong>. It <strong>significantly reduces file size</strong> while keeping acceptable image quality, and is <strong>commonly used</strong> for storing and transmitting digital photographs</li>
+      <li><strong>Portable Network Graphic (.png)</strong> — uses <strong>lossless compression</strong>. It <strong>preserves high-quality images</strong> while still giving small file sizes, and its <strong>transparency support</strong> allows graphics to be placed onto different backgrounds easily. Commonly used for web design, digital illustrations, logos and icons</li>
+      <li><strong>Graphics Interchange Format (.gif)</strong> — used for <strong>short, animated images</strong> and simple graphics. It uses a <strong>lossless</strong> compression algorithm, keeps <strong>high image quality</strong> with small file sizes, and is used on social media, messaging apps and websites</li>
+    </ul>
+  </div>
+  <h3>Generic video files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Moving pictures expert group layer 4 (.mp4)</strong> — a <strong>multimedia container</strong> rather than a single file format that can be used for video, image and audio types. It uses <strong>advanced compression</strong> for high-quality playback, <strong>keeps file sizes relatively small</strong> and is popular for streaming and transferring videos online</li>
+      <li><strong>QuickTime Movie (.mov)</strong> — a <strong>multimedia container</strong> format <strong>developed by Apple</strong> for storing video, audio and other media data. It keeps excellent image quality with smaller file sizes, suits online streaming and local playback, and is widely used in <strong>professional video editing, film production</strong> and multimedia projects</li>
+    </ul>
+  </div>
+  <h3>Generic audio files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Moving pictures expert group layer 3 (.mp3)</strong> — a popular, high-quality audio format. It gives a <strong>significant reduction in file size</strong> with minimal difference in sound quality, is <strong>compatible with a wide range of devices</strong> and audio streaming platforms, and became the <strong>standard format for digital music distribution</strong></li>
+      <li><strong>Waveform File Audio format (.wav)</strong> — an <strong>uncompressed</strong> audio format known for its high lossless quality. It <strong>preserves the original audio waveform</strong> and is commonly used in the music industry, broadcast and multimedia production</li>
+    </ul>
+  </div>
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 4 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which image format does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="jpg">
+        <span class="term">Uses lossy compression and is commonly used for digital photographs</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+      <div class="classify-item" data-answer="png">
+        <span class="term">Has transparency support, so graphics can be placed onto different backgrounds easily</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+      <div class="classify-item" data-answer="gif">
+        <span class="term">Used for short, animated images and simple graphics</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+      <div class="classify-item" data-answer="png">
+        <span class="term">Uses lossless compression and is commonly used for logos and icons</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+      <div class="classify-item" data-answer="jpg">
+        <span class="term">Significantly reduces file size while keeping acceptable image quality</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+      <div class="classify-item" data-answer="gif">
+        <span class="term">Used on social media, messaging apps and websites</span>
+        <span class="choices"><button data-choice="jpg">.jpg</button><button data-choice="png">.png</button><button data-choice="gif">.gif</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 5 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which video or audio format does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="mp4">
+        <span class="term">A multimedia container that is popular for streaming and transferring videos online</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+      <div class="classify-item" data-answer="mov">
+        <span class="term">Developed by Apple and widely used in professional video editing and film production</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+      <div class="classify-item" data-answer="mp3">
+        <span class="term">The standard format for digital music distribution</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+      <div class="classify-item" data-answer="wav">
+        <span class="term">Uncompressed audio that preserves the original audio waveform</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+      <div class="classify-item" data-answer="wav">
+        <span class="term">Commonly used in the music industry and broadcast</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+      <div class="classify-item" data-answer="mp3">
+        <span class="term">Gives a big reduction in file size with minimal difference in sound quality</span>
+        <span class="choices"><button data-choice="mp4">.mp4</button><button data-choice="mov">.mov</button><button data-choice="mp3">.mp3</button><button data-choice="wav">.wav</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 6 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. Which image format uses lossy compression?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.jpg</button>
+        <button class="opt" data-idx="1">.png</button>
+        <button class="opt" data-idx="2">.gif</button>
+        <button class="opt" data-idx="3">.wav</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">2. Which image format can be placed onto different backgrounds easily because of its transparency support?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.jpg</button>
+        <button class="opt" data-idx="1">.mp3</button>
+        <button class="opt" data-idx="2">.png</button>
+        <button class="opt" data-idx="3">.zip</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. Which audio format is uncompressed?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.mp3</button>
+        <button class="opt" data-idx="1">.wav</button>
+        <button class="opt" data-idx="2">.mp4</button>
+        <button class="opt" data-idx="3">.gif</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="4">
+    <p class="task-label"><span>Task 7 · Written answer</span><span class="pts">4 points</span></p>
+    <h4>A photographer wants to store her photographs and also create a company logo for a website. State the most suitable file format for each, and give a reason for each choice.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer</span><strong>Photographs — .jpg</strong> (1) · reason (1), one of: lossy compression significantly reduces the file size while keeping acceptable image quality · it is commonly used for storing and transmitting digital photographs<br><br><strong>Logo — .png</strong> (1) · reason (1), one of: lossless compression preserves a high-quality image with a small file size · transparency support lets the logo be placed onto different backgrounds easily · it is commonly used for logos and web design</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ff-photo" data-points="4">
+        <label for="sm-ff-photo">My answer gave a format and a reason for both — award myself all four points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="panel-text">
+  <h2 class="section-title"><span class="tag">Part 3</span> Text, compressed &amp; web files</h2>
+
+  <h3>Generic text files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Text (.txt)</strong> — used for <strong>storing plain text data</strong>: only human-readable text without any formatting or styling. Extensively supported across platforms and applications, and can be opened and edited using a word processor or basic text editor</li>
+      <li><strong>Rich Text Format (.rtf)</strong> — used for <strong>storing formatted text documents</strong> that can contain different text styles, fonts, colours and other basic formatting. It can be opened and edited using a wide range of text editors and word processors, so it suits letters, reports and academic papers</li>
+      <li><strong>Comma separated values (.csv)</strong> — a <strong>plain text</strong> file format for storing data in a <strong>structured manner</strong>: <strong>rows and columns</strong>, with each cell <strong>separated by a comma</strong>. Widely supported and easy to import and export between applications. Commonly used for data analysis and database management, and easily opened in spreadsheet software</li>
+      <li><strong>Portable Document Format (.pdf)</strong> — retains the <strong>layout and formatting</strong> of documents across a range of platforms. Documents contain text, images, graphics and even interactive elements. Can be <strong>password-protected</strong> to stop unauthorised users editing, and allows a <strong>digital signature</strong> acting as a digital “ink signature”</li>
+    </ul>
+  </div>
+  <h3>Generic compressed files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Zip (.zip)</strong> — a container used for compression. It allows <strong>multiple files and folders to be compressed into a single, smaller-sized archive</strong> using <strong>lossless</strong> compression algorithms</li>
+      <li><strong>Roshal archive (.rar)</strong> — a container used for compression, <strong>similar to .zip</strong>, but it uses a <strong>proprietary compression algorithm</strong> and generally gives <strong>higher compression ratios</strong>. Commonly used for sharing files over the internet and when space-saving is essential</li>
+    </ul>
+  </div>
+  <h3>Generic web development &amp; browsing files</h3>
+<div class="block">
+    <ul>
+      <li><strong>Hypertext Markup Language (.html)</strong> — a global file format used for <strong>creating and structuring web pages</strong>. It contains <strong>text-based code</strong> that defines the structure, layout and content of a webpage, is <strong>rendered by web browsers</strong>, and is used across many devices and platforms</li>
+      <li><strong>Cascading Style Sheets (.css)</strong> — a file format that is <strong>attached to an HTML document</strong> and used to <strong>determine presentation and styling</strong> such as colours, fonts, layout and positioning. Widely used in web development to create responsive and attractive designs</li>
+    </ul>
+  </div>
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 8 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which text format does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="txt">
+        <span class="term">Contains only human-readable text without any formatting or styling</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+      <div class="classify-item" data-answer="rtf">
+        <span class="term">Can contain different text styles, fonts and colours</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+      <div class="classify-item" data-answer="csv">
+        <span class="term">Stores data in rows and columns, with each cell separated by a comma</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+      <div class="classify-item" data-answer="pdf">
+        <span class="term">Retains the layout and formatting of a document across platforms</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+      <div class="classify-item" data-answer="pdf">
+        <span class="term">Can be password-protected and allows a digital signature</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+      <div class="classify-item" data-answer="csv">
+        <span class="term">Easy to import and export data between applications</span>
+        <span class="choices"><button data-choice="txt">.txt</button><button data-choice="rtf">.rtf</button><button data-choice="csv">.csv</button><button data-choice="pdf">.pdf</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="classify" data-points="6">
+    <p class="task-label"><span>Task 9 · Sort it</span><span class="pts">6 points</span></p>
+    <h4>Which compressed or web format does each description match?</h4>
+    <div class="classify-list">
+      <div class="classify-item" data-answer="zip">
+        <span class="term">Lets multiple files and folders be compressed into a single, smaller archive using lossless compression</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+      <div class="classify-item" data-answer="rar">
+        <span class="term">Uses a proprietary compression algorithm and generally gives higher compression ratios</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+      <div class="classify-item" data-answer="html">
+        <span class="term">Contains text-based code that defines the structure and content of a webpage</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+      <div class="classify-item" data-answer="css">
+        <span class="term">Determines colours, fonts and layout, and is attached to an HTML document</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+      <div class="classify-item" data-answer="html">
+        <span class="term">Rendered by web browsers so users can view and interact with web pages</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+      <div class="classify-item" data-answer="rar">
+        <span class="term">Similar to .zip, but with a proprietary algorithm</span>
+        <span class="choices"><button data-choice="zip">.zip</button><button data-choice="rar">.rar</button><button data-choice="html">.html</button><button data-choice="css">.css</button></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="select" data-points="3">
+    <p class="task-label"><span>Task 10 · Tick the right ones</span><span class="pts">3 points</span></p>
+    <h4>Select the three formats that use lossless compression.</h4>
+    <div class="select-list">
+      <label class="select-item"><input type="checkbox" data-correct="true"> .png</label>
+      <label class="select-item"><input type="checkbox"> .jpg</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> .gif</label>
+      <label class="select-item"><input type="checkbox"> .css</label>
+      <label class="select-item"><input type="checkbox" data-correct="true"> .zip</label>
+      <label class="select-item"><input type="checkbox"> .rtf</label>
+    </div>
+    <div class="row"><button class="check-select-btn">Check answers</button></div>
+    <p class="select-feedback"></p>
+  </div>
+
+  <div class="task" data-task="mcq" data-points="3">
+    <p class="task-label"><span>Task 11 · Quick check</span><span class="pts">3 points</span></p>
+    <div class="mcq" data-answer="0">
+      <p class="q">1. Which format is a plain text file storing data in rows and columns separated by commas?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.csv</button>
+        <button class="opt" data-idx="1">.rtf</button>
+        <button class="opt" data-idx="2">.pdf</button>
+        <button class="opt" data-idx="3">.html</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="2">
+      <p class="q">2. Which file format is attached to an HTML document to style it?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.zip</button>
+        <button class="opt" data-idx="1">.txt</button>
+        <button class="opt" data-idx="2">.css</button>
+        <button class="opt" data-idx="3">.wav</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+    <div class="mcq" data-answer="1">
+      <p class="q">3. Which format can be password-protected to stop unauthorised users from editing?</p>
+      <div class="opts">
+        <button class="opt" data-idx="0">.txt</button>
+        <button class="opt" data-idx="1">.pdf</button>
+        <button class="opt" data-idx="2">.gif</button>
+        <button class="opt" data-idx="3">.mp3</button>
+      </div>
+      <p class="mcq-feedback"></p>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="3">
+    <p class="task-label"><span>Task 12 · Worked example</span><span class="pts">3 points</span></p>
+    <h4>A teacher wants to write a document and could save the document as a .txt or an .rtf file format. <strong>Explain</strong> the difference between .txt and .rtf file formats.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Answer (any three of)</span>RTF has basic formatting (embolden, underline, etc.) while TXT is plain text<br>RTF is capable of paragraph formatting while TXT is not<br>RTF is capable of creating bulleted lists while TXT is not<br>RTF files can include images while TXT cannot<br>TXT takes up less memory while RTF takes up more memory</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ff-rtf" data-points="3">
+        <label for="sm-ff-rtf">My answer gave three valid differences — award myself all three points</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="task" data-task="open" data-points="3">
+    <p class="task-label"><span>Task 13 · Written answer</span><span class="pts">3 points</span></p>
+    <h4>A company wants to send several files and folders to a customer. Explain why it might send them as a single .zip file instead of sending each file separately.</h4>
+    <div class="sub-q">
+      <textarea placeholder="Type your answer here…" style="min-height:110px;"></textarea>
+      <div class="row"><button class="check-btn">Check answer</button></div>
+      <p class="error-msg">Try writing your own answer first — that's how you actually learn it. Don't skip straight to the answer!</p>
+      <div class="answer-reveal"><span class="lbl">Model answer (any three of)</span>A .zip file allows multiple files and folders to be compressed into a single archive · the archive is smaller than the original files, so it is quicker to send and uses less storage · it uses lossless compression, so the original files are not degraded · it is a generic format, so the customer can open it on many different devices</div>
+      <div class="self-mark">
+        <input type="checkbox" id="sm-ff-zip" data-points="3">
+        <label for="sm-ff-zip">My answer gave three valid reasons — award myself all three points</label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  Cambridge IGCSE ICT · File Formats — built for revision, points are just for you.
+</footer>
+
+<script>
+(function(){
+  const scoreValEl = document.getElementById('score-val');
+  let score = 0;
+  function addScore(n){
+    score += n;
+    if(score < 0) score = 0;
+    scoreValEl.textContent = score;
+  }
+
+  // ---- Tabs ----
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  // ---- Open-response tasks ----
+  document.querySelectorAll('.sub-q').forEach(function(sq){
+    const btn = sq.querySelector('.check-btn');
+    const ta = sq.querySelector('textarea');
+    const err = sq.querySelector('.error-msg');
+    const reveal = sq.querySelector('.answer-reveal');
+    const mark = sq.querySelector('.self-mark');
+    const checkbox = mark ? mark.querySelector('input[type=checkbox]') : null;
+
+    btn.addEventListener('click', function(){
+      if(!ta.value.trim()){
+        err.classList.add('show');
+        reveal.classList.remove('show');
+        mark.classList.remove('show');
+        ta.focus();
+        return;
+      }
+      err.classList.remove('show');
+      reveal.classList.add('show');
+      mark.classList.add('show');
+    });
+
+    if(checkbox){
+      checkbox.addEventListener('change', function(){
+        const pts = parseInt(checkbox.dataset.points || '1', 10);
+        addScore(checkbox.checked ? pts : -pts);
+      });
+    }
+  });
+
+  // ---- Shuffle (visual only, via CSS "order", so the DOM order stays fixed and saved answers always map to the right item) ----
+  function shuffleOrder(nodes){
+    const idx = nodes.map(function(_, i){ return i; });
+    for(let i = idx.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp;
+    }
+    nodes.forEach(function(n, i){ n.style.order = idx[i]; });
+    return idx;
+  }
+  // sort-it items and tick-box items
+  document.querySelectorAll('.classify-list').forEach(function(list){
+    list.style.display = 'flex'; list.style.flexDirection = 'column';
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  document.querySelectorAll('.select-list').forEach(function(list){
+    shuffleOrder(Array.prototype.slice.call(list.children));
+  });
+  // quick-check: shuffle the questions (and renumber them), then each question's options
+  document.querySelectorAll('.task[data-task="mcq"]').forEach(function(task){
+    task.style.display = 'flex'; task.style.flexDirection = 'column';
+    const qs = Array.prototype.slice.call(task.querySelectorAll('.mcq'));
+    const idx = shuffleOrder(qs);
+    qs.forEach(function(q, i){
+      const p = q.querySelector('p.q');
+      p.textContent = (idx[i] + 1) + '. ' + p.textContent.replace(/^\d+\.\s*/, '');
+      shuffleOrder(Array.prototype.slice.call(q.querySelectorAll('.opt')));
+    });
+  });
+
+  // ---- Classify (sort) tasks ----
+  document.querySelectorAll('.classify-item').forEach(function(item){
+    const answer = item.dataset.answer;
+    const buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){
+        buttons.forEach(function(other){ other.disabled = true; });
+        if(b.dataset.choice === answer){
+          b.classList.add('correct');
+          addScore(1);
+        } else {
+          b.classList.add('incorrect');
+          buttons.forEach(function(other){
+            if(other.dataset.choice === answer) other.classList.add('correct');
+          });
+        }
+      });
+    });
+  });
+
+  // ---- MCQ tasks ----
+  document.querySelectorAll('.mcq').forEach(function(mcq){
+    const correctIdx = mcq.dataset.answer;
+    const opts = mcq.querySelectorAll('.opt');
+    const feedback = mcq.querySelector('.mcq-feedback');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        opts.forEach(function(o){ o.disabled = true; });
+        if(opt.dataset.idx === correctIdx){
+          opt.classList.add('correct');
+          feedback.textContent = 'Correct.';
+          feedback.className = 'mcq-feedback ok';
+          addScore(1);
+        } else {
+          opt.classList.add('incorrect');
+          opts.forEach(function(o){
+            if(o.dataset.idx === correctIdx) o.classList.add('correct');
+          });
+          feedback.textContent = 'Not quite — the correct answer is highlighted above.';
+          feedback.className = 'mcq-feedback bad';
+        }
+      });
+    });
+  });
+
+  // ---- Select-many tasks ----
+  document.querySelectorAll('.task[data-task="select"]').forEach(function(task){
+    const items = task.querySelectorAll('.select-item');
+    const btn = task.querySelector('.check-select-btn');
+    const feedback = task.querySelector('.select-feedback');
+
+    let totalCorrect = 0;
+    items.forEach(function(item){
+      if(item.querySelector('input').dataset.correct === 'true'){ totalCorrect++; }
+    });
+
+    btn.addEventListener('click', function(){
+      let correctChecked = 0;
+      items.forEach(function(item){
+        const input = item.querySelector('input');
+        const isCorrect = input.dataset.correct === 'true';
+        input.disabled = true;
+        if(input.checked && isCorrect){
+          item.classList.add('correct');
+          correctChecked++;
+        } else if(input.checked && !isCorrect){
+          item.classList.add('incorrect');
+        } else if(!input.checked && isCorrect){
+          item.classList.add('missed');
+        }
+      });
+      addScore(correctChecked);
+      btn.disabled = true;
+      const wrong = task.querySelectorAll('.select-item.incorrect').length;
+      const allGood = (correctChecked === totalCorrect && wrong === 0);
+      feedback.textContent = allGood
+        ? 'All correct — well done.'
+        : 'Gold: correct answers you didn\'t pick. Red: incorrect picks.';
+      feedback.className = allGood ? 'select-feedback ok' : 'select-feedback bad';
+    });
+  });
+})();
+</script>
+<script>
+  (function(){
+    var STORE_KEY = 'ict-lesson-progress::' + location.pathname + '::' + document.title;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(mutator){
+    try {
+      var s = load();
+      mutator(s);
+      localStorage.setItem(STORE_KEY, JSON.stringify(s));
+    } catch(e){ /* storage unavailable or full — fail silently */ }
+  }
+
+  var subQs      = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="open"] .sub-q'));
+  var classifyIt = Array.prototype.slice.call(document.querySelectorAll('.classify-item'));
+  var mcqs       = Array.prototype.slice.call(document.querySelectorAll('.mcq'));
+  var orderTasks = Array.prototype.slice.call(document.querySelectorAll('.task[data-task="order"]'));
+  var selectTasks= Array.prototype.slice.call(document.querySelectorAll('.task[data-task="select"]'));
+
+  // ---- SAVE: listen alongside the page's own handlers ----
+
+  subQs.forEach(function(sq, i){
+    var key = 'subq-' + i;
+    var ta = sq.querySelector('textarea');
+    var btn = sq.querySelector('.check-btn');
+    var cb = sq.querySelector('.self-mark input[type=checkbox]');
+
+    if(ta) ta.addEventListener('input', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].text = ta.value; });
+    });
+    if(btn) btn.addEventListener('click', function(){
+      save(function(s){
+        s[key] = s[key] || {};
+        s[key].text = ta ? ta.value : '';
+        s[key].checked = !!(ta && ta.value.trim());
+      });
+    });
+    if(cb) cb.addEventListener('change', function(){
+      save(function(s){ s[key] = s[key] || {}; s[key].selfMarked = cb.checked; });
+    });
+  });
+
+  classifyIt.forEach(function(item, i){
+    var buttons = item.querySelectorAll('.choices button');
+    buttons.forEach(function(b, bi){
+      b.addEventListener('click', function(){
+        save(function(s){ s['classify-' + i] = bi; });
+      });
+    });
+  });
+
+  mcqs.forEach(function(mcq, i){
+    var opts = mcq.querySelectorAll('.opt');
+    opts.forEach(function(o, oi){
+      o.addEventListener('click', function(){
+        save(function(s){ s['mcq-' + i] = oi; });
+      });
+    });
+  });
+
+  orderTasks.forEach(function(task, ti){
+    var items = task.querySelectorAll('.order-item');
+    items.forEach(function(item){
+      item.addEventListener('click', function(){
+        save(function(s){
+          var key = 'order-' + ti;
+          s[key] = s[key] || [];
+          s[key].push(item.dataset.order);
+        });
+      });
+    });
+  });
+
+  selectTasks.forEach(function(task, ti){
+    var btn = task.querySelector('.check-select-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      var checkedIdx = [];
+      items.forEach(function(inp, ii){ if(inp.checked) checkedIdx.push(ii); });
+      save(function(s){ s['select-' + ti] = checkedIdx; });
+    });
+  });
+
+  // ---- RESTORE: replay stored answers as real clicks, so the page's
+  // own scoring logic runs exactly as it did originally ----
+
+  (function restore(){
+    var s = load();
+
+    subQs.forEach(function(sq, i){
+      var rec = s['subq-' + i];
+      if(!rec) return;
+      var ta = sq.querySelector('textarea');
+      var btn = sq.querySelector('.check-btn');
+      var cb = sq.querySelector('.self-mark input[type=checkbox]');
+      if(ta && rec.text) ta.value = rec.text;
+      if(rec.checked && btn) btn.click();
+      if(rec.selfMarked && cb){
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change'));
+      }
+    });
+
+    classifyIt.forEach(function(item, i){
+      var bi = s['classify-' + i];
+      if(bi === undefined) return;
+      var buttons = item.querySelectorAll('.choices button');
+      if(buttons[bi]) buttons[bi].click();
+    });
+
+    mcqs.forEach(function(mcq, i){
+      var oi = s['mcq-' + i];
+      if(oi === undefined) return;
+      var opts = mcq.querySelectorAll('.opt');
+      if(opts[oi]) opts[oi].click();
+    });
+
+    orderTasks.forEach(function(task, ti){
+      var seq = s['order-' + ti];
+      if(!seq) return;
+      seq.forEach(function(orderVal){
+        var items = task.querySelectorAll('.order-item');
+        for(var j = 0; j < items.length; j++){
+          if(items[j].dataset.order === orderVal && !items[j].disabled){
+            items[j].click();
+            break;
+          }
+        }
+      });
+    });
+
+    selectTasks.forEach(function(task, ti){
+      var idxArr = s['select-' + ti];
+      if(!idxArr) return;
+      var items = Array.prototype.slice.call(task.querySelectorAll('.select-item input'));
+      idxArr.forEach(function(ii){ if(items[ii]) items[ii].checked = true; });
+      var btn = task.querySelector('.check-select-btn');
+      if(btn) btn.click();
+    });
+  })();
+
+  // ---- Small "reset my answers" control ----
+  var resetBtn = document.createElement('button');
+  resetBtn.textContent = 'Reset my answers';
+  resetBtn.setAttribute('type', 'button');
+  resetBtn.style.cssText = 'position:fixed;bottom:14px;left:14px;z-index:50;font-family:JetBrains Mono,monospace;'
+    + 'font-size:11px;padding:7px 11px;background:transparent;border:1px solid #496354;'
+    + 'color:#a9a294;border-radius:3px;cursor:pointer;';
+  resetBtn.addEventListener('mouseenter', function(){ resetBtn.style.color = '#e9e4d6'; });
+  resetBtn.addEventListener('mouseleave', function(){ resetBtn.style.color = '#a9a294'; });
+  resetBtn.addEventListener('click', function(){
+    if(confirm('Clear all your saved answers on this page?')){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.body.appendChild(resetBtn);
+})();
+</script>
+</body>
+</html>
