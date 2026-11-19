@@ -171,10 +171,10 @@
   .mcq-feedback.ok{color:var(--sage);}
   .mcq-feedback.bad{color:var(--brick);}
 
-  .classify-item{
-    display:flex; justify-content:space-between; align-items:center; gap:12px;
-    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
-  }
+.classify-item{
+  display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start; gap:8px;
+  padding:10px 0; border-bottom:1px solid var(--trace-dim);
+}
   .classify-item:last-child{border-bottom:none;}
   .classify-item .term{font-size:15px; max-width:60%;}
   .classify-item .choices{display:flex; gap:8px; flex-wrap:wrap;}
