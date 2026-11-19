@@ -165,8 +165,8 @@
   .mcq-feedback.bad{color:var(--brick);}
 
   .classify-item{
-    display:flex; justify-content:space-between; align-items:center; gap:12px;
-    padding:10px 0; border-bottom:1px solid var(--trace-dim); flex-wrap:wrap;
+    display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start; gap:8px;
+    padding:10px 0; border-bottom:1px solid var(--trace-dim);
   }
   .classify-item:last-child{border-bottom:none;}
   .classify-item .term{font-size:15.5px;}
@@ -240,7 +240,7 @@
 </nav>
 
 <header class="hero">
-  <p class="kicker">Cambridge IGCSE ICT · Manage Files Effectively</p>
+  <p class="kicker">Cambridge IGCSE ICT · Theory 12</p>
   <h1 class="title">File Formats</h1>
   <p>Every file is stored in a format, and the format decides what it can hold and which software can open it. This page covers generic file formats, then image, video and audio files, then text, compressed and web files — with activities at the end of each part. Your answers and score are saved on this device.</p>
 </header>
@@ -273,25 +273,33 @@
     </ul>
   </div>
   <h3>Quick reference: characteristics &amp; uses</h3>
+  <p>The <strong>Compression</strong> column uses these three terms:</p>
+  <div class="block">
+    <ul>
+      <li><strong>Lossy</strong> – makes the file smaller by <strong>permanently removing some data</strong>. The original cannot be restored exactly, but the quality is usually still acceptable</li>
+      <li><strong>Lossless</strong> – makes the file smaller <strong>without losing any data</strong>, so the original can be restored exactly</li>
+      <li><strong>Uncompressed</strong> – no compression at all, so the file keeps everything and is larger</li>
+    </ul>
+  </div>
 
   <div class="table-scroll">
     <table>
       <tr><th>Format</th><th>Type</th><th>Compression</th><th>Typical use</th></tr>
-      <tr><td><strong>.jpg</strong> (JPEG)</td><td>Image</td><td>Lossy</td><td>Storing and transmitting digital photographs</td></tr>
-      <tr><td><strong>.png</strong> (Portable Network Graphic)</td><td>Image</td><td>Lossless</td><td>Web design, digital illustrations, logos, icons; supports transparency</td></tr>
-      <tr><td><strong>.gif</strong> (Graphics Interchange Format)</td><td>Image</td><td>Lossless</td><td>Short, animated images and simple graphics; social media, messaging apps and websites</td></tr>
-      <tr><td><strong>.mp4</strong></td><td>Video</td><td>Advanced compression keeps file sizes relatively small</td><td>Streaming and transferring videos online</td></tr>
-      <tr><td><strong>.mov</strong> (QuickTime Movie)</td><td>Video</td><td>Excellent image quality with smaller file sizes</td><td>Professional video editing, film production, multimedia projects</td></tr>
-      <tr><td><strong>.mp3</strong></td><td>Audio</td><td>Significant reduction in file size, minimal difference in sound quality</td><td>Digital music distribution and audio streaming platforms</td></tr>
-      <tr><td><strong>.wav</strong> (Waveform File Audio)</td><td>Audio</td><td>Uncompressed</td><td>Music industry, broadcast, multimedia production</td></tr>
-      <tr><td><strong>.txt</strong> (Text)</td><td>Text</td><td>–</td><td>Storing plain text data</td></tr>
-      <tr><td><strong>.rtf</strong> (Rich Text Format)</td><td>Text</td><td>–</td><td>Formatted documents such as letters, reports and academic papers</td></tr>
-      <tr><td><strong>.csv</strong> (Comma separated values)</td><td>Text</td><td>–</td><td>Data analysis and database management; moving data between applications</td></tr>
-      <tr><td><strong>.pdf</strong> (Portable Document Format)</td><td>Document</td><td>–</td><td>Keeping layout and formatting across platforms; can be password-protected and digitally signed</td></tr>
-      <tr><td><strong>.zip</strong></td><td>Compressed</td><td>Lossless</td><td>Compressing multiple files and folders into a single, smaller archive</td></tr>
-      <tr><td><strong>.rar</strong> (Roshal archive)</td><td>Compressed</td><td>Proprietary algorithm, generally higher compression ratios</td><td>Sharing files over the internet when space-saving is essential</td></tr>
-      <tr><td><strong>.html</strong> (Hypertext Markup Language)</td><td>Web</td><td>–</td><td>Creating and structuring web pages</td></tr>
-      <tr><td><strong>.css</strong> (Cascading Style Sheets)</td><td>Web</td><td>–</td><td>Styling an HTML document: colours, fonts, layout and positioning</td></tr>
+      <tr><td><strong>.jpg</strong> (JPEG)</td><td>Image</td><td><strong>Lossy</strong> – some image data is permanently removed to make the file smaller</td><td>Storing and transmitting digital photographs</td></tr>
+      <tr><td><strong>.png</strong> (Portable Network Graphic)</td><td>Image</td><td><strong>Lossless</strong> – no data is lost, so quality is preserved while the file stays small</td><td>Web design, digital illustrations, logos, icons; supports transparency</td></tr>
+      <tr><td><strong>.gif</strong> (Graphics Interchange Format)</td><td>Image</td><td><strong>Lossless</strong> – no image data is lost</td><td>Short, animated images and simple graphics; social media, messaging apps and websites</td></tr>
+      <tr><td><strong>.mp4</strong></td><td>Video</td><td><strong>Usually lossy</strong> – advanced compression keeps file sizes relatively small (it is a container, so the exact method depends on the codec inside)</td><td>Streaming and transferring videos online</td></tr>
+      <tr><td><strong>.mov</strong> (QuickTime Movie)</td><td>Video</td><td><strong>Usually lossy</strong> – a container that keeps excellent image quality with smaller file sizes</td><td>Professional video editing, film production, multimedia projects</td></tr>
+      <tr><td><strong>.mp3</strong></td><td>Audio</td><td><strong>Lossy</strong> – sounds that are hard to hear are permanently removed, giving a big reduction in file size with minimal difference in sound quality</td><td>Digital music distribution and audio streaming platforms</td></tr>
+      <tr><td><strong>.wav</strong> (Waveform File Audio)</td><td>Audio</td><td><strong>Uncompressed</strong> – nothing is removed, so it keeps the original audio waveform (large files)</td><td>Music industry, broadcast, multimedia production</td></tr>
+      <tr><td><strong>.txt</strong> (Text)</td><td>Text</td><td>None – not a compressed format</td><td>Storing plain text data</td></tr>
+      <tr><td><strong>.rtf</strong> (Rich Text Format)</td><td>Text</td><td>None – not a compressed format</td><td>Formatted documents such as letters, reports and academic papers</td></tr>
+      <tr><td><strong>.csv</strong> (Comma separated values)</td><td>Text</td><td>None – not a compressed format</td><td>Data analysis and database management; moving data between applications</td></tr>
+      <tr><td><strong>.pdf</strong> (Portable Document Format)</td><td>Document</td><td>Not used for compression – it is a document format that keeps layout and formatting</td><td>Keeping layout and formatting across platforms; can be password-protected and digitally signed</td></tr>
+      <tr><td><strong>.zip</strong></td><td>Compressed</td><td><strong>Lossless</strong> – the original files can be restored exactly</td><td>Compressing multiple files and folders into a single, smaller archive</td></tr>
+      <tr><td><strong>.rar</strong> (Roshal archive)</td><td>Compressed</td><td><strong>Lossless</strong> (like .zip) – uses a proprietary algorithm and generally gets higher compression ratios</td><td>Sharing files over the internet when space-saving is essential</td></tr>
+      <tr><td><strong>.html</strong> (Hypertext Markup Language)</td><td>Web</td><td>None – not a compressed format</td><td>Creating and structuring web pages</td></tr>
+      <tr><td><strong>.css</strong> (Cascading Style Sheets)</td><td>Web</td><td>None – not a compressed format</td><td>Styling an HTML document: colours, fonts, layout and positioning</td></tr>
       </table>
   </div>
 
@@ -410,7 +418,7 @@
   <h3>Generic audio files</h3>
 <div class="block">
     <ul>
-      <li><strong>Moving pictures expert group layer 3 (.mp3)</strong> — a popular, high-quality audio format. It gives a <strong>significant reduction in file size</strong> with minimal difference in sound quality, is <strong>compatible with a wide range of devices</strong> and audio streaming platforms, and became the <strong>standard format for digital music distribution</strong></li>
+      <li><strong>Moving pictures expert group layer 3 (.mp3)</strong> — a popular, high-quality audio format that uses <strong>lossy compression</strong>. It gives a <strong>significant reduction in file size</strong> with minimal difference in sound quality, is <strong>compatible with a wide range of devices</strong> and audio streaming platforms, and became the <strong>standard format for digital music distribution</strong></li>
       <li><strong>Waveform File Audio format (.wav)</strong> — an <strong>uncompressed</strong> audio format known for its high lossless quality. It <strong>preserves the original audio waveform</strong> and is commonly used in the music industry, broadcast and multimedia production</li>
     </ul>
   </div>
